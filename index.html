@@ -10,13 +10,15 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:#f4f5f7;
   color:#222;
-  padding-bottom:100px;
+  padding-bottom:105px;
 }
+
 header{
   background:#fff;
   padding:18px 16px 14px;
@@ -25,13 +27,19 @@ header{
   z-index:10;
   box-shadow:0 1px 6px #0001;
 }
-h1{margin:0 0 12px;font-size:24px}
+
+h1{
+  margin:0 0 12px;
+  font-size:24px;
+}
+
 label{
   display:block;
   font-size:14px;
   font-weight:600;
   margin-bottom:6px;
 }
+
 select,input,button{
   width:100%;
   min-height:46px;
@@ -41,6 +49,7 @@ select,input,button{
   padding:10px 12px;
   background:#fff;
 }
+
 button{
   border:0;
   background:#1677ff;
@@ -48,20 +57,24 @@ button{
   font-weight:700;
   cursor:pointer;
 }
+
 button.secondary{background:#666}
 button.success{background:#159447}
 button.danger{background:#d93025}
+
 button.small{
   width:auto;
   min-height:38px;
   padding:7px 12px;
   font-size:14px;
 }
+
 .container{
   max-width:650px;
   margin:auto;
   padding:14px;
 }
+
 .card{
   background:#fff;
   border-radius:14px;
@@ -69,54 +82,69 @@ button.small{
   margin-bottom:12px;
   box-shadow:0 2px 8px #0000000d;
 }
+
+#scannerArea{
+  display:none;
+}
+
 #reader{
   width:100%;
   overflow:hidden;
   border-radius:12px;
 }
+
 #status{
   text-align:center;
   margin:10px 0;
   font-size:14px;
   color:#666;
 }
-.product-name{
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:4px;
-}
-.barcode{
-  color:#777;
-  font-size:13px;
-}
-.price{
-  font-size:25px;
-  font-weight:800;
-  margin:12px 0;
-}
+
 .row{
   display:flex;
   gap:8px;
   align-items:center;
 }
+
 .row>*{flex:1}
+
+.product-name{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+
+.barcode{
+  color:#777;
+  font-size:13px;
+}
+
+.price{
+  font-size:25px;
+  font-weight:800;
+  margin:12px 0;
+}
+
 .qty{
   display:flex;
   align-items:center;
   gap:8px;
   justify-content:center;
 }
+
 .qty button{
   width:42px;
   min-height:42px;
   padding:0;
 }
+
 .qty span{
   min-width:35px;
   text-align:center;
   font-size:18px;
   font-weight:700;
 }
+
 .cart-item{
   display:flex;
   justify-content:space-between;
@@ -124,17 +152,26 @@ button.small{
   padding:12px 0;
   border-bottom:1px solid #eee;
 }
-.cart-item:last-child{border-bottom:0}
-.cart-info{flex:1}
+
+.cart-item:last-child{
+  border-bottom:0;
+}
+
+.cart-info{
+  flex:1;
+}
+
 .cart-total{
   font-weight:800;
   white-space:nowrap;
 }
+
 .empty{
   text-align:center;
   color:#777;
   padding:20px 5px;
 }
+
 .total-bar{
   position:fixed;
   bottom:0;
@@ -145,6 +182,7 @@ button.small{
   padding:12px 14px calc(12px + env(safe-area-inset-bottom));
   z-index:20;
 }
+
 .total-line{
   max-width:650px;
   margin:auto;
@@ -152,8 +190,17 @@ button.small{
   justify-content:space-between;
   align-items:center;
 }
-.total-label{font-size:14px;color:#666}
-.total-value{font-size:25px;font-weight:900}
+
+.total-label{
+  font-size:14px;
+  color:#666;
+}
+
+.total-value{
+  font-size:25px;
+  font-weight:900;
+}
+
 .modal{
   display:none;
   position:fixed;
@@ -163,7 +210,11 @@ button.small{
   align-items:flex-end;
   justify-content:center;
 }
-.modal.show{display:flex}
+
+.modal.show{
+  display:flex;
+}
+
 .modal-box{
   background:#fff;
   width:100%;
@@ -172,47 +223,120 @@ button.small{
   padding:20px;
   padding-bottom:calc(20px + env(safe-area-inset-bottom));
 }
-.modal-box h2{margin-top:0}
+
+.modal-box h2{
+  margin-top:0;
+}
+
 .modal-actions{
   display:flex;
   gap:8px;
   margin-top:15px;
 }
-.modal-actions button{flex:1}
-.hidden{display:none!important}
+
+.modal-actions button{
+  flex:1;
+}
+
+.hidden{
+  display:none!important;
+}
+
 .history-item{
   display:flex;
   justify-content:space-between;
   padding:12px 0;
   border-bottom:1px solid #eee;
 }
-.muted{color:#777;font-size:13px}
+
+.muted{
+  color:#777;
+  font-size:13px;
+}
+
+.scan-button{
+  min-height:56px;
+  font-size:18px;
+  margin-bottom:8px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
+
   <h1>🛒 Supermercado</h1>
 
-  <label for="supermercado">Supermercado</label>
+  <label for="supermercado">
+    Supermercado
+  </label>
+
   <div class="row">
-    <select id="supermercado"></select>
-    <button class="small" onclick="novoSupermercado()">＋</button>
+
+    <select id="supermercado"
+            onchange="trocarSupermercado()">
+    </select>
+
+    <button class="small"
+            onclick="novoSupermercado()">
+      ＋
+    </button>
+
   </div>
+
 </header>
+
 
 <div class="container">
 
+  <!-- SCANNER -->
+
   <div class="card">
-    <div id="reader"></div>
-    <div id="status">Inicializando câmera...</div>
+
+    <button
+      id="scanButton"
+      class="scan-button"
+      onclick="abrirScanner()">
+
+      📷 Escanear produto
+
+    </button>
+
+    <div id="scannerArea">
+
+      <div id="reader"></div>
+
+      <div id="status">
+        Aponte a câmera para o código de barras.
+      </div>
+
+      <button
+        class="secondary"
+        onclick="fecharScanner()">
+
+        ✕ Fechar câmera
+
+      </button>
+
+    </div>
+
   </div>
 
-  <div id="produtoCard" class="card hidden"></div>
+
+  <!-- PRODUTO -->
+
+  <div id="produtoCard"
+       class="card hidden">
+  </div>
+
+
+  <!-- CARRINHO -->
 
   <div class="card">
+
     <h2>🛒 Carrinho</h2>
+
     <div id="cart"></div>
 
     <button
@@ -220,49 +344,86 @@ button.small{
       class="success"
       onclick="finalizarCompra()"
       disabled>
+
       Finalizar e salvar compra
+
     </button>
+
   </div>
 
+
+  <!-- HISTÓRICO -->
+
   <div class="card">
+
     <h2>📋 Compras anteriores</h2>
+
     <div id="historico"></div>
+
   </div>
 
 </div>
 
+
+<!-- TOTAL -->
+
 <div class="total-bar">
+
   <div class="total-line">
+
     <div>
-      <div class="total-label">TOTAL DA COMPRA</div>
-      <div id="total" class="total-value">R$ 0,00</div>
+
+      <div class="total-label">
+        TOTAL DA COMPRA
+      </div>
+
+      <div id="total"
+           class="total-value">
+        R$ 0,00
+      </div>
+
     </div>
+
     <button
       class="small secondary"
       onclick="limparCarrinho()">
+
       Limpar
+
     </button>
+
   </div>
+
 </div>
 
 
-<!-- MODAL PRODUTO -->
-<div id="produtoModal" class="modal">
+<!-- MODAL NOVO PRODUTO -->
+
+<div id="produtoModal"
+     class="modal">
+
   <div class="modal-box">
 
     <h2>Produto não cadastrado</h2>
 
     <p class="muted">
-      O código de barras foi encontrado, mas ainda não existe
-      cadastro para este supermercado.
+      Este código ainda não está cadastrado.
     </p>
 
-    <label>Código de barras</label>
-    <input id="novoCodigo" readonly>
+    <label>
+      Código de barras
+    </label>
+
+    <input
+      id="novoCodigo"
+      readonly>
 
     <br><br>
 
-    <label>Nome do produto</label>
+    <label>
+      Nome do produto
+    </label>
+
     <input
       id="novoNome"
       type="text"
@@ -270,7 +431,10 @@ button.small{
 
     <br><br>
 
-    <label>Preço no supermercado</label>
+    <label>
+      Preço no supermercado
+    </label>
+
     <input
       id="novoPreco"
       type="number"
@@ -279,20 +443,32 @@ button.small{
       placeholder="0,00">
 
     <div class="modal-actions">
-      <button class="secondary" onclick="fecharModal()">
+
+      <button
+        class="secondary"
+        onclick="fecharModal()">
+
         Cancelar
+
       </button>
 
-      <button class="success" onclick="cadastrarProduto()">
+      <button
+        class="success"
+        onclick="cadastrarProduto()">
+
         Cadastrar
+
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 
 <script>
+
 /* =========================================================
    CONFIGURAÇÃO
 ========================================================= */
@@ -304,7 +480,20 @@ const SUPABASE_KEY =
   "sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
 
 const supabaseClient =
-  supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   ARMAZENAMENTO TEMPORÁRIO
+========================================================= */
+
+const STORAGE_KEY =
+  "supermercado_carrinho_v1";
+
+const STORAGE_HORAS = 12;
 
 
 /* =========================================================
@@ -312,29 +501,36 @@ const supabaseClient =
 ========================================================= */
 
 let scanner = null;
+
 let scannerRodando = false;
 
 let produtoAtual = null;
+
 let produtoPendente = null;
 
 let carrinho = [];
+
+let quantidadeProduto = 1;
 
 
 /* =========================================================
    INICIALIZAÇÃO
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
 
-  await carregarSupermercados();
+    await carregarSupermercados();
 
-  await carregarHistorico();
+    restaurarCarrinho();
 
-  atualizarCarrinho();
+    await carregarHistorico();
 
-  iniciarScanner();
+    atualizarCarrinho();
 
-});
+  }
+);
 
 
 /* =========================================================
@@ -343,12 +539,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function carregarSupermercados(){
 
-  const select = document.getElementById("supermercado");
+  const select =
+    document.getElementById(
+      "supermercado"
+    );
 
-  const { data, error } = await supabaseClient
+  const {
+    data,
+    error
+  } = await supabaseClient
     .from("supermercados")
     .select("*")
     .order("nome");
+
 
   if(error){
 
@@ -360,31 +563,160 @@ async function carregarSupermercados(){
     return;
   }
 
+
+  const supermercadoAnterior =
+    localStorage.getItem(
+      "supermercado_selecionado"
+    );
+
+
   select.innerHTML = "";
+
 
   data.forEach(supermercado => {
 
-    const option = document.createElement("option");
+    const option =
+      document.createElement("option");
 
-    option.value = supermercado.id;
-    option.textContent = supermercado.nome;
+    option.value =
+      supermercado.id;
+
+    option.textContent =
+      supermercado.nome;
 
     select.appendChild(option);
 
   });
 
+
+  if(
+    supermercadoAnterior &&
+    data.some(
+      x =>
+        String(x.id) ===
+        String(supermercadoAnterior)
+    )
+  ){
+
+    select.value =
+      supermercadoAnterior;
+
+  }else if(data.length){
+
+    select.value =
+      data[0].id;
+
+  }
+
+
+  localStorage.setItem(
+    "supermercado_selecionado",
+    select.value
+  );
+
 }
 
 
-async function novoSupermercado(){
+/* =========================================================
+   TROCAR SUPERMERCADO
+========================================================= */
 
-  const nome = prompt(
-    "Nome do novo supermercado:"
+async function trocarSupermercado(){
+
+  const novoId =
+    document.getElementById(
+      "supermercado"
+    ).value;
+
+
+  /*
+     Se houver carrinho, não permitir
+     trocar silenciosamente.
+  */
+
+  if(carrinho.length > 0){
+
+    const antigoId =
+      localStorage.getItem(
+        "supermercado_carrinho"
+      );
+
+
+    if(
+      antigoId &&
+      String(antigoId) !==
+      String(novoId)
+    ){
+
+      const confirmar =
+        confirm(
+          "Existe uma compra em andamento neste carrinho.\n\n" +
+          "Trocar de supermercado irá limpar o carrinho atual.\n\n" +
+          "Deseja continuar?"
+        );
+
+
+      if(!confirmar){
+
+        document.getElementById(
+          "supermercado"
+        ).value = antigoId;
+
+        return;
+
+      }
+
+
+      carrinho = [];
+
+      salvarCarrinho();
+
+      atualizarCarrinho();
+
+    }
+
+  }
+
+
+  localStorage.setItem(
+    "supermercado_selecionado",
+    novoId
   );
 
-  if(!nome || !nome.trim()) return;
 
-  const { data, error } = await supabaseClient
+  /*
+     Se o carrinho estiver vazio,
+     o novo supermercado passa a ser
+     o supermercado da próxima compra.
+  */
+
+  document.getElementById(
+    "produtoCard"
+  ).classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   NOVO SUPERMERCADO
+========================================================= */
+
+async function novoSupermercado(){
+
+  const nome =
+    prompt(
+      "Nome do novo supermercado:"
+    );
+
+
+  if(!nome || !nome.trim())
+    return;
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
     .from("supermercados")
     .insert({
       nome: nome.trim()
@@ -392,71 +724,191 @@ async function novoSupermercado(){
     .select()
     .single();
 
+
   if(error){
 
     if(error.code === "23505"){
-      alert("Esse supermercado já está cadastrado.");
+
+      alert(
+        "Esse supermercado já está cadastrado."
+      );
+
     }else{
-      alert("Erro ao cadastrar supermercado.");
+
       console.error(error);
+
+      alert(
+        "Erro ao cadastrar supermercado."
+      );
+
     }
 
     return;
   }
 
+
   await carregarSupermercados();
 
-  document.getElementById("supermercado").value =
-    data.id;
+
+  document.getElementById(
+    "supermercado"
+  ).value = data.id;
+
+
+  localStorage.setItem(
+    "supermercado_selecionado",
+    data.id
+  );
 
 }
 
 
 /* =========================================================
-   SCANNER
+   ABRIR CÂMERA
 ========================================================= */
 
-function iniciarScanner(){
+async function abrirScanner(){
 
-  scanner = new Html5Qrcode("reader");
+  if(scannerRodando)
+    return;
 
-  scanner.start(
-    { facingMode: "environment" },
 
-    {
-      fps: 10,
-      qrbox: {
-        width: 280,
-        height: 140
-      }
-    },
+  const supermercado =
+    document.getElementById(
+      "supermercado"
+    ).value;
 
-    codigo => {
 
-      if(scannerRodando){
-        scannerRodando = false;
-        processarCodigo(codigo);
-      }
+  if(!supermercado){
 
-    },
+    alert(
+      "Selecione um supermercado primeiro."
+    );
 
-    () => {}
+    return;
+  }
 
-  ).then(() => {
+
+  document.getElementById(
+    "scannerArea"
+  ).style.display = "block";
+
+
+  document.getElementById(
+    "scanButton"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "status"
+  ).textContent =
+    "Abrindo câmera...";
+
+
+  if(!scanner){
+
+    scanner =
+      new Html5Qrcode("reader");
+
+  }
+
+
+  try{
+
+    await scanner.start(
+
+      {
+        facingMode:
+          "environment"
+      },
+
+      {
+        fps:10,
+
+        qrbox:{
+          width:280,
+          height:140
+        }
+
+      },
+
+      codigo => {
+
+        if(scannerRodando){
+
+          scannerRodando = false;
+
+          processarCodigo(codigo);
+
+        }
+
+      },
+
+      () => {}
+
+    );
+
 
     scannerRodando = true;
 
-    document.getElementById("status").textContent =
+
+    document.getElementById(
+      "status"
+    ).textContent =
       "Aponte a câmera para o código de barras.";
 
-  }).catch(error => {
+
+  }catch(error){
 
     console.error(error);
 
-    document.getElementById("status").textContent =
-      "Não foi possível acessar a câmera.";
+    fecharScanner();
 
-  });
+
+    alert(
+      "Não foi possível abrir a câmera. Verifique a permissão de câmera do Safari."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   FECHAR CÂMERA
+========================================================= */
+
+async function fecharScanner(){
+
+  if(
+    scanner &&
+    scannerRodando
+  ){
+
+    try{
+
+      await scanner.stop();
+
+    }catch(error){
+
+      console.log(error);
+
+    }
+
+  }
+
+
+  scannerRodando = false;
+
+
+  document.getElementById(
+    "scannerArea"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "scanButton"
+  ).style.display = "block";
 
 }
 
@@ -467,31 +919,51 @@ function iniciarScanner(){
 
 async function processarCodigo(codigo){
 
-  document.getElementById("status").textContent =
+  /*
+     Desliga a câmera imediatamente
+     depois da leitura.
+  */
+
+  await fecharScanner();
+
+
+  document.getElementById(
+    "status"
+  ).textContent =
     "Consultando produto...";
 
+
   const supermercadoId =
-    document.getElementById("supermercado").value;
+    document.getElementById(
+      "supermercado"
+    ).value;
+
 
   if(!supermercadoId){
 
-    alert("Selecione um supermercado.");
-
-    scannerRodando = true;
+    alert(
+      "Selecione um supermercado."
+    );
 
     return;
   }
 
 
   /*
-     Primeiro procuramos o produto pelo código.
+     Procurar produto pelo código.
   */
 
-  const { data: produto, error } =
+  const {
+    data: produto,
+    error
+  } =
     await supabaseClient
       .from("produtos")
       .select("*")
-      .eq("codigo_barras", codigo)
+      .eq(
+        "codigo_barras",
+        codigo
+      )
       .limit(1)
       .maybeSingle();
 
@@ -500,17 +972,13 @@ async function processarCodigo(codigo){
 
     console.error(error);
 
-    alert("Erro ao consultar o produto.");
-
-    scannerRodando = true;
+    alert(
+      "Erro ao consultar o produto."
+    );
 
     return;
   }
 
-
-  /*
-     Produto já existe.
-  */
 
   if(produto){
 
@@ -522,10 +990,6 @@ async function processarCodigo(codigo){
     return;
   }
 
-
-  /*
-     Produto totalmente novo.
-  */
 
   abrirModalNovoProduto(codigo);
 
@@ -541,28 +1005,44 @@ async function processarProdutoExistente(
   supermercadoId
 ){
 
-  const { data: supermercado } =
+  const {
+    data: supermercado
+  } =
     await supabaseClient
       .from("supermercados")
       .select("nome")
-      .eq("id", supermercadoId)
+      .eq(
+        "id",
+        supermercadoId
+      )
       .single();
 
 
   /*
-     Procurar o último preço registrado
-     naquele supermercado.
+     Buscar último preço daquele
+     produto naquele supermercado.
   */
 
-  const { data: ultimoPreco } =
+  const {
+    data: ultimoPreco
+  } =
     await supabaseClient
       .from("precos")
       .select("*")
-      .eq("produto_id", produto.id)
-      .eq("supermercado_id", supermercadoId)
-      .order("registrado_em", {
-        ascending:false
-      })
+      .eq(
+        "produto_id",
+        produto.id
+      )
+      .eq(
+        "supermercado_id",
+        supermercadoId
+      )
+      .order(
+        "registrado_em",
+        {
+          ascending:false
+        }
+      )
       .limit(1)
       .maybeSingle();
 
@@ -571,7 +1051,8 @@ async function processarProdutoExistente(
 
     ...produto,
 
-    supermercado_id: supermercadoId,
+    supermercado_id:
+      supermercadoId,
 
     supermercado_nome:
       supermercado?.nome || "",
@@ -582,7 +1063,9 @@ async function processarProdutoExistente(
   };
 
 
-  mostrarProduto(produtoAtual);
+  mostrarProduto(
+    produtoAtual
+  );
 
 }
 
@@ -594,27 +1077,45 @@ async function processarProdutoExistente(
 function mostrarProduto(produto){
 
   const card =
-    document.getElementById("produtoCard");
+    document.getElementById(
+      "produtoCard"
+    );
 
-  card.classList.remove("hidden");
+
+  card.classList.remove(
+    "hidden"
+  );
+
 
   const precoTexto =
     produto.preco !== null
-      ? formatarMoeda(produto.preco)
-      : "Preço não cadastrado";
+      ?
+      formatarMoeda(
+        produto.preco
+      )
+      :
+      "Preço não cadastrado";
+
 
   card.innerHTML = `
 
     <div class="product-name">
-      ${escaparHTML(produto.nome)}
+      ${escaparHTML(
+        produto.nome
+      )}
     </div>
 
     <div class="barcode">
-      Código: ${escaparHTML(produto.codigo_barras)}
+      Código:
+      ${escaparHTML(
+        produto.codigo_barras
+      )}
     </div>
 
     <div class="muted">
-      ${escaparHTML(produto.supermercado_nome)}
+      ${escaparHTML(
+        produto.supermercado_nome
+      )}
     </div>
 
     <div class="price">
@@ -623,67 +1124,89 @@ function mostrarProduto(produto){
 
     ${
       produto.preco !== null
+
       ?
+
       `
       <div class="row">
 
         <div class="qty">
+
           <button
             class="small secondary"
             onclick="alterarQuantidadeProduto(-1)">
             −
           </button>
 
-          <span id="qtdProduto">1</span>
+          <span id="qtdProduto">
+            1
+          </span>
 
           <button
             class="small"
             onclick="alterarQuantidadeProduto(1)">
             +
           </button>
+
         </div>
 
         <button
           class="success"
           onclick="adicionarCarrinho()">
+
           🛒 Adicionar ao carrinho
+
         </button>
 
       </div>
       `
+
       :
+
       `
-      <button onclick="registrarPreco()">
+      <button
+        onclick="registrarPreco()">
+
         Informar preço
+
       </button>
       `
     }
 
   `;
 
-  window.quantidadeProduto = 1;
+
+  quantidadeProduto = 1;
 
 }
 
 
 /* =========================================================
-   ALTERAR QUANTIDADE
+   QUANTIDADE DO PRODUTO
 ========================================================= */
 
-function alterarQuantidadeProduto(valor){
+function alterarQuantidadeProduto(
+  valor
+){
 
-  window.quantidadeProduto =
+  quantidadeProduto =
     Math.max(
       1,
-      (window.quantidadeProduto || 1) + valor
+      quantidadeProduto + valor
     );
 
-  const el =
-    document.getElementById("qtdProduto");
 
-  if(el){
-    el.textContent =
-      window.quantidadeProduto;
+  const elemento =
+    document.getElementById(
+      "qtdProduto"
+    );
+
+
+  if(elemento){
+
+    elemento.textContent =
+      quantidadeProduto;
+
   }
 
 }
@@ -693,36 +1216,40 @@ function alterarQuantidadeProduto(valor){
    ADICIONAR AO CARRINHO
 ========================================================= */
 
-async function adicionarCarrinho(){
+function adicionarCarrinho(){
 
-  if(!produtoAtual) return;
+  if(!produtoAtual)
+    return;
 
-  if(produtoAtual.preco === null){
 
-    alert("Este produto ainda não possui preço.");
+  if(
+    produtoAtual.preco === null
+  ){
+
+    alert(
+      "Este produto ainda não possui preço."
+    );
 
     return;
   }
 
 
   const quantidade =
-    window.quantidadeProduto || 1;
+    quantidadeProduto || 1;
 
-
-  /*
-     Se já existe no carrinho,
-     apenas aumenta a quantidade.
-  */
 
   const existente =
-    carrinho.find(item =>
-      item.produto_id === produtoAtual.id
+    carrinho.find(
+      item =>
+        item.produto_id ===
+        produtoAtual.id
     );
 
 
   if(existente){
 
-    existente.quantidade += quantidade;
+    existente.quantidade +=
+      quantidade;
 
   }else{
 
@@ -738,7 +1265,9 @@ async function adicionarCarrinho(){
         produtoAtual.nome,
 
       preco_unitario:
-        Number(produtoAtual.preco),
+        Number(
+          produtoAtual.preco
+        ),
 
       quantidade:
         quantidade
@@ -748,19 +1277,27 @@ async function adicionarCarrinho(){
   }
 
 
+  salvarCarrinho();
+
   atualizarCarrinho();
 
-  document.getElementById("produtoCard")
-    .classList.add("hidden");
+
+  document.getElementById(
+    "produtoCard"
+  ).classList.add(
+    "hidden"
+  );
+
 
   produtoAtual = null;
 
-  window.quantidadeProduto = 1;
+  quantidadeProduto = 1;
 
-  document.getElementById("status").textContent =
-    "Produto adicionado. Escaneie o próximo.";
 
-  scannerRodando = true;
+  document.getElementById(
+    "scanButton"
+  ).style.display =
+    "block";
 
 }
 
@@ -772,37 +1309,51 @@ async function adicionarCarrinho(){
 function atualizarCarrinho(){
 
   const container =
-    document.getElementById("cart");
+    document.getElementById(
+      "cart"
+    );
+
 
   if(carrinho.length === 0){
 
     container.innerHTML =
-      `<div class="empty">
+      `
+      <div class="empty">
         O carrinho está vazio.
-      </div>`;
+      </div>
+      `;
 
   }else{
 
     container.innerHTML =
-      carrinho.map((item,index) => {
+      carrinho.map(
+        (item,index) => {
 
-        const subtotal =
-          item.preco_unitario *
-          item.quantidade;
+          const subtotal =
+            item.preco_unitario *
+            item.quantidade;
 
-        return `
+
+          return `
 
           <div class="cart-item">
 
             <div class="cart-info">
 
               <strong>
-                ${escaparHTML(item.nome)}
+                ${escaparHTML(
+                  item.nome
+                )}
               </strong>
 
               <div class="muted">
-                ${item.quantidade} ×
-                ${formatarMoeda(item.preco_unitario)}
+
+                ${item.quantidade}
+                ×
+                ${formatarMoeda(
+                  item.preco_unitario
+                )}
+
               </div>
 
               <div class="qty">
@@ -834,14 +1385,19 @@ function atualizarCarrinho(){
             </div>
 
             <div class="cart-total">
-              ${formatarMoeda(subtotal)}
+
+              ${formatarMoeda(
+                subtotal
+              )}
+
             </div>
 
           </div>
 
-        `;
+          `;
 
-      }).join("");
+        }
+      ).join("");
 
   }
 
@@ -849,43 +1405,68 @@ function atualizarCarrinho(){
   const total =
     calcularTotal();
 
-  document.getElementById("total")
-    .textContent =
-      formatarMoeda(total);
+
+  document.getElementById(
+    "total"
+  ).textContent =
+    formatarMoeda(total);
 
 
-  document.getElementById("finalizarBtn")
-    .disabled =
-      carrinho.length === 0;
+  document.getElementById(
+    "finalizarBtn"
+  ).disabled =
+    carrinho.length === 0;
 
 }
 
+
+/* =========================================================
+   TOTAL
+========================================================= */
 
 function calcularTotal(){
 
   return carrinho.reduce(
     (total,item) =>
+
       total +
-      item.preco_unitario *
-      item.quantidade,
+      (
+        item.preco_unitario *
+        item.quantidade
+      ),
+
     0
   );
 
 }
 
 
+/* =========================================================
+   ALTERAR CARRINHO
+========================================================= */
+
 function alterarQuantidadeCarrinho(
   index,
   valor
 ){
 
-  carrinho[index].quantidade += valor;
+  carrinho[index].quantidade +=
+    valor;
 
-  if(carrinho[index].quantidade <= 0){
 
-    carrinho.splice(index,1);
+  if(
+    carrinho[index].quantidade <= 0
+  ){
+
+    carrinho.splice(
+      index,
+      1
+    );
 
   }
+
+
+  salvarCarrinho();
 
   atualizarCarrinho();
 
@@ -894,7 +1475,13 @@ function alterarQuantidadeCarrinho(
 
 function removerCarrinho(index){
 
-  carrinho.splice(index,1);
+  carrinho.splice(
+    index,
+    1
+  );
+
+
+  salvarCarrinho();
 
   atualizarCarrinho();
 
@@ -903,17 +1490,222 @@ function removerCarrinho(index){
 
 function limparCarrinho(){
 
-  if(carrinho.length === 0) return;
-
-  if(!confirm(
-    "Deseja realmente limpar o carrinho?"
-  )){
+  if(
+    carrinho.length === 0
+  )
     return;
+
+
+  if(
+    !confirm(
+      "Deseja realmente cancelar esta compra?"
+    )
+  ){
+
+    return;
+
   }
+
 
   carrinho = [];
 
+  salvarCarrinho();
+
   atualizarCarrinho();
+
+}
+
+
+/* =========================================================
+   SALVAR CARRINHO NO CELULAR
+========================================================= */
+
+function salvarCarrinho(){
+
+  const supermercadoId =
+    document.getElementById(
+      "supermercado"
+    ).value;
+
+
+  const dados = {
+
+    supermercado_id:
+      supermercadoId,
+
+    criado_em:
+      localStorage.getItem(
+        "carrinho_criado_em"
+      ) ||
+      new Date().toISOString(),
+
+    atualizado_em:
+      new Date().toISOString(),
+
+    itens:
+      carrinho
+
+  };
+
+
+  if(
+    !localStorage.getItem(
+      "carrinho_criado_em"
+    )
+  ){
+
+    localStorage.setItem(
+      "carrinho_criado_em",
+      dados.criado_em
+    );
+
+  }
+
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(dados)
+  );
+
+
+  localStorage.setItem(
+    "supermercado_carrinho",
+    supermercadoId
+  );
+
+}
+
+
+/* =========================================================
+   RESTAURAR CARRINHO
+========================================================= */
+
+function restaurarCarrinho(){
+
+  const salvo =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+
+  if(!salvo)
+    return;
+
+
+  try{
+
+    const dados =
+      JSON.parse(salvo);
+
+
+    /*
+       Expira depois de 12 horas.
+    */
+
+    const criado =
+      new Date(
+        dados.criado_em
+      ).getTime();
+
+
+    const agora =
+      Date.now();
+
+
+    const horas =
+      (
+        agora - criado
+      ) /
+      (
+        1000 * 60 * 60
+      );
+
+
+    if(
+      horas >
+      STORAGE_HORAS
+    ){
+
+      localStorage.removeItem(
+        STORAGE_KEY
+      );
+
+      localStorage.removeItem(
+        "carrinho_criado_em"
+      );
+
+      localStorage.removeItem(
+        "supermercado_carrinho"
+      );
+
+      return;
+
+    }
+
+
+    carrinho =
+      Array.isArray(
+        dados.itens
+      )
+      ?
+      dados.itens
+      :
+      [];
+
+
+    if(
+      dados.supermercado_id
+    ){
+
+      localStorage.setItem(
+        "supermercado_carrinho",
+        dados.supermercado_id
+      );
+
+      localStorage.setItem(
+        "supermercado_selecionado",
+        dados.supermercado_id
+      );
+
+    }
+
+
+    /*
+       Depois que os supermercados
+       carregaram, selecionar o correto.
+    */
+
+    const select =
+      document.getElementById(
+        "supermercado"
+      );
+
+
+    if(
+      dados.supermercado_id &&
+      select.querySelector(
+        `option[value="${dados.supermercado_id}"]`
+      )
+    ){
+
+      select.value =
+        dados.supermercado_id;
+
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "Erro ao restaurar carrinho:",
+      error
+    );
+
+    localStorage.removeItem(
+      STORAGE_KEY
+    );
+
+  }
 
 }
 
@@ -924,24 +1716,22 @@ function limparCarrinho(){
 
 async function finalizarCompra(){
 
-  if(carrinho.length === 0){
+  if(
+    carrinho.length === 0
+  ){
 
-    alert("O carrinho está vazio.");
+    alert(
+      "O carrinho está vazio."
+    );
 
     return;
   }
 
 
   const supermercadoId =
-    document.getElementById("supermercado").value;
-
-
-  if(!supermercadoId){
-
-    alert("Selecione um supermercado.");
-
-    return;
-  }
+    document.getElementById(
+      "supermercado"
+    ).value;
 
 
   const total =
@@ -949,10 +1739,13 @@ async function finalizarCompra(){
 
 
   /*
-     1. Criar a compra.
+     Criar compra no Supabase.
   */
 
-  const { data: compra, error } =
+  const {
+    data: compra,
+    error
+  } =
     await supabaseClient
       .from("compras")
       .insert({
@@ -972,39 +1765,45 @@ async function finalizarCompra(){
 
     console.error(error);
 
-    alert("Erro ao salvar a compra.");
+    alert(
+      "Erro ao salvar a compra."
+    );
 
     return;
   }
 
 
   /*
-     2. Salvar cada item.
+     Salvar itens.
   */
 
   const itens =
-    carrinho.map(item => ({
+    carrinho.map(
+      item => ({
 
-      compra_id:
-        compra.id,
+        compra_id:
+          compra.id,
 
-      produto_id:
-        item.produto_id,
+        produto_id:
+          item.produto_id,
 
-      quantidade:
-        item.quantidade,
+        quantidade:
+          item.quantidade,
 
-      preco_unitario:
-        item.preco_unitario,
+        preco_unitario:
+          item.preco_unitario,
 
-      subtotal:
-        item.preco_unitario *
-        item.quantidade
+        subtotal:
+          item.preco_unitario *
+          item.quantidade
 
-    }));
+      })
+    );
 
 
-  const { error: erroItens } =
+  const {
+    error: erroItens
+  } =
     await supabaseClient
       .from("itens_compra")
       .insert(itens);
@@ -1022,18 +1821,36 @@ async function finalizarCompra(){
   }
 
 
+  /*
+     Compra concluída:
+     apagar carrinho temporário.
+  */
+
+  carrinho = [];
+
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
+
+  localStorage.removeItem(
+    "carrinho_criado_em"
+  );
+
+  localStorage.removeItem(
+    "supermercado_carrinho"
+  );
+
+
+  atualizarCarrinho();
+
+  await carregarHistorico();
+
+
   alert(
     "Compra salva com sucesso!\n\n" +
     "Total: " +
     formatarMoeda(total)
   );
-
-
-  carrinho = [];
-
-  atualizarCarrinho();
-
-  await carregarHistorico();
 
 }
 
@@ -1044,14 +1861,19 @@ async function finalizarCompra(){
 
 async function registrarPreco(){
 
-  if(!produtoAtual) return;
+  if(!produtoAtual)
+    return;
+
 
   const valor =
     prompt(
       "Digite o preço atual do produto:"
     );
 
-  if(valor === null) return;
+
+  if(valor === null)
+    return;
+
 
   const preco =
     Number(
@@ -1059,15 +1881,22 @@ async function registrarPreco(){
     );
 
 
-  if(isNaN(preco) || preco < 0){
+  if(
+    isNaN(preco) ||
+    preco < 0
+  ){
 
-    alert("Digite um preço válido.");
+    alert(
+      "Digite um preço válido."
+    );
 
     return;
   }
 
 
-  const { error } =
+  const {
+    error
+  } =
     await supabaseClient
       .from("precos")
       .insert({
@@ -1088,50 +1917,73 @@ async function registrarPreco(){
 
     console.error(error);
 
-    alert("Erro ao registrar preço.");
+    alert(
+      "Erro ao registrar preço."
+    );
 
     return;
   }
 
 
-  produtoAtual.preco = preco;
+  produtoAtual.preco =
+    preco;
 
-  mostrarProduto(produtoAtual);
+
+  mostrarProduto(
+    produtoAtual
+  );
 
 }
 
 
 /* =========================================================
-   CADASTRAR PRODUTO NOVO
+   NOVO PRODUTO
 ========================================================= */
 
-function abrirModalNovoProduto(codigo){
+function abrirModalNovoProduto(
+  codigo
+){
 
-  produtoPendente = codigo;
+  produtoPendente =
+    codigo;
 
-  document.getElementById("novoCodigo")
-    .value = codigo;
 
-  document.getElementById("novoNome")
-    .value = "";
+  document.getElementById(
+    "novoCodigo"
+  ).value =
+    codigo;
 
-  document.getElementById("novoPreco")
-    .value = "";
 
-  document.getElementById("produtoModal")
-    .classList.add("show");
+  document.getElementById(
+    "novoNome"
+  ).value = "";
+
+
+  document.getElementById(
+    "novoPreco"
+  ).value = "";
+
+
+  document.getElementById(
+    "produtoModal"
+  ).classList.add(
+    "show"
+  );
 
 }
 
 
 function fecharModal(){
 
-  document.getElementById("produtoModal")
-    .classList.remove("show");
+  document.getElementById(
+    "produtoModal"
+  ).classList.remove(
+    "show"
+  );
 
-  produtoPendente = null;
 
-  scannerRodando = true;
+  produtoPendente =
+    null;
 
 }
 
@@ -1139,14 +1991,18 @@ function fecharModal(){
 async function cadastrarProduto(){
 
   const nome =
-    document.getElementById("novoNome")
-      .value.trim();
+    document.getElementById(
+      "novoNome"
+    ).value.trim();
+
 
   const preco =
     Number(
-      document.getElementById("novoPreco")
-        .value
+      document.getElementById(
+        "novoPreco"
+      ).value
     );
+
 
   const codigo =
     produtoPendente;
@@ -1154,25 +2010,35 @@ async function cadastrarProduto(){
 
   if(!nome){
 
-    alert("Digite o nome do produto.");
+    alert(
+      "Digite o nome do produto."
+    );
 
     return;
   }
 
 
-  if(isNaN(preco) || preco < 0){
+  if(
+    isNaN(preco) ||
+    preco < 0
+  ){
 
-    alert("Digite um preço válido.");
+    alert(
+      "Digite um preço válido."
+    );
 
     return;
   }
 
 
   /*
-     1. Criar produto.
+     Criar produto.
   */
 
-  const { data: produto, error } =
+  const {
+    data: produto,
+    error
+  } =
     await supabaseClient
       .from("produtos")
       .insert({
@@ -1192,21 +2058,27 @@ async function cadastrarProduto(){
 
     console.error(error);
 
-    alert("Erro ao cadastrar produto.");
+    alert(
+      "Erro ao cadastrar produto."
+    );
 
     return;
   }
 
 
   /*
-     2. Registrar preço.
+     Registrar preço.
   */
 
   const supermercadoId =
-    document.getElementById("supermercado").value;
+    document.getElementById(
+      "supermercado"
+    ).value;
 
 
-  const { error: erroPreco } =
+  const {
+    error: erroPreco
+  } =
     await supabaseClient
       .from("precos")
       .insert({
@@ -1235,11 +2107,8 @@ async function cadastrarProduto(){
   }
 
 
-  /*
-     3. Fechar e mostrar produto.
-  */
-
   fecharModal();
+
 
   await processarProdutoExistente(
     produto,
@@ -1256,10 +2125,15 @@ async function cadastrarProduto(){
 async function carregarHistorico(){
 
   const container =
-    document.getElementById("historico");
+    document.getElementById(
+      "historico"
+    );
 
 
-  const { data, error } =
+  const {
+    data,
+    error
+  } =
     await supabaseClient
       .from("compras")
       .select(`
@@ -1270,9 +2144,12 @@ async function carregarHistorico(){
           nome
         )
       `)
-      .order("data_compra", {
-        ascending:false
-      })
+      .order(
+        "data_compra",
+        {
+          ascending:false
+        }
+      )
       .limit(10);
 
 
@@ -1281,64 +2158,85 @@ async function carregarHistorico(){
     console.error(error);
 
     container.innerHTML =
-      `<div class="muted">
+      `
+      <div class="muted">
         Não foi possível carregar o histórico.
-      </div>`;
+      </div>
+      `;
 
     return;
   }
 
 
-  if(!data || data.length === 0){
+  if(
+    !data ||
+    data.length === 0
+  ){
 
     container.innerHTML =
-      `<div class="empty">
+      `
+      <div class="empty">
         Nenhuma compra salva ainda.
-      </div>`;
+      </div>
+      `;
 
     return;
   }
 
 
   container.innerHTML =
-    data.map(compra => {
+    data.map(
+      compra => {
 
-      const dataCompra =
-        new Date(compra.data_compra)
-          .toLocaleString("pt-BR");
+        const dataCompra =
+          new Date(
+            compra.data_compra
+          )
+          .toLocaleString(
+            "pt-BR"
+          );
 
 
-      return `
+        return `
 
-        <div class="history-item">
+          <div class="history-item">
 
-          <div>
+            <div>
+
+              <strong>
+                Compra #${compra.id}
+              </strong>
+
+              <div class="muted">
+
+                ${escaparHTML(
+                  compra.supermercados?.nome || ""
+                )}
+
+              </div>
+
+              <div class="muted">
+
+                ${dataCompra}
+
+              </div>
+
+            </div>
 
             <strong>
-              Compra #${compra.id}
-            </strong>
 
-            <div class="muted">
-              ${escaparHTML(
-                compra.supermercados?.nome || ""
+              ${formatarMoeda(
+                compra.total
               )}
-            </div>
 
-            <div class="muted">
-              ${dataCompra}
-            </div>
+            </strong>
 
           </div>
 
-          <strong>
-            ${formatarMoeda(compra.total)}
-          </strong>
+        `;
 
-        </div>
-
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 }
 
@@ -1347,30 +2245,51 @@ async function carregarHistorico(){
    UTILITÁRIOS
 ========================================================= */
 
-function formatarMoeda(valor){
+function formatarMoeda(
+  valor
+){
 
-  return Number(valor)
-    .toLocaleString(
-      "pt-BR",
-      {
-        style:"currency",
-        currency:"BRL"
-      }
+  return Number(
+    valor
+  ).toLocaleString(
+    "pt-BR",
+    {
+      style:"currency",
+      currency:"BRL"
+    }
+  );
+
+}
+
+
+function escaparHTML(
+  texto
+){
+
+  return String(texto)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
     );
 
 }
 
-
-function escaparHTML(texto){
-
-  return String(texto)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
 </script>
 
 </body>
