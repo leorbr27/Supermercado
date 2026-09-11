@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leitor de Código de Barras</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Comparador de Preços</title>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
             background: #f5f6f8;
             color: #171717;
+
+            padding-bottom: 100px;
         }
 
         .container {
             width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 560px;
+            margin: auto;
+            padding: 18px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         h1 {
-            margin: 0 0 6px;
-            font-size: 25px;
+            margin: 0;
+            font-size: 26px;
         }
 
         .subtitle {
-            color: #666;
+            margin-top: 5px;
+            color: #6b7280;
             font-size: 14px;
         }
 
@@ -46,25 +58,46 @@
             background: white;
             border-radius: 18px;
             padding: 18px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-            margin-bottom: 16px;
+            margin-bottom: 15px;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,.06);
         }
 
-        #reader {
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        select,
+        input {
             width: 100%;
-            overflow: hidden;
-            border-radius: 14px;
+            height: 48px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+
+            padding: 0 13px;
+
+            font-size: 16px;
+            background: white;
         }
 
         button {
             width: 100%;
             border: 0;
             border-radius: 12px;
-            padding: 15px;
+
+            min-height: 48px;
+
+            padding: 12px 15px;
+
             font-size: 16px;
             font-weight: 600;
+
             cursor: pointer;
-            margin-top: 12px;
         }
 
         .primary {
@@ -77,125 +110,514 @@
             color: #111827;
         }
 
-        .product {
-            display: none;
+        .green {
+            background: #16803c;
+            color: white;
         }
 
-        .product h2 {
-            margin: 0 0 15px;
-            font-size: 22px;
+        .danger {
+            background: #fee2e2;
+            color: #b91c1c;
         }
 
-        .info {
-            display: flex;
-            justify-content: space-between;
-            padding: 11px 0;
-            border-bottom: 1px solid #eee;
+        .button-space {
+            margin-top: 12px;
         }
 
-        .info:last-child {
-            border-bottom: 0;
-        }
-
-        .label {
-            color: #666;
-        }
-
-        .value {
-            font-weight: 600;
-            text-align: right;
-        }
-
-        .price {
-            font-size: 30px;
-            font-weight: 700;
-            margin: 15px 0;
+        #reader {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 14px;
         }
 
         .message {
             text-align: center;
-            padding: 15px;
-            color: #555;
-            font-size: 15px;
+            padding: 12px 5px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #087443;
         }
 
         .error {
             color: #b42318;
         }
 
-        .success {
-            color: #087443;
+        .produto {
+            display: none;
         }
+
+        .produto-nome {
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .codigo {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 14px;
+        }
+
+        .preco {
+            font-size: 30px;
+            font-weight: 750;
+            margin-bottom: 15px;
+        }
+
+        .quantidade-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quantidade-area button {
+            width: 50px;
+            min-width: 50px;
+            font-size: 22px;
+            padding: 0;
+        }
+
+        .quantidade {
+            flex: 1;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .carrinho-item {
+            border-bottom: 1px solid #eee;
+            padding: 13px 0;
+        }
+
+        .carrinho-item:last-child {
+            border-bottom: 0;
+        }
+
+        .item-topo {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .item-nome {
+            font-weight: 650;
+        }
+
+        .item-total {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .item-detalhes {
+            color: #666;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .item-controles {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 9px;
+        }
+
+        .item-controles button {
+            width: 38px;
+            min-height: 36px;
+            padding: 0;
+            font-size: 18px;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #777;
+            padding: 15px 0;
+        }
+
+        .modal-fundo {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0,0,0,.55);
+
+            z-index: 1000;
+
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal {
+            background: white;
+
+            width: 100%;
+            max-width: 560px;
+
+            border-radius: 22px 22px 0 0;
+
+            padding: 22px;
+
+            animation: subir .2s ease;
+        }
+
+        @keyframes subir {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal h2 {
+            margin-top: 0;
+        }
+
+        .campo {
+            margin-bottom: 15px;
+        }
+
+        .total-fixo {
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background: white;
+
+            border-top: 1px solid #ddd;
+
+            box-shadow:
+                0 -4px 20px rgba(0,0,0,.08);
+
+            z-index: 900;
+        }
+
+        .total-conteudo {
+            max-width: 560px;
+            margin: auto;
+
+            padding: 12px 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .total-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .total-valor {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .contador {
+            font-size: 13px;
+            color: #666;
+        }
+
     </style>
 </head>
+
 
 <body>
 
 <div class="container">
 
     <header>
-        <h1>Leitor de Produtos</h1>
-        <div class="subtitle">Aponte a câmera para o código de barras</div>
+
+        <h1>Comparador de Preços</h1>
+
+        <div class="subtitle">
+            Escaneie os produtos durante sua compra
+        </div>
+
     </header>
+
+
+    <!-- SUPERMERCADO -->
+
+    <div class="card">
+
+        <label for="supermercado">
+            Supermercado
+        </label>
+
+        <select id="supermercado">
+            <option value="">
+                Carregando supermercados...
+            </option>
+        </select>
+
+    </div>
+
+
+    <!-- LEITOR -->
 
     <div class="card">
 
         <div id="reader"></div>
 
-        <button class="primary" id="startButton" onclick="iniciarLeitor()">
+        <button
+            id="startButton"
+            class="primary"
+            onclick="iniciarLeitor()">
+
             📷 Ler código de barras
+
         </button>
 
-        <button class="secondary" id="stopButton"
-                onclick="pararLeitor()"
-                style="display:none;">
+        <button
+            id="stopButton"
+            class="secondary button-space"
+            onclick="pararLeitor()"
+            style="display:none;">
+
             Parar câmera
+
         </button>
 
-        <div id="mensagem" class="message">
-            Toque no botão para iniciar a câmera.
+        <div
+            id="mensagem"
+            class="message">
+
+            Escolha o supermercado e leia um produto.
+
         </div>
 
     </div>
 
-    <div class="card product" id="produto">
 
-        <h2 id="nomeProduto"></h2>
+    <!-- PRODUTO ENCONTRADO -->
 
-        <div class="price" id="precoProduto"></div>
+    <div
+        id="produto"
+        class="card produto">
 
-        <div class="info">
-            <span class="label">Código</span>
-            <span class="value" id="codigoProduto"></span>
+        <div
+            id="nomeProduto"
+            class="produto-nome">
         </div>
 
-        <div class="info">
-            <span class="label">Marca</span>
-            <span class="value" id="marcaProduto"></span>
+        <div
+            id="codigoProduto"
+            class="codigo">
         </div>
 
-        <div class="info">
-            <span class="label">Categoria</span>
-            <span class="value" id="categoriaProduto"></span>
+        <div
+            id="precoProduto"
+            class="preco">
         </div>
 
-        <div class="info">
-            <span class="label">Estoque</span>
-            <span class="value" id="estoqueProduto"></span>
+
+        <div class="quantidade-area">
+
+            <button
+                class="secondary"
+                onclick="alterarQuantidadeProduto(-1)">
+                −
+            </button>
+
+            <div
+                id="quantidadeProduto"
+                class="quantidade">
+                1
+            </div>
+
+            <button
+                class="secondary"
+                onclick="alterarQuantidadeProduto(1)">
+                +
+            </button>
+
         </div>
 
-        <button class="primary" onclick="novoProduto()">
+
+        <button
+            class="green"
+            onclick="adicionarCarrinho()">
+
+            🛒 Adicionar ao carrinho
+
+        </button>
+
+
+        <button
+            class="secondary button-space"
+            onclick="novoProduto()">
+
             📷 Ler outro produto
+
+        </button>
+
+    </div>
+
+
+    <!-- CARRINHO -->
+
+    <div class="card">
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+            ">
+
+            <strong>
+                🛒 Minha compra
+            </strong>
+
+            <span
+                id="contadorItens"
+                class="contador">
+                0 itens
+            </span>
+
+        </div>
+
+
+        <div id="carrinho">
+
+            <div class="vazio">
+                Nenhum produto adicionado.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL NOVO PRODUTO -->
+
+<div
+    id="modalNovoProduto"
+    class="modal-fundo">
+
+    <div class="modal">
+
+        <h2>Produto novo</h2>
+
+        <p style="color:#666;">
+            Esse código ainda não está cadastrado.
+        </p>
+
+        <div
+            style="
+                background:#f3f4f6;
+                padding:12px;
+                border-radius:10px;
+                margin-bottom:18px;
+            ">
+
+            Código:
+            <strong id="novoCodigo"></strong>
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Nome do produto
+            </label>
+
+            <input
+                id="novoNome"
+                type="text"
+                placeholder="Ex.: Arroz 5kg">
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Preço
+            </label>
+
+            <input
+                id="novoPreco"
+                type="number"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+                placeholder="0,00">
+
+        </div>
+
+
+        <button
+            class="green"
+            onclick="cadastrarNovoProduto()">
+
+            Cadastrar produto
+
+        </button>
+
+
+        <button
+            class="secondary button-space"
+            onclick="fecharModal()">
+
+            Cancelar
+
         </button>
 
     </div>
 
 </div>
 
+
+<!-- TOTAL FIXO -->
+
+<div class="total-fixo">
+
+    <div class="total-conteudo">
+
+        <div>
+
+            <div class="total-label">
+                TOTAL DA COMPRA
+            </div>
+
+            <div
+                id="totalItens"
+                class="contador">
+                0 itens
+            </div>
+
+        </div>
+
+        <div
+            id="totalCompra"
+            class="total-valor">
+
+            R$ 0,00
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
     // =====================================================
-    // CONFIGURAÇÃO DO SUPABASE
+    // SUPABASE
     // =====================================================
 
     const SUPABASE_URL =
@@ -205,111 +627,216 @@
         "sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
 
     const supabaseClient =
-        supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
 
     // =====================================================
-    // LEITOR
+    // VARIÁVEIS
     // =====================================================
 
     let html5QrCode = null;
+
     let lendo = false;
 
+    let produtoAtual = null;
+
+    let quantidadeAtual = 1;
+
+    let carrinho = [];
+
+
+
+    // =====================================================
+    // CARREGAR SUPERMERCADOS
+    // =====================================================
+
+    async function carregarSupermercados() {
+
+        const select =
+            document.getElementById("supermercado");
+
+        const resultado =
+            await supabaseClient
+                .from("supermercados")
+                .select("*")
+                .order("nome");
+
+        if (resultado.error) {
+
+            console.error(resultado.error);
+
+            select.innerHTML =
+                '<option value="">Erro ao carregar</option>';
+
+            return;
+        }
+
+
+        select.innerHTML =
+            '<option value="">Selecione...</option>';
+
+
+        resultado.data.forEach(supermercado => {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                supermercado.nome;
+
+            option.textContent =
+                supermercado.nome;
+
+            select.appendChild(option);
+
+        });
+
+    }
+
+
+
+    // =====================================================
+    // INICIAR LEITOR
+    // =====================================================
 
     async function iniciarLeitor() {
 
+        const supermercado =
+            document.getElementById("supermercado").value;
+
+
+        if (!supermercado) {
+
+            mostrarMensagem(
+                "Selecione primeiro o supermercado.",
+                "error"
+            );
+
+            return;
+        }
+
+
         if (lendo) return;
 
-        document.getElementById("mensagem").innerHTML =
-            "Aponte a câmera para o código de barras.";
-
-        document.getElementById("mensagem").className =
-            "message";
-
-        document.getElementById("startButton").style.display =
-            "none";
-
-        document.getElementById("stopButton").style.display =
-            "block";
 
         document.getElementById("produto").style.display =
             "none";
 
-        html5QrCode = new Html5Qrcode("reader");
+
+        document.getElementById("mensagem").innerHTML =
+            "Aponte a câmera para o código de barras.";
+
+
+        document.getElementById("mensagem").className =
+            "message";
+
+
+        document.getElementById("startButton").style.display =
+            "none";
+
+
+        document.getElementById("stopButton").style.display =
+            "block";
+
+
+        html5QrCode =
+            new Html5Qrcode("reader");
+
 
         try {
 
             const cameras =
                 await Html5Qrcode.getCameras();
 
+
             if (!cameras || cameras.length === 0) {
-                throw new Error("Nenhuma câmera encontrada.");
+
+                throw new Error(
+                    "Nenhuma câmera encontrada."
+                );
+
             }
 
-            let cameraId = cameras[0].id;
 
-            // Tenta escolher a câmera traseira
-            const traseira = cameras.find(camera =>
-                /back|rear|environment|trás|traseira/i.test(
-                    camera.label
-                )
-            );
+            let cameraId =
+                cameras[0].id;
+
+
+            const traseira =
+                cameras.find(camera =>
+                    /back|rear|environment|trás|traseira/i
+                    .test(camera.label)
+                );
+
 
             if (traseira) {
-                cameraId = traseira.id;
+
+                cameraId =
+                    traseira.id;
+
             }
+
 
             lendo = true;
 
+
             await html5QrCode.start(
+
                 cameraId,
+
                 {
                     fps: 10,
+
                     qrbox: {
                         width: 280,
                         height: 160
                     },
+
                     aspectRatio: 1.777
                 },
-                async (codigo) => {
 
-                    console.log(
-                        "Código encontrado:",
-                        codigo
-                    );
+                async (codigo) => {
 
                     await produtoEncontrado(codigo);
 
                 },
-                (erro) => {
-                    // Erros de leitura são normais
-                }
+
+                () => {}
+
             );
+
 
         } catch (erro) {
 
             console.error(erro);
 
-            document.getElementById("mensagem").innerHTML =
-                "Não foi possível acessar a câmera. " +
-                "Verifique a permissão do Safari.";
+            mostrarMensagem(
+                "Não foi possível acessar a câmera. Verifique a permissão do Safari.",
+                "error"
+            );
 
-            document.getElementById("mensagem").className =
-                "message error";
 
             document.getElementById("startButton").style.display =
                 "block";
 
+
             document.getElementById("stopButton").style.display =
                 "none";
 
+
             lendo = false;
+
         }
+
     }
 
 
+
     // =====================================================
-    // PARAR CÂMERA
+    // PARAR LEITOR
     // =====================================================
 
     async function pararLeitor() {
@@ -317,34 +844,52 @@
         if (html5QrCode && lendo) {
 
             try {
+
                 await html5QrCode.stop();
+
+                html5QrCode.clear();
+
             } catch (erro) {
+
                 console.log(erro);
+
             }
 
-            html5QrCode.clear();
         }
 
+
         lendo = false;
+
 
         document.getElementById("startButton").style.display =
             "block";
 
+
         document.getElementById("stopButton").style.display =
             "none";
+
     }
 
 
+
     // =====================================================
-    // CONSULTAR PRODUTO
+    // PRODUTO ENCONTRADO
     // =====================================================
 
     async function produtoEncontrado(codigo) {
 
         await pararLeitor();
 
-        document.getElementById("mensagem").innerHTML =
-            "Consultando produto...";
+
+        const supermercado =
+            document.getElementById("supermercado").value;
+
+
+        mostrarMensagem(
+            "Consultando produto...",
+            ""
+        );
+
 
         try {
 
@@ -353,37 +898,289 @@
                     .from("produtos")
                     .select("*")
                     .eq("codigo_barras", codigo)
-                    .maybeSingle();
+                    .eq("supermercado", supermercado)
+                    .limit(1);
+
 
             if (resultado.error) {
+
                 throw resultado.error;
+
             }
 
-            if (!resultado.data) {
 
-                document.getElementById("mensagem").innerHTML =
-                    "Produto não cadastrado.<br><br>" +
-                    "Código: <strong>" + codigo + "</strong>";
+            if (
+                !resultado.data ||
+                resultado.data.length === 0
+            ) {
 
-                document.getElementById("mensagem").className =
-                    "message error";
+                await verificarProdutoExistente(
+                    codigo,
+                    supermercado
+                );
 
                 return;
+
             }
 
-            mostrarProduto(resultado.data);
+
+            mostrarProduto(
+                resultado.data[0]
+            );
+
 
         } catch (erro) {
 
             console.error(erro);
 
-            document.getElementById("mensagem").innerHTML =
-                "Erro ao consultar o produto.";
+            mostrarMensagem(
+                "Erro ao consultar o produto.",
+                "error"
+            );
 
-            document.getElementById("mensagem").className =
-                "message error";
         }
+
     }
+
+
+
+    // =====================================================
+    // VERIFICAR SE PRODUTO EXISTE EM OUTRO SUPERMERCADO
+    // =====================================================
+
+    async function verificarProdutoExistente(
+        codigo,
+        supermercado
+    ) {
+
+        const resultado =
+            await supabaseClient
+                .from("produtos")
+                .select("*")
+                .eq("codigo_barras", codigo)
+                .limit(1);
+
+
+        if (resultado.error) {
+
+            console.error(resultado.error);
+
+            abrirModalNovoProduto(codigo);
+
+            return;
+
+        }
+
+
+        if (
+            resultado.data &&
+            resultado.data.length > 0
+        ) {
+
+            const produto =
+                resultado.data[0];
+
+
+            produtoAtual = {
+
+                ...produto,
+
+                codigo_barras: codigo,
+
+                supermercado: supermercado,
+
+                id: null,
+
+                preco: null
+
+            };
+
+
+            document.getElementById("novoCodigo")
+                .textContent = codigo;
+
+
+            document.getElementById("novoNome")
+                .value = produto.nome || "";
+
+
+            document.getElementById("novoPreco")
+                .value = "";
+
+
+            document.getElementById("modalNovoProduto")
+                .style.display = "flex";
+
+
+            return;
+
+        }
+
+
+        abrirModalNovoProduto(codigo);
+
+    }
+
+
+
+    // =====================================================
+    // MODAL NOVO PRODUTO
+    // =====================================================
+
+    function abrirModalNovoProduto(codigo) {
+
+        produtoAtual = {
+
+            codigo_barras: codigo
+
+        };
+
+
+        document.getElementById("novoCodigo")
+            .textContent = codigo;
+
+
+        document.getElementById("novoNome")
+            .value = "";
+
+
+        document.getElementById("novoPreco")
+            .value = "";
+
+
+        document.getElementById("modalNovoProduto")
+            .style.display = "flex";
+
+
+        setTimeout(() => {
+
+            document.getElementById("novoNome")
+                .focus();
+
+        }, 200);
+
+    }
+
+
+
+    function fecharModal() {
+
+        document.getElementById("modalNovoProduto")
+            .style.display = "none";
+
+    }
+
+
+
+    // =====================================================
+    // CADASTRAR PRODUTO NOVO
+    // =====================================================
+
+    async function cadastrarNovoProduto() {
+
+        const nome =
+            document.getElementById("novoNome")
+                .value.trim();
+
+
+        const precoTexto =
+            document.getElementById("novoPreco")
+                .value;
+
+
+        const preco =
+            Number(
+                precoTexto.replace(",", ".")
+            );
+
+
+        const supermercado =
+            document.getElementById("supermercado")
+                .value;
+
+
+        const codigo =
+            produtoAtual.codigo_barras;
+
+
+        if (!nome) {
+
+            alert(
+                "Informe o nome do produto."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !precoTexto ||
+            isNaN(preco) ||
+            preco < 0
+        ) {
+
+            alert(
+                "Informe um preço válido."
+            );
+
+            return;
+
+        }
+
+
+        mostrarMensagem(
+            "Salvando produto...",
+            ""
+        );
+
+
+        const resultado =
+            await supabaseClient
+                .from("produtos")
+                .insert({
+
+                    codigo_barras: codigo,
+
+                    nome: nome,
+
+                    preco: preco,
+
+                    supermercado: supermercado,
+
+                    estoque: 0,
+
+                    estoque_minimo: 0,
+
+                    ativo: true
+
+                })
+                .select()
+                .single();
+
+
+        if (resultado.error) {
+
+            console.error(resultado.error);
+
+            alert(
+                "Não foi possível cadastrar o produto."
+            );
+
+            return;
+
+        }
+
+
+        fecharModal();
+
+
+        mostrarProduto(
+            resultado.data
+        );
+
+    }
+
 
 
     // =====================================================
@@ -392,62 +1189,450 @@
 
     function mostrarProduto(produto) {
 
-        document.getElementById("nomeProduto").textContent =
+        produtoAtual =
+            produto;
+
+
+        quantidadeAtual =
+            1;
+
+
+        document.getElementById("nomeProduto")
+            .textContent =
             produto.nome;
 
-        document.getElementById("precoProduto").textContent =
-            formatarMoeda(produto.preco);
 
-        document.getElementById("codigoProduto").textContent =
+        document.getElementById("codigoProduto")
+            .textContent =
+            "Código: " +
             produto.codigo_barras;
 
-        document.getElementById("marcaProduto").textContent =
-            produto.marca || "-";
 
-        document.getElementById("categoriaProduto").textContent =
-            produto.categoria || "-";
+        document.getElementById("precoProduto")
+            .textContent =
+            formatarMoeda(produto.preco);
 
-        document.getElementById("estoqueProduto").textContent =
-            produto.estoque;
 
-        document.getElementById("produto").style.display =
+        document.getElementById("quantidadeProduto")
+            .textContent =
+            quantidadeAtual;
+
+
+        document.getElementById("produto")
+            .style.display =
             "block";
 
-        document.getElementById("mensagem").innerHTML =
-            "Produto encontrado!";
 
-        document.getElementById("mensagem").className =
-            "message success";
+        mostrarMensagem(
+            "Produto encontrado.",
+            "success"
+        );
+
     }
 
 
+
     // =====================================================
-    // NOVA LEITURA
+    // ALTERAR QUANTIDADE DO PRODUTO
+    // =====================================================
+
+    function alterarQuantidadeProduto(valor) {
+
+        quantidadeAtual += valor;
+
+
+        if (quantidadeAtual < 1) {
+
+            quantidadeAtual = 1;
+
+        }
+
+
+        document.getElementById(
+            "quantidadeProduto"
+        ).textContent =
+            quantidadeAtual;
+
+    }
+
+
+
+    // =====================================================
+    // ADICIONAR AO CARRINHO
+    // =====================================================
+
+    function adicionarCarrinho() {
+
+        if (!produtoAtual) {
+
+            return;
+
+        }
+
+
+        const idProduto =
+            produtoAtual.id;
+
+
+        const itemExistente =
+            carrinho.find(
+                item =>
+                    item.codigo_barras ===
+                    produtoAtual.codigo_barras
+            );
+
+
+        if (itemExistente) {
+
+            itemExistente.quantidade +=
+                quantidadeAtual;
+
+        } else {
+
+            carrinho.push({
+
+                id: idProduto,
+
+                codigo_barras:
+                    produtoAtual.codigo_barras,
+
+                nome:
+                    produtoAtual.nome,
+
+                preco:
+                    Number(produtoAtual.preco),
+
+                quantidade:
+                    quantidadeAtual
+
+            });
+
+        }
+
+
+        atualizarCarrinho();
+
+
+        mostrarMensagem(
+            "Produto adicionado ao carrinho.",
+            "success"
+        );
+
+
+        document.getElementById("produto")
+            .style.display =
+            "none";
+
+
+        produtoAtual = null;
+
+        quantidadeAtual = 1;
+
+    }
+
+
+
+    // =====================================================
+    // ATUALIZAR CARRINHO
+    // =====================================================
+
+    function atualizarCarrinho() {
+
+        const container =
+            document.getElementById("carrinho");
+
+
+        if (carrinho.length === 0) {
+
+            container.innerHTML =
+                '<div class="vazio">Nenhum produto adicionado.</div>';
+
+            atualizarTotal();
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        carrinho.forEach(
+            (item, index) => {
+
+                const totalItem =
+                    item.preco *
+                    item.quantidade;
+
+
+                const div =
+                    document.createElement("div");
+
+
+                div.className =
+                    "carrinho-item";
+
+
+                div.innerHTML = `
+
+                    <div class="item-topo">
+
+                        <div class="item-nome">
+                            ${escaparHTML(item.nome)}
+                        </div>
+
+                        <div class="item-total">
+                            ${formatarMoeda(totalItem)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="item-detalhes">
+
+                        ${formatarMoeda(item.preco)}
+                        ×
+                        ${item.quantidade}
+
+                    </div>
+
+
+                    <div class="item-controles">
+
+                        <button
+                            class="secondary"
+                            onclick="alterarQuantidadeCarrinho(${index}, -1)">
+                            −
+                        </button>
+
+
+                        <strong>
+                            ${item.quantidade}
+                        </strong>
+
+
+                        <button
+                            class="secondary"
+                            onclick="alterarQuantidadeCarrinho(${index}, 1)">
+                            +
+                        </button>
+
+
+                        <button
+                            class="danger"
+                            onclick="removerCarrinho(${index})">
+                            🗑
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(div);
+
+            }
+        );
+
+
+        atualizarTotal();
+
+    }
+
+
+
+    // =====================================================
+    // ALTERAR QUANTIDADE NO CARRINHO
+    // =====================================================
+
+    function alterarQuantidadeCarrinho(
+        index,
+        valor
+    ) {
+
+        carrinho[index].quantidade +=
+            valor;
+
+
+        if (
+            carrinho[index].quantidade <= 0
+        ) {
+
+            carrinho.splice(index, 1);
+
+        }
+
+
+        atualizarCarrinho();
+
+    }
+
+
+
+    // =====================================================
+    // REMOVER ITEM
+    // =====================================================
+
+    function removerCarrinho(index) {
+
+        carrinho.splice(
+            index,
+            1
+        );
+
+
+        atualizarCarrinho();
+
+    }
+
+
+
+    // =====================================================
+    // ATUALIZAR TOTAL
+    // =====================================================
+
+    function atualizarTotal() {
+
+        let total = 0;
+
+        let quantidadeItens = 0;
+
+
+        carrinho.forEach(item => {
+
+            total +=
+                item.preco *
+                item.quantidade;
+
+
+            quantidadeItens +=
+                item.quantidade;
+
+        });
+
+
+        document.getElementById(
+            "totalCompra"
+        ).textContent =
+            formatarMoeda(total);
+
+
+        document.getElementById(
+            "totalItens"
+        ).textContent =
+            quantidadeItens +
+            (
+                quantidadeItens === 1
+                    ? " item"
+                    : " itens"
+            );
+
+
+        document.getElementById(
+            "contadorItens"
+        ).textContent =
+            quantidadeItens +
+            (
+                quantidadeItens === 1
+                    ? " item"
+                    : " itens"
+            );
+
+    }
+
+
+
+    // =====================================================
+    // NOVO PRODUTO
     // =====================================================
 
     function novoProduto() {
 
-        document.getElementById("produto").style.display =
+        document.getElementById("produto")
+            .style.display =
             "none";
 
+
+        produtoAtual = null;
+
+
         iniciarLeitor();
+
     }
 
 
+
     // =====================================================
-    // FORMATAÇÃO DE PREÇO
+    // MENSAGEM
+    // =====================================================
+
+    function mostrarMensagem(
+        texto,
+        tipo
+    ) {
+
+        const mensagem =
+            document.getElementById(
+                "mensagem"
+            );
+
+
+        mensagem.innerHTML =
+            texto;
+
+
+        mensagem.className =
+            "message " +
+            tipo;
+
+    }
+
+
+
+    // =====================================================
+    // MOEDA
     // =====================================================
 
     function formatarMoeda(valor) {
 
-        return Number(valor).toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
+        return Number(valor)
+            .toLocaleString(
+                "pt-BR",
+                {
+                    style: "currency",
+                    currency: "BRL"
+                }
+            );
+
     }
+
+
+
+    // =====================================================
+    // SEGURANÇA HTML
+    // =====================================================
+
+    function escaparHTML(texto) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            texto;
+
+        return div.innerHTML;
+
+    }
+
+
+
+    // =====================================================
+    // INICIALIZAÇÃO
+    // =====================================================
+
+    carregarSupermercados();
+
+    atualizarCarrinho();
 
 </script>
 
