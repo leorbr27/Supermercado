@@ -1,36 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
 <title>Supermercado</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:#f4f5f7;
-  color:#222;
-  padding-bottom:105px;
+  padding:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:#f4f6f8;
+  color:#1f2937;
 }
 
-header{
-  background:#fff;
-  padding:18px 16px 14px;
-  position:sticky;
-  top:0;
-  z-index:10;
-  box-shadow:0 1px 6px #0001;
+.container{
+  width:100%;
+  max-width:700px;
+  margin:0 auto;
+  padding:16px;
+  padding-bottom:110px;
 }
 
 h1{
-  margin:0 0 12px;
-  font-size:24px;
+  margin:5px 0 18px;
+  font-size:27px;
+  text-align:center;
+}
+
+h2{
+  font-size:20px;
+  margin:22px 0 12px;
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:15px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
 }
 
 label{
@@ -40,64 +64,15 @@ label{
   margin-bottom:6px;
 }
 
-select,input,button{
+select,
+input{
   width:100%;
-  min-height:46px;
-  border:1px solid #ccc;
+  height:48px;
+  border:1px solid #d1d5db;
   border-radius:10px;
+  padding:0 13px;
   font-size:16px;
-  padding:10px 12px;
-  background:#fff;
-}
-
-button{
-  border:0;
-  background:#1677ff;
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-}
-
-button.secondary{background:#666}
-button.success{background:#159447}
-button.danger{background:#d93025}
-
-button.small{
-  width:auto;
-  min-height:38px;
-  padding:7px 12px;
-  font-size:14px;
-}
-
-.container{
-  max-width:650px;
-  margin:auto;
-  padding:14px;
-}
-
-.card{
-  background:#fff;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:12px;
-  box-shadow:0 2px 8px #0000000d;
-}
-
-#scannerArea{
-  display:none;
-}
-
-#reader{
-  width:100%;
-  overflow:hidden;
-  border-radius:12px;
-}
-
-#status{
-  text-align:center;
-  margin:10px 0;
-  font-size:14px;
-  color:#666;
+  background:white;
 }
 
 .row{
@@ -106,70 +81,177 @@ button.small{
   align-items:center;
 }
 
-.row>*{flex:1}
-
-.product-name{
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:4px;
+.row select{
+  flex:1;
+  min-width:0;
 }
 
-.barcode{
-  color:#777;
-  font-size:13px;
+/* BOTÃO + PEQUENO E QUADRADO */
+.row > button.small{
+  flex:0 0 46px;
+  width:46px;
+  min-width:46px;
+  height:46px;
+  padding:0;
+  border-radius:10px;
+  font-size:25px;
+}
+
+button{
+  border:0;
+  border-radius:11px;
+  min-height:46px;
+  padding:0 16px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+.primary{
+  width:100%;
+  background:#111827;
+  color:white;
+}
+
+.secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.danger{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+.success{
+  background:#16a34a;
+  color:white;
+}
+
+.small{
+  font-size:14px;
+}
+
+#scannerArea{
+  display:none;
+  margin-top:15px;
+}
+
+#reader{
+  width:100%;
+  overflow:hidden;
+  border-radius:14px;
+  background:#111;
+}
+
+#reader video{
+  width:100% !important;
+  height:auto !important;
+  border-radius:14px;
+}
+
+#status{
+  text-align:center;
+  font-size:14px;
+  color:#6b7280;
+  margin:10px 0;
+  min-height:20px;
+}
+
+.product-info{
+  background:#f8fafc;
+  border-radius:12px;
+  padding:14px;
+  margin-top:14px;
+}
+
+.product-name{
+  font-size:19px;
+  font-weight:700;
+  margin-bottom:7px;
 }
 
 .price{
   font-size:25px;
   font-weight:800;
-  margin:12px 0;
 }
 
-.qty{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  justify-content:center;
-}
-
-.qty button{
-  width:42px;
-  min-height:42px;
-  padding:0;
-}
-
-.qty span{
-  min-width:35px;
-  text-align:center;
-  font-size:18px;
-  font-weight:700;
+.barcode{
+  color:#6b7280;
+  font-size:13px;
+  margin-top:5px;
 }
 
 .cart-item{
   display:flex;
   justify-content:space-between;
   gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid #eee;
+  padding:13px 0;
+  border-bottom:1px solid #e5e7eb;
 }
 
 .cart-item:last-child{
   border-bottom:0;
 }
 
-.cart-info{
+.cart-left{
   flex:1;
+  min-width:0;
 }
 
-.cart-total{
-  font-weight:800;
-  white-space:nowrap;
+.cart-name{
+  font-weight:650;
+  line-height:1.25;
+}
+
+.cart-price{
+  color:#6b7280;
+  font-size:14px;
+  margin-top:4px;
+}
+
+.cart-right{
+  text-align:right;
+  min-width:105px;
+}
+
+.subtotal{
+  font-weight:750;
+}
+
+.qty{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:7px;
+  margin-top:6px;
+}
+
+.qty button{
+  width:30px;
+  min-width:30px;
+  height:30px;
+  min-height:30px;
+  padding:0;
+  border-radius:8px;
+  background:#e5e7eb;
+  font-size:18px;
+}
+
+.qty span{
+  min-width:20px;
+  text-align:center;
+  font-weight:700;
 }
 
 .empty{
   text-align:center;
-  color:#777;
-  padding:20px 5px;
+  color:#6b7280;
+  padding:18px 5px;
 }
 
 .total-bar{
@@ -177,2120 +259,175 @@ button.small{
   bottom:0;
   left:0;
   right:0;
-  background:#fff;
-  box-shadow:0 -2px 12px #0002;
-  padding:12px 14px calc(12px + env(safe-area-inset-bottom));
-  z-index:20;
+  background:white;
+  border-top:1px solid #e5e7eb;
+  box-shadow:0 -3px 15px rgba(0,0,0,.08);
+  padding:12px 16px;
+  z-index:100;
 }
 
-.total-line{
-  max-width:650px;
+.total-inner{
+  width:100%;
+  max-width:700px;
   margin:auto;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  gap:12px;
 }
 
 .total-label{
   font-size:14px;
-  color:#666;
+  color:#6b7280;
 }
 
 .total-value{
-  font-size:25px;
-  font-weight:900;
+  font-size:26px;
+  font-weight:850;
+}
+
+.total-bar button{
+  min-width:150px;
+}
+
+.history-item{
+  padding:13px 0;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.history-item:last-child{
+  border-bottom:0;
+}
+
+.history-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.history-date{
+  font-weight:650;
+}
+
+.history-total{
+  font-weight:800;
+}
+
+.history-market{
+  font-size:14px;
+  color:#6b7280;
+  margin-top:4px;
 }
 
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:#0008;
-  z-index:50;
-  align-items:flex-end;
+  background:rgba(0,0,0,.55);
+  z-index:200;
+  padding:20px;
+  align-items:center;
   justify-content:center;
 }
 
-.modal.show{
-  display:flex;
-}
-
 .modal-box{
-  background:#fff;
   width:100%;
-  max-width:650px;
-  border-radius:20px 20px 0 0;
+  max-width:500px;
+  background:white;
+  border-radius:18px;
   padding:20px;
-  padding-bottom:calc(20px + env(safe-area-inset-bottom));
+  max-height:90vh;
+  overflow:auto;
 }
 
-.modal-box h2{
-  margin-top:0;
+.modal-title{
+  font-size:21px;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+.field{
+  margin-bottom:15px;
 }
 
 .modal-actions{
   display:flex;
   gap:8px;
-  margin-top:15px;
+  margin-top:18px;
 }
 
 .modal-actions button{
   flex:1;
 }
 
-.hidden{
-  display:none!important;
+.loading{
+  opacity:.65;
+  pointer-events:none;
 }
 
-.history-item{
-  display:flex;
-  justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
-
-.muted{
-  color:#777;
+.notice{
   font-size:13px;
+  color:#6b7280;
+  line-height:1.45;
+  margin-top:8px;
 }
 
-.scan-button{
-  min-height:56px;
-  font-size:18px;
-  margin-bottom:8px;
+.hidden{
+  display:none !important;
 }
+
+@media(max-width:500px){
+
+  .container{
+    padding:12px;
+    padding-bottom:115px;
+  }
+
+  h1{
+    font-size:25px;
+  }
+
+  .card{
+    padding:14px;
+    border-radius:14px;
+  }
+
+  .total-inner{
+    gap:8px;
+  }
+
+  .total-value{
+    font-size:23px;
+  }
+
+  .total-bar button{
+    min-width:135px;
+    padding:0 12px;
+  }
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<header>
+<div class="container">
 
   <h1>🛒 Supermercado</h1>
 
-  <label for="supermercado">
-    Supermercado
-  </label>
-
-  <div class="row">
-
-    <select id="supermercado"
-            onchange="trocarSupermercado()">
-    </select>
-
-    <button class="small"
-            onclick="novoSupermercado()">
-      ＋
-    </button>
-
-  </div>
-
-</header>
-
-
-<div class="container">
-
-  <!-- SCANNER -->
+  <!-- SUPERMERCADO -->
 
   <div class="card">
 
-    <button
-      id="scanButton"
-      class="scan-button"
-      onclick="abrirScanner()">
-
-      📷 Escanear produto
-
-    </button>
-
-    <div id="scannerArea">
-
-      <div id="reader"></div>
-
-      <div id="status">
-        Aponte a câmera para o código de barras.
-      </div>
-
-      <button
-        class="secondary"
-        onclick="fecharScanner()">
-
-        ✕ Fechar câmera
-
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- PRODUTO -->
-
-  <div id="produtoCard"
-       class="card hidden">
-  </div>
-
-
-  <!-- CARRINHO -->
-
-  <div class="card">
-
-    <h2>🛒 Carrinho</h2>
-
-    <div id="cart"></div>
-
-    <button
-      id="finalizarBtn"
-      class="success"
-      onclick="finalizarCompra()"
-      disabled>
-
-      Finalizar e salvar compra
-
-    </button>
-
-  </div>
-
-
-  <!-- HISTÓRICO -->
-
-  <div class="card">
-
-    <h2>📋 Compras anteriores</h2>
-
-    <div id="historico"></div>
-
-  </div>
-
-</div>
-
-
-<!-- TOTAL -->
-
-<div class="total-bar">
-
-  <div class="total-line">
-
-    <div>
-
-      <div class="total-label">
-        TOTAL DA COMPRA
-      </div>
-
-      <div id="total"
-           class="total-value">
-        R$ 0,00
-      </div>
-
-    </div>
-
-    <button
-      class="small secondary"
-      onclick="limparCarrinho()">
-
-      Limpar
-
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- MODAL NOVO PRODUTO -->
-
-<div id="produtoModal"
-     class="modal">
-
-  <div class="modal-box">
-
-    <h2>Produto não cadastrado</h2>
-
-    <p class="muted">
-      Este código ainda não está cadastrado.
-    </p>
-
-    <label>
-      Código de barras
+    <label for="supermercado">
+      Supermercado
     </label>
 
-    <input
-      id="novoCodigo"
-      readonly>
+    <div class="row">
 
-    <br><br>
+      <select id="supermercado">
 
-    <label>
-      Nome do produto
-    </label>
-
-    <input
-      id="novoNome"
-      type="text"
-      placeholder="Ex.: Arroz 5kg">
-
-    <br><br>
-
-    <label>
-      Preço no supermercado
-    </label>
-
-    <input
-      id="novoPreco"
-      type="number"
-      step="0.01"
-      min="0"
-      placeholder="0,00">
-
-    <div class="modal-actions">
-
-      <button
-        class="secondary"
-        onclick="fecharModal()">
-
-        Cancelar
-
-      </button>
-
-      <button
-        class="success"
-        onclick="cadastrarProduto()">
-
-        Cadastrar
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   CONFIGURAÇÃO
-========================================================= */
-
-const SUPABASE_URL =
-  "https://lbehdmxfkakwygwoozyr.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
-
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =========================================================
-   ARMAZENAMENTO TEMPORÁRIO
-========================================================= */
-
-const STORAGE_KEY =
-  "supermercado_carrinho_v1";
-
-const STORAGE_HORAS = 12;
-
-
-/* =========================================================
-   ESTADO
-========================================================= */
-
-let scanner = null;
-
-let scannerRodando = false;
-
-let produtoAtual = null;
-
-let produtoPendente = null;
-
-let carrinho = [];
-
-let quantidadeProduto = 1;
-
-
-/* =========================================================
-   INICIALIZAÇÃO
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  async () => {
-
-    await carregarSupermercados();
-
-    restaurarCarrinho();
-
-    await carregarHistorico();
-
-    atualizarCarrinho();
-
-  }
-);
-
-
-/* =========================================================
-   SUPERMERCADOS
-========================================================= */
-
-async function carregarSupermercados(){
-
-  const select =
-    document.getElementById(
-      "supermercado"
-    );
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("supermercados")
-    .select("*")
-    .order("nome");
-
-
-  if(error){
-
-    console.error(error);
-
-    select.innerHTML =
-      `<option>Erro ao carregar</option>`;
-
-    return;
-  }
-
-
-  const supermercadoAnterior =
-    localStorage.getItem(
-      "supermercado_selecionado"
-    );
-
-
-  select.innerHTML = "";
-
-
-  data.forEach(supermercado => {
-
-    const option =
-      document.createElement("option");
-
-    option.value =
-      supermercado.id;
-
-    option.textContent =
-      supermercado.nome;
-
-    select.appendChild(option);
-
-  });
-
-
-  if(
-    supermercadoAnterior &&
-    data.some(
-      x =>
-        String(x.id) ===
-        String(supermercadoAnterior)
-    )
-  ){
-
-    select.value =
-      supermercadoAnterior;
-
-  }else if(data.length){
-
-    select.value =
-      data[0].id;
-
-  }
-
-
-  localStorage.setItem(
-    "supermercado_selecionado",
-    select.value
-  );
-
-}
-
-
-/* =========================================================
-   TROCAR SUPERMERCADO
-========================================================= */
-
-async function trocarSupermercado(){
-
-  const novoId =
-    document.getElementById(
-      "supermercado"
-    ).value;
-
-
-  /*
-     Se houver carrinho, não permitir
-     trocar silenciosamente.
-  */
-
-  if(carrinho.length > 0){
-
-    const antigoId =
-      localStorage.getItem(
-        "supermercado_carrinho"
-      );
-
-
-    if(
-      antigoId &&
-      String(antigoId) !==
-      String(novoId)
-    ){
-
-      const confirmar =
-        confirm(
-          "Existe uma compra em andamento neste carrinho.\n\n" +
-          "Trocar de supermercado irá limpar o carrinho atual.\n\n" +
-          "Deseja continuar?"
-        );
-
-
-      if(!confirmar){
-
-        document.getElementById(
-          "supermercado"
-        ).value = antigoId;
-
-        return;
-
-      }
-
-
-      carrinho = [];
-
-      salvarCarrinho();
-
-      atualizarCarrinho();
-
-    }
-
-  }
-
-
-  localStorage.setItem(
-    "supermercado_selecionado",
-    novoId
-  );
-
-
-  /*
-     Se o carrinho estiver vazio,
-     o novo supermercado passa a ser
-     o supermercado da próxima compra.
-  */
-
-  document.getElementById(
-    "produtoCard"
-  ).classList.add("hidden");
-
-}
-
-
-/* =========================================================
-   NOVO SUPERMERCADO
-========================================================= */
-
-async function novoSupermercado(){
-
-  const nome =
-    prompt(
-      "Nome do novo supermercado:"
-    );
-
-
-  if(!nome || !nome.trim())
-    return;
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("supermercados")
-    .insert({
-      nome: nome.trim()
-    })
-    .select()
-    .single();
-
-
-  if(error){
-
-    if(error.code === "23505"){
-
-      alert(
-        "Esse supermercado já está cadastrado."
-      );
-
-    }else{
-
-      console.error(error);
-
-      alert(
-        "Erro ao cadastrar supermercado."
-      );
-
-    }
-
-    return;
-  }
-
-
-  await carregarSupermercados();
-
-
-  document.getElementById(
-    "supermercado"
-  ).value = data.id;
-
-
-  localStorage.setItem(
-    "supermercado_selecionado",
-    data.id
-  );
-
-}
-
-
-/* =========================================================
-   ABRIR CÂMERA
-========================================================= */
-
-async function abrirScanner(){
-
-  if(scannerRodando)
-    return;
-
-
-  const supermercado =
-    document.getElementById(
-      "supermercado"
-    ).value;
-
-
-  if(!supermercado){
-
-    alert(
-      "Selecione um supermercado primeiro."
-    );
-
-    return;
-  }
-
-
-  document.getElementById(
-    "scannerArea"
-  ).style.display = "block";
-
-
-  document.getElementById(
-    "scanButton"
-  ).style.display = "none";
-
-
-  document.getElementById(
-    "status"
-  ).textContent =
-    "Abrindo câmera...";
-
-
-  if(!scanner){
-
-    scanner =
-      new Html5Qrcode("reader");
-
-  }
-
-
-  try{
-
-    await scanner.start(
-
-      {
-        facingMode:
-          "environment"
-      },
-
-      {
-        fps:10,
-
-        qrbox:{
-          width:280,
-          height:140
-        }
-
-      },
-
-      codigo => {
-
-        if(scannerRodando){
-
-          scannerRodando = false;
-
-          processarCodigo(codigo);
-
-        }
-
-      },
-
-      () => {}
-
-    );
-
-
-    scannerRodando = true;
-
-
-    document.getElementById(
-      "status"
-    ).textContent =
-      "Aponte a câmera para o código de barras.";
-
-
-  }catch(error){
-
-    console.error(error);
-
-    fecharScanner();
-
-
-    alert(
-      "Não foi possível abrir a câmera. Verifique a permissão de câmera do Safari."
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   FECHAR CÂMERA
-========================================================= */
-
-async function fecharScanner(){
-
-  if(
-    scanner &&
-    scannerRodando
-  ){
-
-    try{
-
-      await scanner.stop();
-
-    }catch(error){
-
-      console.log(error);
-
-    }
-
-  }
-
-
-  scannerRodando = false;
-
-
-  document.getElementById(
-    "scannerArea"
-  ).style.display = "none";
-
-
-  document.getElementById(
-    "scanButton"
-  ).style.display = "block";
-
-}
-
-
-/* =========================================================
-   PROCESSAR CÓDIGO
-========================================================= */
-
-async function processarCodigo(codigo){
-
-  /*
-     Desliga a câmera imediatamente
-     depois da leitura.
-  */
-
-  await fecharScanner();
-
-
-  document.getElementById(
-    "status"
-  ).textContent =
-    "Consultando produto...";
-
-
-  const supermercadoId =
-    document.getElementById(
-      "supermercado"
-    ).value;
-
-
-  if(!supermercadoId){
-
-    alert(
-      "Selecione um supermercado."
-    );
-
-    return;
-  }
-
-
-  /*
-     Procurar produto pelo código.
-  */
-
-  const {
-    data: produto,
-    error
-  } =
-    await supabaseClient
-      .from("produtos")
-      .select("*")
-      .eq(
-        "codigo_barras",
-        codigo
-      )
-      .limit(1)
-      .maybeSingle();
-
-
-  if(error){
-
-    console.error(error);
-
-    alert(
-      "Erro ao consultar o produto."
-    );
-
-    return;
-  }
-
-
-  if(produto){
-
-    await processarProdutoExistente(
-      produto,
-      supermercadoId
-    );
-
-    return;
-  }
-
-
-  abrirModalNovoProduto(codigo);
-
-}
-
-
-/* =========================================================
-   PRODUTO EXISTENTE
-========================================================= */
-
-async function processarProdutoExistente(
-  produto,
-  supermercadoId
-){
-
-  const {
-    data: supermercado
-  } =
-    await supabaseClient
-      .from("supermercados")
-      .select("nome")
-      .eq(
-        "id",
-        supermercadoId
-      )
-      .single();
-
-
-  /*
-     Buscar último preço daquele
-     produto naquele supermercado.
-  */
-
-  const {
-    data: ultimoPreco
-  } =
-    await supabaseClient
-      .from("precos")
-      .select("*")
-      .eq(
-        "produto_id",
-        produto.id
-      )
-      .eq(
-        "supermercado_id",
-        supermercadoId
-      )
-      .order(
-        "registrado_em",
-        {
-          ascending:false
-        }
-      )
-      .limit(1)
-      .maybeSingle();
-
-
-  produtoAtual = {
-
-    ...produto,
-
-    supermercado_id:
-      supermercadoId,
-
-    supermercado_nome:
-      supermercado?.nome || "",
-
-    preco:
-      ultimoPreco?.preco ?? null
-
-  };
-
-
-  mostrarProduto(
-    produtoAtual
-  );
-
-}
-
-
-/* =========================================================
-   MOSTRAR PRODUTO
-========================================================= */
-
-function mostrarProduto(produto){
-
-  const card =
-    document.getElementById(
-      "produtoCard"
-    );
-
-
-  card.classList.remove(
-    "hidden"
-  );
-
-
-  const precoTexto =
-    produto.preco !== null
-      ?
-      formatarMoeda(
-        produto.preco
-      )
-      :
-      "Preço não cadastrado";
-
-
-  card.innerHTML = `
-
-    <div class="product-name">
-      ${escaparHTML(
-        produto.nome
-      )}
-    </div>
-
-    <div class="barcode">
-      Código:
-      ${escaparHTML(
-        produto.codigo_barras
-      )}
-    </div>
-
-    <div class="muted">
-      ${escaparHTML(
-        produto.supermercado_nome
-      )}
-    </div>
-
-    <div class="price">
-      ${precoTexto}
-    </div>
-
-    ${
-      produto.preco !== null
-
-      ?
-
-      `
-      <div class="row">
-
-        <div class="qty">
-
-          <button
-            class="small secondary"
-            onclick="alterarQuantidadeProduto(-1)">
-            −
-          </button>
-
-          <span id="qtdProduto">
-            1
-          </span>
-
-          <button
-            class="small"
-            onclick="alterarQuantidadeProduto(1)">
-            +
-          </button>
-
-        </div>
-
-        <button
-          class="success"
-          onclick="adicionarCarrinho()">
-
-          🛒 Adicionar ao carrinho
-
-        </button>
-
-      </div>
-      `
-
-      :
-
-      `
-      <button
-        onclick="registrarPreco()">
-
-        Informar preço
-
-      </button>
-      `
-    }
-
-  `;
-
-
-  quantidadeProduto = 1;
-
-}
-
-
-/* =========================================================
-   QUANTIDADE DO PRODUTO
-========================================================= */
-
-function alterarQuantidadeProduto(
-  valor
-){
-
-  quantidadeProduto =
-    Math.max(
-      1,
-      quantidadeProduto + valor
-    );
-
-
-  const elemento =
-    document.getElementById(
-      "qtdProduto"
-    );
-
-
-  if(elemento){
-
-    elemento.textContent =
-      quantidadeProduto;
-
-  }
-
-}
-
-
-/* =========================================================
-   ADICIONAR AO CARRINHO
-========================================================= */
-
-function adicionarCarrinho(){
-
-  if(!produtoAtual)
-    return;
-
-
-  if(
-    produtoAtual.preco === null
-  ){
-
-    alert(
-      "Este produto ainda não possui preço."
-    );
-
-    return;
-  }
-
-
-  const quantidade =
-    quantidadeProduto || 1;
-
-
-  const existente =
-    carrinho.find(
-      item =>
-        item.produto_id ===
-        produtoAtual.id
-    );
-
-
-  if(existente){
-
-    existente.quantidade +=
-      quantidade;
-
-  }else{
-
-    carrinho.push({
-
-      produto_id:
-        produtoAtual.id,
-
-      codigo_barras:
-        produtoAtual.codigo_barras,
-
-      nome:
-        produtoAtual.nome,
-
-      preco_unitario:
-        Number(
-          produtoAtual.preco
-        ),
-
-      quantidade:
-        quantidade
-
-    });
-
-  }
-
-
-  salvarCarrinho();
-
-  atualizarCarrinho();
-
-
-  document.getElementById(
-    "produtoCard"
-  ).classList.add(
-    "hidden"
-  );
-
-
-  produtoAtual = null;
-
-  quantidadeProduto = 1;
-
-
-  document.getElementById(
-    "scanButton"
-  ).style.display =
-    "block";
-
-}
-
-
-/* =========================================================
-   CARRINHO
-========================================================= */
-
-function atualizarCarrinho(){
-
-  const container =
-    document.getElementById(
-      "cart"
-    );
-
-
-  if(carrinho.length === 0){
-
-    container.innerHTML =
-      `
-      <div class="empty">
-        O carrinho está vazio.
-      </div>
-      `;
-
-  }else{
-
-    container.innerHTML =
-      carrinho.map(
-        (item,index) => {
-
-          const subtotal =
-            item.preco_unitario *
-            item.quantidade;
-
-
-          return `
-
-          <div class="cart-item">
-
-            <div class="cart-info">
-
-              <strong>
-                ${escaparHTML(
-                  item.nome
-                )}
-              </strong>
-
-              <div class="muted">
-
-                ${item.quantidade}
-                ×
-                ${formatarMoeda(
-                  item.preco_unitario
-                )}
-
-              </div>
-
-              <div class="qty">
-
-                <button
-                  class="small secondary"
-                  onclick="alterarQuantidadeCarrinho(${index},-1)">
-                  −
-                </button>
-
-                <span>
-                  ${item.quantidade}
-                </span>
-
-                <button
-                  class="small"
-                  onclick="alterarQuantidadeCarrinho(${index},1)">
-                  +
-                </button>
-
-                <button
-                  class="small danger"
-                  onclick="removerCarrinho(${index})">
-                  ×
-                </button>
-
-              </div>
-
-            </div>
-
-            <div class="cart-total">
-
-              ${formatarMoeda(
-                subtotal
-              )}
-
-            </div>
-
-          </div>
-
-          `;
-
-        }
-      ).join("");
-
-  }
-
-
-  const total =
-    calcularTotal();
-
-
-  document.getElementById(
-    "total"
-  ).textContent =
-    formatarMoeda(total);
-
-
-  document.getElementById(
-    "finalizarBtn"
-  ).disabled =
-    carrinho.length === 0;
-
-}
-
-
-/* =========================================================
-   TOTAL
-========================================================= */
-
-function calcularTotal(){
-
-  return carrinho.reduce(
-    (total,item) =>
-
-      total +
-      (
-        item.preco_unitario *
-        item.quantidade
-      ),
-
-    0
-  );
-
-}
-
-
-/* =========================================================
-   ALTERAR CARRINHO
-========================================================= */
-
-function alterarQuantidadeCarrinho(
-  index,
-  valor
-){
-
-  carrinho[index].quantidade +=
-    valor;
-
-
-  if(
-    carrinho[index].quantidade <= 0
-  ){
-
-    carrinho.splice(
-      index,
-      1
-    );
-
-  }
-
-
-  salvarCarrinho();
-
-  atualizarCarrinho();
-
-}
-
-
-function removerCarrinho(index){
-
-  carrinho.splice(
-    index,
-    1
-  );
-
-
-  salvarCarrinho();
-
-  atualizarCarrinho();
-
-}
-
-
-function limparCarrinho(){
-
-  if(
-    carrinho.length === 0
-  )
-    return;
-
-
-  if(
-    !confirm(
-      "Deseja realmente cancelar esta compra?"
-    )
-  ){
-
-    return;
-
-  }
-
-
-  carrinho = [];
-
-  salvarCarrinho();
-
-  atualizarCarrinho();
-
-}
-
-
-/* =========================================================
-   SALVAR CARRINHO NO CELULAR
-========================================================= */
-
-function salvarCarrinho(){
-
-  const supermercadoId =
-    document.getElementById(
-      "supermercado"
-    ).value;
-
-
-  const dados = {
-
-    supermercado_id:
-      supermercadoId,
-
-    criado_em:
-      localStorage.getItem(
-        "carrinho_criado_em"
-      ) ||
-      new Date().toISOString(),
-
-    atualizado_em:
-      new Date().toISOString(),
-
-    itens:
-      carrinho
-
-  };
-
-
-  if(
-    !localStorage.getItem(
-      "carrinho_criado_em"
-    )
-  ){
-
-    localStorage.setItem(
-      "carrinho_criado_em",
-      dados.criado_em
-    );
-
-  }
-
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(dados)
-  );
-
-
-  localStorage.setItem(
-    "supermercado_carrinho",
-    supermercadoId
-  );
-
-}
-
-
-/* =========================================================
-   RESTAURAR CARRINHO
-========================================================= */
-
-function restaurarCarrinho(){
-
-  const salvo =
-    localStorage.getItem(
-      STORAGE_KEY
-    );
-
-
-  if(!salvo)
-    return;
-
-
-  try{
-
-    const dados =
-      JSON.parse(salvo);
-
-
-    /*
-       Expira depois de 12 horas.
-    */
-
-    const criado =
-      new Date(
-        dados.criado_em
-      ).getTime();
-
-
-    const agora =
-      Date.now();
-
-
-    const horas =
-      (
-        agora - criado
-      ) /
-      (
-        1000 * 60 * 60
-      );
-
-
-    if(
-      horas >
-      STORAGE_HORAS
-    ){
-
-      localStorage.removeItem(
-        STORAGE_KEY
-      );
-
-      localStorage.removeItem(
-        "carrinho_criado_em"
-      );
-
-      localStorage.removeItem(
-        "supermercado_carrinho"
-      );
-
-      return;
-
-    }
-
-
-    carrinho =
-      Array.isArray(
-        dados.itens
-      )
-      ?
-      dados.itens
-      :
-      [];
-
-
-    if(
-      dados.supermercado_id
-    ){
-
-      localStorage.setItem(
-        "supermercado_carrinho",
-        dados.supermercado_id
-      );
-
-      localStorage.setItem(
-        "supermercado_selecionado",
-        dados.supermercado_id
-      );
-
-    }
-
-
-    /*
-       Depois que os supermercados
-       carregaram, selecionar o correto.
-    */
-
-    const select =
-      document.getElementById(
-        "supermercado"
-      );
-
-
-    if(
-      dados.supermercado_id &&
-      select.querySelector(
-        `option[value="${dados.supermercado_id}"]`
-      )
-    ){
-
-      select.value =
-        dados.supermercado_id;
-
-    }
-
-
-  }catch(error){
-
-    console.error(
-      "Erro ao restaurar carrinho:",
-      error
-    );
-
-    localStorage.removeItem(
-      STORAGE_KEY
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   FINALIZAR COMPRA
-========================================================= */
-
-async function finalizarCompra(){
-
-  if(
-    carrinho.length === 0
-  ){
-
-    alert(
-      "O carrinho está vazio."
-    );
-
-    return;
-  }
-
-
-  const supermercadoId =
-    document.getElementById(
-      "supermercado"
-    ).value;
-
-
-  const total =
-    calcularTotal();
-
-
-  /*
-     Criar compra no Supabase.
-  */
-
-  const {
-    data: compra,
-    error
-  } =
-    await supabaseClient
-      .from("compras")
-      .insert({
-
-        supermercado_id:
-          supermercadoId,
-
-        total:
-          total
-
-      })
-      .select()
-      .single();
-
-
-  if(error){
-
-    console.error(error);
-
-    alert(
-      "Erro ao salvar a compra."
-    );
-
-    return;
-  }
-
-
-  /*
-     Salvar itens.
-  */
-
-  const itens =
-    carrinho.map(
-      item => ({
-
-        compra_id:
-          compra.id,
-
-        produto_id:
-          item.produto_id,
-
-        quantidade:
-          item.quantidade,
-
-        preco_unitario:
-          item.preco_unitario,
-
-        subtotal:
-          item.preco_unitario *
-          item.quantidade
-
-      })
-    );
-
-
-  const {
-    error: erroItens
-  } =
-    await supabaseClient
-      .from("itens_compra")
-      .insert(itens);
-
-
-  if(erroItens){
-
-    console.error(erroItens);
-
-    alert(
-      "A compra foi criada, mas houve erro ao salvar os itens."
-    );
-
-    return;
-  }
-
-
-  /*
-     Compra concluída:
-     apagar carrinho temporário.
-  */
-
-  carrinho = [];
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-  localStorage.removeItem(
-    "carrinho_criado_em"
-  );
-
-  localStorage.removeItem(
-    "supermercado_carrinho"
-  );
-
-
-  atualizarCarrinho();
-
-  await carregarHistorico();
-
-
-  alert(
-    "Compra salva com sucesso!\n\n" +
-    "Total: " +
-    formatarMoeda(total)
-  );
-
-}
-
-
-/* =========================================================
-   REGISTRAR PREÇO
-========================================================= */
-
-async function registrarPreco(){
-
-  if(!produtoAtual)
-    return;
-
-
-  const valor =
-    prompt(
-      "Digite o preço atual do produto:"
-    );
-
-
-  if(valor === null)
-    return;
-
-
-  const preco =
-    Number(
-      valor.replace(",", ".")
-    );
-
-
-  if(
-    isNaN(preco) ||
-    preco < 0
-  ){
-
-    alert(
-      "Digite um preço válido."
-    );
-
-    return;
-  }
-
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .from("precos")
-      .insert({
-
-        produto_id:
-          produtoAtual.id,
-
-        supermercado_id:
-          produtoAtual.supermercado_id,
-
-        preco:
-          preco
-
-      });
-
-
-  if(error){
-
-    console.error(error);
-
-    alert(
-      "Erro ao registrar preço."
-    );
-
-    return;
-  }
-
-
-  produtoAtual.preco =
-    preco;
-
-
-  mostrarProduto(
-    produtoAtual
-  );
-
-}
-
-
-/* =========================================================
-   NOVO PRODUTO
-========================================================= */
-
-function abrirModalNovoProduto(
-  codigo
-){
-
-  produtoPendente =
-    codigo;
-
-
-  document.getElementById(
-    "novoCodigo"
-  ).value =
-    codigo;
-
-
-  document.getElementById(
-    "novoNome"
-  ).value = "";
-
-
-  document.getElementById(
-    "novoPreco"
-  ).value = "";
-
-
-  document.getElementById(
-    "produtoModal"
-  ).classList.add(
-    "show"
-  );
-
-}
-
-
-function fecharModal(){
-
-  document.getElementById(
-    "produtoModal"
-  ).classList.remove(
-    "show"
-  );
-
-
-  produtoPendente =
-    null;
-
-}
-
-
-async function cadastrarProduto(){
-
-  const nome =
-    document.getElementById(
-      "novoNome"
-    ).value.trim();
-
-
-  const preco =
-    Number(
-      document.getElementById(
-        "novoPreco"
-      ).value
-    );
-
-
-  const codigo =
-    produtoPendente;
-
-
-  if(!nome){
-
-    alert(
-      "Digite o nome do produto."
-    );
-
-    return;
-  }
-
-
-  if(
-    isNaN(preco) ||
-    preco < 0
-  ){
-
-    alert(
-      "Digite um preço válido."
-    );
-
-    return;
-  }
-
-
-  /*
-     Criar produto.
-  */
-
-  const {
-    data: produto,
-    error
-  } =
-    await supabaseClient
-      .from("produtos")
-      .insert({
-
-        codigo_barras:
-          codigo,
-
-        nome:
-          nome
-
-      })
-      .select()
-      .single();
-
-
-  if(error){
-
-    console.error(error);
-
-    alert(
-      "Erro ao cadastrar produto."
-    );
-
-    return;
-  }
-
-
-  /*
-     Registrar preço.
-  */
-
-  const supermercadoId =
-    document.getElementById(
-      "supermercado"
-    ).value;
-
-
-  const {
-    error: erroPreco
-  } =
-    await supabaseClient
-      .from("precos")
-      .insert({
-
-        produto_id:
-          produto.id,
-
-        supermercado_id:
-          supermercadoId,
-
-        preco:
-          preco
-
-      });
-
-
-  if(erroPreco){
-
-    console.error(erroPreco);
-
-    alert(
-      "Produto cadastrado, mas houve erro ao salvar o preço."
-    );
-
-    return;
-  }
-
-
-  fecharModal();
-
-
-  await processarProdutoExistente(
-    produto,
-    supermercadoId
-  );
-
-}
-
-
-/* =========================================================
-   HISTÓRICO DE COMPRAS
-========================================================= */
-
-async function carregarHistorico(){
-
-  const container =
-    document.getElementById(
-      "historico"
-    );
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("compras")
-      .select(`
-        id,
-        data_compra,
-        total,
-        supermercados (
-          nome
-        )
-      `)
-      .order(
-        "data_compra",
-        {
-          ascending:false
-        }
-      )
-      .limit(10);
-
-
-  if(error){
-
-    console.error(error);
-
-    container.innerHTML =
-      `
-      <div class="muted">
-        Não foi possível carregar o histórico.
-      </div>
-      `;
-
-    return;
-  }
-
-
-  if(
-    !data ||
-    data.length === 0
-  ){
-
-    container.innerHTML =
-      `
-      <div class="empty">
-        Nenhuma compra salva ainda.
-      </div>
-      `;
-
-    return;
-  }
-
-
-  container.innerHTML =
-    data.map(
-      compra => {
-
-        const dataCompra =
-          new Date(
-            compra.data_compra
-          )
-          .toLocaleString(
-            "pt-BR"
-          );
-
-
-        return `
-
-          <div class="history-item">
-
-            <div>
-
-              <strong>
-                Compra #${compra.id}
-              </strong>
-
-              <div class="muted">
-
-                ${escaparHTML(
-                  compra.supermercados?.nome || ""
-                )}
-
-              </div>
-
-              <div class="muted">
-
-                ${dataCompra}
-
-              </div>
-
-            </div>
-
-            <strong>
-
-              ${formatarMoeda(
-                compra.total
-              )}
-
-            </strong>
-
-          </div>
-
-        `;
-
-      }
-    ).join("");
-
-}
-
-
-/* =========================================================
-   UTILITÁRIOS
-========================================================= */
-
-function formatarMoeda(
-  valor
-){
-
-  return Number(
-    valor
-  ).toLocaleString(
-    "pt-BR",
-    {
-      style:"currency",
-      currency:"BRL"
-    }
-  );
-
-}
-
-
-function escaparHTML(
-  texto
-){
-
-  return String(texto)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-</script>
-
-</body>
-</html>
+        <option value="">
+          Se
