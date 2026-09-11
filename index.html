@@ -110,6 +110,11 @@ button:active{
   transform:scale(.98);
 }
 
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
 .primary{
   width:100%;
   background:#111827;
@@ -167,10 +172,10 @@ button:active{
 .product-name{
   font-size:19px;
   font-weight:700;
-  margin-bottom:12px;
+  margin-bottom:14px;
 }
 
-.price-label{
+.field-label{
   font-size:14px;
   font-weight:600;
   margin-bottom:6px;
@@ -180,6 +185,16 @@ button:active{
   font-size:24px;
   font-weight:750;
   height:54px;
+}
+
+.quantity-input{
+  font-size:20px;
+  font-weight:700;
+  height:50px;
+}
+
+.product-field{
+  margin-bottom:13px;
 }
 
 .barcode{
@@ -464,20 +479,46 @@ button:active{
       ></div>
 
 
-      <div class="price-label">
-        Preço neste supermercado
+      <!-- PREÇO -->
+
+      <div class="product-field">
+
+        <div class="field-label">
+          Preço neste supermercado
+        </div>
+
+        <input
+          id="produtoPreco"
+          class="price-input"
+          type="number"
+          inputmode="decimal"
+          step="0.01"
+          min="0"
+          placeholder="0,00"
+        >
+
       </div>
 
 
-      <input
-        id="produtoPreco"
-        class="price-input"
-        type="number"
-        inputmode="decimal"
-        step="0.01"
-        min="0"
-        placeholder="0,00"
-      >
+      <!-- QUANTIDADE -->
+
+      <div class="product-field">
+
+        <div class="field-label">
+          Quantidade
+        </div>
+
+        <input
+          id="produtoQuantidade"
+          class="quantity-input"
+          type="number"
+          inputmode="numeric"
+          step="1"
+          min="1"
+          value="1"
+        >
+
+      </div>
 
 
       <div
@@ -1333,9 +1374,9 @@ async function processarCodigo(codigo){
   }
 
 
-  /* =======================================================
-     PRODUTO NOVO
-  ======================================================= */
+  /*
+    PRODUTO NÃO CADASTRADO
+  */
 
   if(
     !produtos ||
@@ -1353,9 +1394,10 @@ async function processarCodigo(codigo){
     produtos[0];
 
 
-  /* =======================================================
-     BUSCA ÚLTIMO PREÇO
-  ======================================================= */
+  /*
+    BUSCA O ÚLTIMO PREÇO DESTE PRODUTO
+    NESTE SUPERMERCADO.
+  */
 
   const {
     data: precos,
@@ -1363,7 +1405,7 @@ async function processarCodigo(codigo){
   } =
     await supabaseClient
       .from("precos")
-      .select("*")
+      .select("preco,registrado_em")
       .eq(
         "produto_id",
         produto.id
@@ -1394,28 +1436,30 @@ async function processarCodigo(codigo){
   }
 
 
-  let ultimoPreco = "";
+  /*
+    SE EXISTIR PREÇO:
+    recupera o último.
+
+    SE NÃO EXISTIR:
+    começa em ZERO.
+  */
+
+  let ultimoPreco = 0;
 
 
   if(
     precos &&
-    precos.length > 0
+    precos.length > 0 &&
+    precos[0].preco !== null
   ){
 
     ultimoPreco =
       Number(
         precos[0].preco
-      ).toFixed(2);
+      );
 
   }
 
-
-  /*
-    Aqui está a alteração principal:
-
-    Mesmo que já exista preço cadastrado,
-    ele será colocado em um campo EDITÁVEL.
-  */
 
   produtoAtual = {
 
@@ -1461,7 +1505,20 @@ function mostrarProduto(){
   document.getElementById(
     "produtoPreco"
   ).value =
-    produtoAtual.preco;
+    Number(
+      produtoAtual.preco
+    ).toFixed(2);
+
+
+  /*
+    Toda vez que um novo produto é escaneado,
+    a quantidade começa em 1.
+  */
+
+  document.getElementById(
+    "produtoQuantidade"
+  ).value =
+    1;
 
 
   document.getElementById(
@@ -1558,7 +1615,7 @@ function fecharModalProduto(){
 
 
 /* =========================================================
-   CADASTRAR PRODUTO NOVO
+   CADASTRAR NOVO PRODUTO
 ========================================================= */
 
 async function cadastrarProduto(){
@@ -1692,13 +1749,18 @@ async function cadastrarProduto(){
   };
 
 
+  /*
+    Depois de cadastrar um produto novo,
+    também mostramos a quantidade.
+  */
+
   mostrarProduto();
 
 }
 
 
 /* =========================================================
-   SALVAR PREÇO E ADICIONAR AO CARRINHO
+   SALVAR PREÇO + QUANTIDADE + CARRINHO
 ========================================================= */
 
 async function salvarPrecoEAdicionar(){
@@ -1716,11 +1778,27 @@ async function salvarPrecoEAdicionar(){
     );
 
 
+  const campoQuantidade =
+    document.getElementById(
+      "produtoQuantidade"
+    );
+
+
   const preco =
     Number(
       campoPreco.value
     );
 
+
+  const quantidade =
+    Number(
+      campoQuantidade.value
+    );
+
+
+  /*
+    VALIDA PREÇO
+  */
 
   if(
     !Number.isFinite(preco) ||
@@ -1732,6 +1810,26 @@ async function salvarPrecoEAdicionar(){
     );
 
     campoPreco.focus();
+
+    return;
+
+  }
+
+
+  /*
+    VALIDA QUANTIDADE
+  */
+
+  if(
+    !Number.isInteger(quantidade) ||
+    quantidade < 1
+  ){
+
+    alert(
+      "A quantidade deve ser pelo menos 1."
+    );
+
+    campoQuantidade.focus();
 
     return;
 
@@ -1762,14 +1860,11 @@ async function salvarPrecoEAdicionar(){
 
 
   /*
-    SEMPRE registramos o preço informado.
+    REGISTRA O PREÇO.
 
-    Dessa forma:
-
-    R$ 6,00 ontem
-    R$ 6,49 hoje
-
-    ficam preservados no histórico.
+    Mesmo que seja igual ao preço anterior,
+    este registro fica armazenado como uma
+    nova observação de preço.
   */
 
   const {
@@ -1809,16 +1904,18 @@ async function salvarPrecoEAdicionar(){
   }
 
 
-  /*
-    Atualiza o preço atual do produto
-    antes de colocá-lo no carrinho.
-  */
-
   produtoAtual.preco =
     preco;
 
 
-  adicionarAoCarrinhoComProdutoAtual();
+  /*
+    ADICIONA A QUANTIDADE INFORMADA.
+  */
+
+  adicionarAoCarrinho(
+    produtoAtual,
+    quantidade
+  );
 
 
   botao.disabled = false;
@@ -1833,9 +1930,12 @@ async function salvarPrecoEAdicionar(){
    ADICIONAR AO CARRINHO
 ========================================================= */
 
-function adicionarAoCarrinhoComProdutoAtual(){
+function adicionarAoCarrinho(
+  produto,
+  quantidade
+){
 
-  if(!produtoAtual){
+  if(!produto){
 
     return;
 
@@ -1845,8 +1945,12 @@ function adicionarAoCarrinhoComProdutoAtual(){
   const existente =
     carrinho.find(
       item =>
-        Number(item.produto_id) ===
-        Number(produtoAtual.id)
+        Number(
+          item.produto_id
+        ) ===
+        Number(
+          produto.id
+        )
     );
 
 
@@ -1854,34 +1958,40 @@ function adicionarAoCarrinhoComProdutoAtual(){
 
     /*
       Se o produto já estiver no carrinho,
-      mantemos a quantidade existente e
-      atualizamos o preço para o preço
-      informado nesta leitura.
+      soma a nova quantidade.
+
+      E atualiza o preço para o preço
+      informado nesta última leitura.
     */
 
     existente.preco_unitario =
-      Number(produtoAtual.preco);
+      Number(
+        produto.preco
+      );
 
-    existente.quantidade += 1;
+    existente.quantidade +=
+      quantidade;
 
   }else{
 
     carrinho.push({
 
       produto_id:
-        produtoAtual.id,
+        produto.id,
 
       codigo_barras:
-        produtoAtual.codigo_barras,
+        produto.codigo_barras,
 
       nome:
-        produtoAtual.nome,
+        produto.nome,
 
       preco_unitario:
-        Number(produtoAtual.preco),
+        Number(
+          produto.preco
+        ),
 
       quantidade:
-        1
+        quantidade
 
     });
 
@@ -1944,8 +2054,12 @@ function renderizarCarrinho(){
     function(item,index){
 
       const subtotal =
-        Number(item.preco_unitario) *
-        Number(item.quantidade);
+        Number(
+          item.preco_unitario
+        ) *
+        Number(
+          item.quantidade
+        );
 
 
       const div =
@@ -2029,7 +2143,10 @@ function renderizarCarrinho(){
 }
 
 
-function alterarQuantidade(index,delta){
+function alterarQuantidade(
+  index,
+  delta
+){
 
   if(!carrinho[index]){
 
@@ -2162,7 +2279,9 @@ function restaurarCarrinho(){
 
     const idade =
       Date.now() -
-      Number(dataCriacao);
+      Number(
+        dataCriacao
+      );
 
 
     const limite =
@@ -2196,7 +2315,9 @@ function restaurarCarrinho(){
   try{
 
     carrinho =
-      JSON.parse(dados);
+      JSON.parse(
+        dados
+      );
 
 
     if(
@@ -2394,7 +2515,9 @@ async function finalizarCompra(){
   } =
     await supabaseClient
       .from("itens_compra")
-      .insert(itens);
+      .insert(
+        itens
+      );
 
 
   if(erroItens){
