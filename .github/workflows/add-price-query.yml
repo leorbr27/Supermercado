@@ -1,0 +1,128 @@
+name: Adicionar consulta de preços
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-price-query.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Atualizar index.html
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          # 1. Add the price-query card after the supermarket selector card.
+          marker = '<div class="card">\n<button id="scanButton"'
+          query_html = '''<div class="card" id="consultaPrecoCard">
+          <h2>🔎 Consulta de preços</h2>
+          <div class="notice">Procure um produto por nome ou código de barras. Você também pode escanear o código.</div>
+          <div style="margin-top:12px">
+          <input id="consultaBusca" type="search" autocomplete="off" placeholder="Nome ou código de barras" onkeydown="if(event.key==='Enter')buscarConsultaPreco()">
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="primary" style="flex:1" onclick="buscarConsultaPreco()">Consultar</button>
+          <button class="secondary" style="flex:0 0 54px;padding:0" onclick="abrirScannerConsulta()" title="Escanear código de barras">📷</button>
+          </div>
+          <div id="consultaScannerArea" style="display:none;margin-top:14px">
+          <div id="consultaReader" style="width:100%;overflow:hidden;border-radius:14px;background:#111"></div>
+          <div id="consultaStatus" class="notice" style="text-align:center">Abrindo câmera...</div>
+          <button class="secondary" style="width:100%;margin-top:8px" onclick="fecharScannerConsulta()">Fechar câmera</button>
+          </div>
+          <div id="consultaResultados" style="margin-top:12px">
+          <div class="empty">Digite o nome ou código de barras para consultar.</div>
+          </div>
+          </div>
+
+          '''
+          if 'id="consultaPrecoCard"' not in text:
+              if marker not in text:
+                  raise SystemExit('Local para inserir consulta de preços não encontrado.')
+              text = text.replace(marker, query_html + marker, 1)
+
+          # 2. Add consultation functions before the existing processarCodigo function.
+          marker_js = 'async function processarCodigo(codigo){'
+          query_js = r'''let scannerConsulta=null,scannerConsultaRodando=false;
+
+          async function buscarConsultaPreco(){
+            const termo=document.getElementById("consultaBusca").value.trim();
+            if(!termo){alert("Digite o nome ou código de barras do produto.");return}
+            if(scannerConsultaRodando)await fecharScannerConsulta();
+            const resultados=document.getElementById("consultaResultados");
+            resultados.innerHTML='<div class="empty">Consultando...</div>';
+            const {data,error}=await supabaseClient.from("produtos").select("*").or(`nome.ilike.%${termo}%,codigo_barras.eq.${termo}`).order("nome").limit(20);
+            if(error){console.error(error);resultados.innerHTML='<div class="empty">Não foi possível consultar os produtos.</div>';return}
+            if(!data||data.length===0){resultados.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return}
+            let html='';
+            for(const produto of data){
+              const {data:precos,error:erroPreco}=await supabaseClient.from("precos").select("preco,registrado_em,supermercado_id,supermercados(nome)").eq("produto_id",produto.id).order("registrado_em",{ascending:false}).limit(100);
+              if(erroPreco){console.error(erroPreco);continue}
+              const ultimos={};
+              (precos||[]).forEach(p=>{if(!ultimos[p.supermercado_id])ultimos[p.supermercado_id]=p});
+              const lista=Object.values(ultimos).sort((a,b)=>Number(a.preco)-Number(b.preco));
+              html+=`<div class="product-info" style="margin-top:10px"><div class="product-name">${escaparHtml(produto.nome)}</div><div class="barcode">Código: ${escaparHtml(produto.codigo_barras)}</div>`;
+              if(lista.length===0){html+='<div class="notice" style="margin-top:10px">Nenhum preço cadastrado.</div>'}
+              else {html+='<div style="margin-top:10px">';lista.forEach(p=>{html+=`<div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #e5e7eb"><span>${escaparHtml(p.supermercados?.nome||"Supermercado")}</span><strong>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</strong></div>`});html+='</div>'}
+              html+=`<button class="success" style="width:100%;margin-top:10px" onclick="usarProdutoConsulta(${produto.id})">Adicionar ao carrinho</button></div>`;
+            }
+            resultados.innerHTML=html||'<div class="empty">Nenhum preço cadastrado.</div>';
+          }
+
+          function escaparHtml(valor){return String(valor??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+          async function usarProdutoConsulta(produtoId){
+            if(!supermercadoAtual){alert("Selecione um supermercado primeiro.");return}
+            const {data:produto,error}=await supabaseClient.from("produtos").select("*").eq("id",produtoId).single();
+            if(error||!produto){alert("Não foi possível carregar o produto.");return}
+            const {data:precos}=await supabaseClient.from("precos").select("preco,registrado_em").eq("produto_id",produto.id).eq("supermercado_id",supermercadoAtual).order("registrado_em",{ascending:false}).limit(1);
+            produtoAtual=produto;
+            document.getElementById("produtoNome").textContent=produto.nome;
+            document.getElementById("produtoCodigo").textContent="Código: "+produto.codigo_barras;
+            document.getElementById("produtoPreco").value=precos&&precos.length?Number(precos[0].preco).toFixed(2):'';
+            document.getElementById("produtoQuantidade").value=1;
+            document.getElementById("produtoCard").classList.remove("hidden");
+            document.getElementById("produtoCard").scrollIntoView({behavior:"smooth",block:"center"});
+          }
+
+          async function abrirScannerConsulta(){
+            if(scannerConsultaRodando)return;
+            document.getElementById("consultaScannerArea").style.display="block";
+            document.getElementById("consultaStatus").textContent="Abrindo câmera...";
+            scannerConsulta=new Html5Qrcode("consultaReader");
+            try{await scannerConsulta.start({facingMode:"environment"},{fps:10,qrbox:{width:280,height:140},aspectRatio:1.777778},codigo=>{if(scannerConsultaRodando){scannerConsultaRodando=false;buscarConsultaPorCodigoEscaneado(codigo)}},()=>{});scannerConsultaRodando=true;document.getElementById("consultaStatus").textContent="Aponte a câmera para o código de barras."}
+            catch(error){console.error(error);scannerConsulta=null;scannerConsultaRodando=false;document.getElementById("consultaScannerArea").style.display="none";alert("Não foi possível abrir a câmera. Verifique a permissão do Safari.")}
+          }
+
+          async function fecharScannerConsulta(){const s=scannerConsulta;scannerConsulta=null;scannerConsultaRodando=false;if(s){try{await s.stop()}catch(e){}try{s.clear()}catch(e){}}document.getElementById("consultaScannerArea").style.display="none";}
+
+          async function buscarConsultaPorCodigoEscaneado(codigo){await fecharScannerConsulta();document.getElementById("consultaBusca").value=String(codigo).trim();await buscarConsultaPreco()}
+
+          '''
+          if 'async function buscarConsultaPreco()' not in text:
+              if marker_js not in text:
+                  raise SystemExit('Função processarCodigo não encontrada.')
+              text=text.replace(marker_js,query_js+marker_js,1)
+
+          path.write_text(text,encoding='utf-8')
+          PY
+
+      - name: Commit e remover workflow temporário
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/add-price-query.yml
+          git commit -m "Adicionar consulta de preços por nome ou código de barras"
+          git push
