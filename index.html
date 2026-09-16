@@ -17,6 +17,26 @@
 <label for="supermercado">Supermercado</label>
 <div class="row"><select id="supermercado"><option value="">Selecione o supermercado</option></select><button class="secondary small" onclick="abrirModalSupermercado()" title="Adicionar supermercado">+</button></div>
 </div>
+<div class="card" id="consultaPrecoCard">
+<h2>🔎 Consulta de preços</h2>
+<div class="notice">Procure um produto por nome ou código de barras. Você também pode escanear o código.</div>
+<div style="margin-top:12px">
+<input id="consultaBusca" type="search" autocomplete="off" placeholder="Nome ou código de barras" onkeydown="if(event.key==='Enter')buscarConsultaPreco()">
+</div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="primary" style="flex:1" onclick="buscarConsultaPreco()">Consultar</button>
+<button class="secondary" style="flex:0 0 54px;padding:0" onclick="abrirScannerConsulta()" title="Escanear código de barras">📷</button>
+</div>
+<div id="consultaScannerArea" style="display:none;margin-top:14px">
+<div id="consultaReader" style="width:100%;overflow:hidden;border-radius:14px;background:#111"></div>
+<div id="consultaStatus" class="notice" style="text-align:center">Abrindo câmera...</div>
+<button class="secondary" style="width:100%;margin-top:8px" onclick="fecharScannerConsulta()">Fechar câmera</button>
+</div>
+<div id="consultaResultados" style="margin-top:12px">
+<div class="empty">Digite o nome ou código de barras para consultar.</div>
+</div>
+</div>
+
 <div class="card">
 <button id="scanButton" class="primary" onclick="abrirScanner()">📷 Escanear produto</button>
 <button class="secondary" style="width:100%;margin-top:10px" onclick="abrirEntradaManual()">⌨️ Digitar código de barras</button>
@@ -56,6 +76,61 @@ function abrirEntradaManual(){if(!document.getElementById("supermercado").value)
 async function processarCodigoManual(){const campo=document.getElementById("codigoManual");const codigo=campo.value.trim();if(!codigo){alert("Digite o código de barras.");campo.focus();return}if(!/^\d+$/.test(codigo)){alert("Digite somente números no código de barras.");campo.focus();return}if(codigo.length<8||codigo.length>14){alert("Digite um código de barras válido, com 8 a 14 números.");campo.focus();return}document.getElementById("manualArea").style.display="none";await processarCodigo(codigo)}
 async function abrirScanner(){if(scannerRodando)return;if(!document.getElementById("supermercado").value){alert("Selecione um supermercado primeiro.");return}document.getElementById("scannerArea").style.display="block";document.getElementById("scanButton").style.display="none";document.getElementById("manualArea").style.display="none";document.getElementById("status").textContent="Abrindo câmera...";scanner=new Html5Qrcode("reader");try{await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:280,height:140},aspectRatio:1.777778},codigo=>{if(scannerRodando){scannerRodando=false;processarCodigo(codigo)}},()=>{});scannerRodando=true;document.getElementById("status").textContent="Aponte a câmera para o código de barras."}catch(error){console.error("Erro ao abrir câmera:",error);scanner=null;scannerRodando=false;document.getElementById("scannerArea").style.display="none";document.getElementById("scanButton").style.display="block";document.getElementById("status").textContent="";alert("Não foi possível abrir a câmera.\n\nVerifique se o Safari possui permissão para usar a câmera.")}}
 async function fecharScanner(){const s=scanner;scanner=null;scannerRodando=false;if(s){try{await s.stop()}catch(e){console.log("Câmera já estava parada.",e)}try{s.clear()}catch(e){console.log("Scanner já estava limpo.",e)}}document.getElementById("scannerArea").style.display="none";document.getElementById("scanButton").style.display="block";document.getElementById("status").textContent=""}
+let scannerConsulta=null,scannerConsultaRodando=false;
+
+async function buscarConsultaPreco(){
+  const termo=document.getElementById("consultaBusca").value.trim();
+  if(!termo){alert("Digite o nome ou código de barras do produto.");return}
+  if(scannerConsultaRodando)await fecharScannerConsulta();
+  const resultados=document.getElementById("consultaResultados");
+  resultados.innerHTML='<div class="empty">Consultando...</div>';
+  const {data,error}=await supabaseClient.from("produtos").select("*").or(`nome.ilike.%${termo}%,codigo_barras.eq.${termo}`).order("nome").limit(20);
+  if(error){console.error(error);resultados.innerHTML='<div class="empty">Não foi possível consultar os produtos.</div>';return}
+  if(!data||data.length===0){resultados.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return}
+  let html='';
+  for(const produto of data){
+    const {data:precos,error:erroPreco}=await supabaseClient.from("precos").select("preco,registrado_em,supermercado_id,supermercados(nome)").eq("produto_id",produto.id).order("registrado_em",{ascending:false}).limit(100);
+    if(erroPreco){console.error(erroPreco);continue}
+    const ultimos={};
+    (precos||[]).forEach(p=>{if(!ultimos[p.supermercado_id])ultimos[p.supermercado_id]=p});
+    const lista=Object.values(ultimos).sort((a,b)=>Number(a.preco)-Number(b.preco));
+    html+=`<div class="product-info" style="margin-top:10px"><div class="product-name">${escaparHtml(produto.nome)}</div><div class="barcode">Código: ${escaparHtml(produto.codigo_barras)}</div>`;
+    if(lista.length===0){html+='<div class="notice" style="margin-top:10px">Nenhum preço cadastrado.</div>'}
+    else {html+='<div style="margin-top:10px">';lista.forEach(p=>{html+=`<div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #e5e7eb"><span>${escaparHtml(p.supermercados?.nome||"Supermercado")}</span><strong>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</strong></div>`});html+='</div>'}
+    html+=`<button class="success" style="width:100%;margin-top:10px" onclick="usarProdutoConsulta(${produto.id})">Adicionar ao carrinho</button></div>`;
+  }
+  resultados.innerHTML=html||'<div class="empty">Nenhum preço cadastrado.</div>';
+}
+
+function escaparHtml(valor){return String(valor??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+async function usarProdutoConsulta(produtoId){
+  if(!supermercadoAtual){alert("Selecione um supermercado primeiro.");return}
+  const {data:produto,error}=await supabaseClient.from("produtos").select("*").eq("id",produtoId).single();
+  if(error||!produto){alert("Não foi possível carregar o produto.");return}
+  const {data:precos}=await supabaseClient.from("precos").select("preco,registrado_em").eq("produto_id",produto.id).eq("supermercado_id",supermercadoAtual).order("registrado_em",{ascending:false}).limit(1);
+  produtoAtual=produto;
+  document.getElementById("produtoNome").textContent=produto.nome;
+  document.getElementById("produtoCodigo").textContent="Código: "+produto.codigo_barras;
+  document.getElementById("produtoPreco").value=precos&&precos.length?Number(precos[0].preco).toFixed(2):'';
+  document.getElementById("produtoQuantidade").value=1;
+  document.getElementById("produtoCard").classList.remove("hidden");
+  document.getElementById("produtoCard").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+async function abrirScannerConsulta(){
+  if(scannerConsultaRodando)return;
+  document.getElementById("consultaScannerArea").style.display="block";
+  document.getElementById("consultaStatus").textContent="Abrindo câmera...";
+  scannerConsulta=new Html5Qrcode("consultaReader");
+  try{await scannerConsulta.start({facingMode:"environment"},{fps:10,qrbox:{width:280,height:140},aspectRatio:1.777778},codigo=>{if(scannerConsultaRodando){scannerConsultaRodando=false;buscarConsultaPorCodigoEscaneado(codigo)}},()=>{});scannerConsultaRodando=true;document.getElementById("consultaStatus").textContent="Aponte a câmera para o código de barras."}
+  catch(error){console.error(error);scannerConsulta=null;scannerConsultaRodando=false;document.getElementById("consultaScannerArea").style.display="none";alert("Não foi possível abrir a câmera. Verifique a permissão do Safari.")}
+}
+
+async function fecharScannerConsulta(){const s=scannerConsulta;scannerConsulta=null;scannerConsultaRodando=false;if(s){try{await s.stop()}catch(e){}try{s.clear()}catch(e){}}document.getElementById("consultaScannerArea").style.display="none";}
+
+async function buscarConsultaPorCodigoEscaneado(codigo){await fecharScannerConsulta();document.getElementById("consultaBusca").value=String(codigo).trim();await buscarConsultaPreco()}
+
 async function processarCodigo(codigo){codigo=String(codigo).trim();await fecharScanner();if(!codigo)return;if(!supermercadoAtual){alert("Selecione um supermercado primeiro.");return}const {data:produtos,error}=await supabaseClient.from("produtos").select("*").eq("codigo_barras",codigo).order("id",{ascending:true}).limit(1);if(error){console.error(error);alert("Erro ao consultar o produto.");return}if(!produtos||produtos.length===0){abrirModalNovoProduto(codigo);return}const produto=produtos[0];const {data:precos,error:erroPreco}=await supabaseClient.from("precos").select("preco,registrado_em").eq("produto_id",produto.id).eq("supermercado_id",supermercadoAtual).order("registrado_em",{ascending:false}).limit(1);if(erroPreco){console.error(erroPreco);alert("Erro ao consultar o preço.");return}let ultimoPreco=0;if(precos&&precos.length>0&&precos[0].preco!==null)ultimoPreco=Number(precos[0].preco);produtoAtual={id:produto.id,codigo_barras:produto.codigo_barras,nome:produto.nome,preco:ultimoPreco};mostrarProduto()}
 function mostrarProduto(){if(!produtoAtual)return;document.getElementById("produtoNome").textContent=produtoAtual.nome;document.getElementById("produtoPreco").value=Number(produtoAtual.preco).toFixed(2);document.getElementById("produtoQuantidade").value=1;document.getElementById("produtoCodigo").textContent="Código: "+produtoAtual.codigo_barras;document.getElementById("produtoCard").classList.remove("hidden");setTimeout(()=>document.getElementById("produtoPreco").focus(),150)}
 function esconderProduto(){document.getElementById("produtoCard").classList.add("hidden")}
