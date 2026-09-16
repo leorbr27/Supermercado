@@ -1,0 +1,177 @@
+name: Add manual barcode option
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-manual-barcode.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update index.html
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_html = '''    <button
+      id="scanButton"
+      class="primary"
+      onclick="abrirScanner()"
+    >
+      📷 Escanear produto
+    </button>
+'''
+
+          new_html = '''    <button
+      id="scanButton"
+      class="primary"
+      onclick="abrirScanner()"
+    >
+      📷 Escanear produto
+    </button>
+
+    <button
+      class="secondary"
+      style="width:100%;margin-top:10px;"
+      onclick="abrirEntradaManual()"
+    >
+      ⌨️ Digitar código de barras
+    </button>
+
+    <div id="entradaManual" style="display:none;margin-top:14px;">
+
+      <label for="codigoManual">
+        Código de barras
+      </label>
+
+      <input
+        id="codigoManual"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        maxlength="14"
+        placeholder="Digite o código de barras"
+        onkeydown="if(event.key === 'Enter') processarCodigoManual()"
+      >
+
+      <button
+        class="success"
+        style="width:100%;margin-top:10px;"
+        onclick="processarCodigoManual()"
+      >
+        Continuar
+      </button>
+
+    </div>
+'''
+
+          if 'id="entradaManual"' not in text:
+              if old_html not in text:
+                  raise SystemExit('Bloco do botão de scanner não encontrado.')
+              text = text.replace(old_html, new_html, 1)
+
+          marker = 'async function processarCodigo(codigo){'
+
+          manual_js = '''function abrirEntradaManual(){
+
+  const supermercado =
+    document.getElementById("supermercado").value;
+
+  if(!supermercado){
+
+    alert("Selecione um supermercado primeiro.");
+
+    return;
+
+  }
+
+  const entrada =
+    document.getElementById("entradaManual");
+
+  entrada.style.display = "block";
+
+  const campo =
+    document.getElementById("codigoManual");
+
+  campo.value = "";
+
+  setTimeout(function(){
+    campo.focus();
+  }, 100);
+
+}
+
+
+async function processarCodigoManual(){
+
+  const campo =
+    document.getElementById("codigoManual");
+
+  const codigo =
+    campo.value.trim();
+
+  if(!codigo){
+
+    alert("Digite o código de barras.");
+
+    campo.focus();
+
+    return;
+
+  }
+
+  if(!/^\\d+$/.test(codigo)){
+
+    alert("Digite somente números no código de barras.");
+
+    campo.focus();
+
+    return;
+
+  }
+
+  if(codigo.length < 8 || codigo.length > 14){
+
+    alert("Digite um código de barras válido, com 8 a 14 números.");
+
+    campo.focus();
+
+    return;
+
+  }
+
+  document.getElementById("entradaManual").style.display = "none";
+
+  await processarCodigo(codigo);
+
+}
+
+
+'''
+
+          if 'async function processarCodigoManual()' not in text:
+              if marker not in text:
+                  raise SystemExit('Função processarCodigo não encontrada.')
+              text = text.replace(marker, manual_js + marker, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit changes and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/add-manual-barcode.yml
+          git commit -m "Adicionar opção de digitar código de barras"
+          git push
