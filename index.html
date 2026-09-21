@@ -12,6 +12,7 @@
 <div class="container">
 <h1>🛒 Supermercado</h1>
 <div class="card">
+<h2>🏪 Supermercado</h2>
 <label for="supermercado">Supermercado</label>
 <div class="row"><select id="supermercado"><option value="">Selecione o supermercado</option></select><button class="secondary small" onclick="abrirModalSupermercado()" title="Adicionar supermercado">+</button></div>
 </div>
@@ -37,6 +38,7 @@
 </div>
 
 <div class="card">
+<h2>📷 Adicionar produto</h2>
 <button id="scanButton" class="primary" onclick="abrirScanner()">📷 Escanear produto</button>
 <button class="secondary" style="width:100%;margin-top:10px" onclick="abrirEntradaManual()">⌨️ Digitar código de barras</button>
 <div id="manualArea" class="manual-area">
@@ -47,6 +49,7 @@
 <div id="scannerArea"><div id="reader"></div><div id="status">Abrindo câmera...</div><button class="secondary" style="width:100%" onclick="fecharScanner()">Fechar câmera</button></div>
 </div>
 <div id="produtoCard" class="card hidden">
+<h2>🛍️ Produto</h2>
 <div class="product-info"><div id="produtoNome" class="product-name"></div>
 <div class="product-field"><div class="field-label">Preço neste supermercado</div><input id="produtoPreco" class="price-input" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00"></div>
 <div class="product-field"><div class="field-label">Quantidade</div><input id="produtoQuantidade" class="quantity-input" type="number" inputmode="numeric" step="1" min="1" value="1"></div>
