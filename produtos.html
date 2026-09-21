@@ -2,160 +2,97 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Consultar produtos — Supermercado</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f4f6f8;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.container{max-width:900px;margin:auto;padding:16px 16px 40px}
-header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}
-.back{border:0;background:#e5e7eb;border-radius:10px;width:44px;height:44px;font-size:22px;cursor:pointer}
-h1{font-size:25px;margin:0}.subtitle{color:#6b7280;font-size:14px;margin-top:3px}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:#f8fafc;border-radius:12px;padding:12px;text-align:center}
-.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:#6b7280}
-.controls{display:grid;grid-template-columns:1.4fr 1fr;gap:9px}
-input,select{width:100%;height:46px;border:1px solid #d1d5db;border-radius:10px;padding:0 12px;font-size:15px;background:#fff}
-.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}
-.toolbar strong{font-size:15px}.clear{border:0;background:#e5e7eb;border-radius:9px;padding:8px 11px;font-weight:600}
-.product{border:1px solid #e5e7eb;border-radius:14px;margin-bottom:10px;overflow:hidden;background:#fff}
-.product:last-child{margin-bottom:0}
-.product-head{padding:13px 14px;background:#f8fafc}
-.name{font-weight:750;font-size:17px}.code{font-size:12px;color:#6b7280;margin-top:4px}
-.rows{padding:0 14px}
-.row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #edf0f2}
-.row:last-child{border-bottom:0}.market{font-weight:600}.date{font-size:11px;color:#8a929b;margin-top:3px}
-.price{font-size:18px;font-weight:800;white-space:nowrap}.lowest{color:#15803d}
-.badge{font-size:10px;background:#dcfce7;color:#166534;padding:3px 6px;border-radius:20px;margin-left:5px;vertical-align:2px}
-.empty{text-align:center;color:#6b7280;padding:25px 5px}
-.loading{text-align:center;padding:28px;color:#6b7280}
-.note{font-size:12px;color:#6b7280;line-height:1.45;margin-top:10px}
-@media(max-width:600px){.controls{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.stat b{font-size:19px}.row{grid-template-columns:1fr auto}.price{grid-column:2;grid-row:1/3}.date{grid-column:1}.badge{display:inline-block}}
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.container{max-width:900px;margin:auto;padding:16px 16px 40px}
+header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0;background:#e5e7eb;border-radius:10px;width:44px;height:44px;font-size:22px}.subtitle,.note,.date,.code{color:#6b7280;font-size:13px}.card,.product{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#f8fafc;border-radius:12px;padding:12px;text-align:center}.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:#6b7280}
+.controls{display:grid;grid-template-columns:1.4fr 1fr;gap:9px}input,select{width:100%;height:46px;border:1px solid #d1d5db;border-radius:10px;padding:0 12px;font-size:16px;background:#fff}
+.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}.clear{border:0;background:#e5e7eb;border-radius:9px;padding:8px 11px;font-weight:600}
+.product{padding:0;overflow:hidden}.product-head{padding:13px 14px;background:#f8fafc}.name{font-weight:750;font-size:17px}.rows{padding:0 14px}.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #edf0f2}.row:last-child{border-bottom:0}.market{font-weight:600}.price{font-size:18px;font-weight:800;white-space:nowrap}.lowest{color:#15803d}.badge{font-size:10px;background:#dcfce7;color:#166534;padding:3px 6px;border-radius:20px;margin-left:5px}.empty{text-align:center;color:#6b7280;padding:25px 5px}.loading{text-align:center;padding:28px;color:#6b7280}.error{background:#fff1f2;color:#9f1239;border-radius:12px;padding:16px;line-height:1.45}
+@media(max-width:600px){.controls{grid-template-columns:1fr}.stat b{font-size:19px}}
 </style>
 </head>
 <body>
 <div class="container">
-<header>
-<button class="back" onclick="window.location.href='index.html'" aria-label="Voltar">‹</button>
-<div><h1>📋 Consultar produtos</h1><div class="subtitle">Produtos, supermercados e preços registrados</div></div>
-</header>
-
+<header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1 style="font-size:25px;margin:0">📋 Consultar produtos</h1><div class="subtitle">Produtos, supermercados e preços registrados</div></div></header>
+<div class="card"><div class="stats"><div class="stat"><b id="totalProdutos">—</b><span>Produtos</span></div><div class="stat"><b id="totalMercados">—</b><span>Supermercados</span></div><div class="stat"><b id="totalPrecos">—</b><span>Registros de preços</span></div></div></div>
 <div class="card">
-<div class="stats">
-<div class="stat"><b id="totalProdutos">—</b><span>Produtos</span></div>
-<div class="stat"><b id="totalMercados">—</b><span>Supermercados</span></div>
-<div class="stat"><b id="totalPrecos">—</b><span>Preços registrados</span></div>
+<div class="controls"><input id="busca" type="search" autocomplete="off" placeholder="🔎 Produto ou código de barras"><select id="mercado"><option value="">Todos os supermercados</option></select></div>
+<div style="margin-top:9px"><select id="ordenacao"><option value="nome">Ordenar: produto (A–Z)</option><option value="menor">Ordenar: menor preço</option><option value="maior">Ordenar: maior preço</option><option value="recente">Ordenar: atualização mais recente</option></select></div>
+<div class="note" style="margin-top:10px">Para cada produto, é mostrado o preço mais recente de cada supermercado. O histórico permanece no banco.</div>
 </div>
+<div class="card"><div class="toolbar"><strong id="contador">Carregando...</strong><button class="clear" id="limpar">Limpar filtros</button></div><div id="lista"><div class="loading">Carregando produtos e preços...</div></div></div>
 </div>
-
-<div class="card">
-<div class="controls">
-<input id="busca" type="search" placeholder="🔎 Produto ou código de barras" oninput="renderizar()">
-<select id="mercado" onchange="renderizar()"><option value="">Todos os supermercados</option></select>
-</div>
-<div style="margin-top:9px">
-<select id="ordenacao" onchange="renderizar()">
-<option value="nome">Ordenar: produto (A–Z)</option>
-<option value="menor">Ordenar: menor preço</option>
-<option value="maior">Ordenar: maior preço</option>
-<option value="recente">Ordenar: atualização mais recente</option>
-</select>
-</div>
-<div class="note">É mostrado o preço mais recente registrado para cada combinação produto + supermercado. Registros anteriores continuam armazenados no banco.</div>
-</div>
-
-<div class="card">
-<div class="toolbar"><strong id="contador">Carregando...</strong><button class="clear" onclick="limparFiltros()">Limpar filtros</button></div>
-<div id="lista"><div class="loading">Carregando produtos e preços...</div></div>
-</div>
-</div>
-
 <script>
-const SUPABASE_URL="https://lbehdmxfkakwygwoozyr.supabase.co";
-const SUPABASE_KEY="sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let produtos=[],precos=[],mercados=[];
-
-document.addEventListener("DOMContentLoaded",carregar);
+const URL="https://lbehdmxfkakwygwoozyr.supabase.co";
+const KEY="sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
+const db=window.supabase.createClient(URL,KEY);
+let produtos=[],mercados=[],precos=[];
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function moeda(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
+function data(v){return v?new Date(v).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"—";}
 
 async function carregar(){
-  const lista=document.getElementById("lista");
+  $("lista").innerHTML='<div class="loading">Carregando produtos e preços...</div>';
   try{
-    const [rp,rs,rc]=await Promise.all([
-      supabaseClient.from("produtos").select("id,nome,codigo_barras,ativo").eq("ativo",true).order("nome"),
-      supabaseClient.from("supermercados").select("id,nome").order("nome"),
-      supabaseClient.from("precos").select("id,produto_id,supermercado_id,preco,registrado_em").order("registrado_em",{ascending:false}).limit(10000)
+    const [p,m,r]=await Promise.all([
+      db.from("produtos").select("id,nome,codigo_barras,ativo").eq("ativo",true).order("nome"),
+      db.from("supermercados").select("id,nome").order("nome"),
+      db.from("precos").select("id,produto_id,supermercado_id,preco,registrado_em").order("registrado_em",{ascending:false}).limit(10000)
     ]);
-    if(rp.error)throw rp.error;
-    if(rs.error)throw rs.error;
-    if(rc.error)throw rc.error;
-    produtos=rp.data||[];mercados=rs.data||[];precos=rc.data||[];
-    document.getElementById("totalProdutos").textContent=produtos.length;
-    document.getElementById("totalMercados").textContent=mercados.length;
-    document.getElementById("totalPrecos").textContent=precos.length;
-    const select=document.getElementById("mercado");
-    mercados.forEach(m=>{const o=document.createElement("option");o.value=m.id;o.textContent=m.nome;select.appendChild(o)});
+    if(p.error)throw new Error("Produtos: "+p.error.message);
+    if(m.error)throw new Error("Supermercados: "+m.error.message);
+    if(r.error)throw new Error("Preços: "+r.error.message);
+    produtos=p.data||[];mercados=m.data||[];precos=r.data||[];
+    $("totalProdutos").textContent=produtos.length;
+    $("totalMercados").textContent=mercados.length;
+    $("totalPrecos").textContent=precos.length;
+    $("mercado").innerHTML='<option value="">Todos os supermercados</option>'+mercados.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.nome)+'</option>').join("");
     renderizar();
   }catch(e){
     console.error(e);
-    lista.innerHTML='<div class="empty">Não foi possível carregar os produtos e preços.</div>';
+    $("contador").textContent="Erro ao carregar";
+    $("lista").innerHTML='<div class="error"><strong>Não foi possível carregar os dados.</strong><br>'+esc(e.message||"Erro desconhecido")+'<br><br>Recarregue a página. Se o problema continuar, verifique a conexão com o Supabase.</div>';
   }
 }
-
 function renderizar(){
-  const busca=document.getElementById("busca").value.trim().toLowerCase();
-  const mercado=document.getElementById("mercado").value;
-  const ordem=document.getElementById("ordenacao").value;
-  const mercadoMap=new Map(mercados.map(m=>[String(m.id),m.nome]));
-  const produtoMap=new Map(produtos.map(p=>[String(p.id),p]));
+  const termo=$("busca").value.trim().toLocaleLowerCase("pt-BR"),mercado=$("mercado").value,ordem=$("ordenacao").value;
+  const mMap=new Map(mercados.map(x=>[String(x.id),x.nome]));
   const latest=new Map();
   for(const x of precos){
-    const key=x.produto_id+"_"+x.supermercado_id;
-    if(!latest.has(key))latest.set(key,x);
+    const k=String(x.produto_id)+"|"+String(x.supermercado_id);
+    if(!latest.has(k))latest.set(k,x);
   }
-  const grupos=new Map();
+  const arr=[];
   for(const p of produtos){
-    const rows=[];
-    for(const x of latest.values()){
-      if(String(x.produto_id)!==String(p.id))continue;
-      if(mercado&&String(x.supermercado_id)!==String(mercado))continue;
-      rows.push({...x,mercadoNome:mercadoMap.get(String(x.supermercado_id))||"Supermercado"});
-    }
-    if(busca && !p.nome.toLowerCase().includes(busca) && !String(p.codigo_barras||"").includes(busca))continue;
-    if(mercado && rows.length===0)continue;
+    if(termo && !String(p.nome||"").toLocaleLowerCase("pt-BR").includes(termo) && !String(p.codigo_barras||"").includes(termo))continue;
+    const rows=[...latest.values()].filter(x=>String(x.produto_id)===String(p.id)&&( !mercado || String(x.supermercado_id)===String(mercado))).map(x=>({...x,nomeMercado:mMap.get(String(x.supermercado_id))||"Supermercado"}));
+    if(mercado&&!rows.length)continue;
     rows.sort((a,b)=>Number(a.preco)-Number(b.preco));
-    grupos.set(p.id,{produto:p,rows});
+    arr.push({produto:p,rows});
   }
-  let arr=[...grupos.values()];
   arr.sort((a,b)=>{
-    if(ordem==="menor")return (Number(a.rows[0]?.preco)||Infinity)-(Number(b.rows[0]?.preco)||Infinity);
-    if(ordem==="maior")return (Number(b.rows[0]?.preco)||-Infinity)-(Number(a.rows[0]?.preco)||-Infinity);
+    if(ordem==="menor")return (a.rows.length?Number(a.rows[0].preco):Infinity)-(b.rows.length?Number(b.rows[0].preco):Infinity);
+    if(ordem==="maior")return (b.rows.length?Number(b.rows[0].preco):-Infinity)-(a.rows.length?Number(a.rows[0].preco):-Infinity);
     if(ordem==="recente")return new Date(b.rows[0]?.registrado_em||0)-new Date(a.rows[0]?.registrado_em||0);
-    return a.produto.nome.localeCompare(b.produto.nome,"pt-BR");
+    return String(a.produto.nome).localeCompare(String(b.produto.nome),"pt-BR");
   });
-  document.getElementById("contador").textContent=arr.length+" produto"+(arr.length===1?"":"s")+" encontrado"+(arr.length===1?"":"s");
-  const lista=document.getElementById("lista");
-  if(!arr.length){lista.innerHTML='<div class="empty">Nenhum produto encontrado com os filtros atuais.</div>';return}
-  lista.innerHTML="";
-  arr.forEach(g=>{
-    const box=document.createElement("div");box.className="product";
+  $("contador").textContent=arr.length+" produto"+(arr.length===1?"":"s")+" encontrado"+(arr.length===1?"":"s");
+  if(!arr.length){$("lista").innerHTML='<div class="empty">Nenhum produto encontrado com os filtros atuais.</div>';return;}
+  $("lista").innerHTML=arr.map(g=>{
     const menor=g.rows.length?Math.min(...g.rows.map(x=>Number(x.preco))):null;
-    let rows=g.rows.map(x=>{
-      const isLowest=menor!==null && Number(x.preco)===menor;
-      return '<div class="row"><div><div class="market">'+esc(x.mercadoNome)+(isLowest?'<span class="badge">menor preço</span>':'')+'</div><div class="date">Atualizado em '+formatarData(x.registrado_em)+'</div></div><div></div><div class="price '+(isLowest?'lowest':'')+'">'+moeda(x.preco)+'</div></div>';
-    }).join("");
-    if(!rows)rows='<div class="empty">Nenhum preço registrado.</div>';
-    box.innerHTML='<div class="product-head"><div class="name">'+esc(g.produto.nome)+'</div><div class="code">Código de barras: '+esc(g.produto.codigo_barras||"—")+'</div></div><div class="rows">'+rows+'</div>';
-    lista.appendChild(box);
-  });
+    let linhas=g.rows.map(x=>{const low=menor!==null&&Number(x.preco)===menor;return '<div class="row"><div><div class="market">'+esc(x.nomeMercado)+(low?'<span class="badge">menor preço</span>':'')+'</div><div class="date">Atualizado em '+esc(data(x.registrado_em))+'</div></div><div class="price '+(low?"lowest":"")+'">'+moeda(x.preco)+'</div></div>';}).join("");
+    if(!linhas)linhas='<div class="empty">Nenhum preço registrado.</div>';
+    return '<div class="product"><div class="product-head"><div class="name">'+esc(g.produto.nome)+'</div><div class="code">Código de barras: '+esc(g.produto.codigo_barras||"—")+'</div></div><div class="rows">'+linhas+'</div></div>';
+  }).join("");
 }
-
-function limparFiltros(){document.getElementById("busca").value="";document.getElementById("mercado").value="";document.getElementById("ordenacao").value="nome";renderizar()}
-function moeda(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
-function formatarData(v){if(!v)return"—";return new Date(v).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"})}
-function esc(v){return String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",""":"&quot;"}[c]))}
+$("busca").addEventListener("input",renderizar);$("mercado").addEventListener("change",renderizar);$("ordenacao").addEventListener("change",renderizar);
+$("limpar").addEventListener("click",()=>{$("busca").value="";$("mercado").value="";$("ordenacao").value="nome";renderizar();});
+carregar();
 </script>
 </body>
 </html>
