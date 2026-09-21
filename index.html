@@ -22,7 +22,7 @@
 <h2>🔎 Consulta de preços</h2>
 <div class="notice">Procure um produto por nome ou código de barras. Você também pode escanear o código.</div>
 <div style="margin-top:12px">
-<input id="consultaBusca" type="search" autocomplete="off" placeholder="Nome ou código de barras" onkeydown="if(event.key==='Enter')buscarConsultaPreco()">
+<input id="consultaBusca" type="search" autocomplete="off" inputmode="search" placeholder="Nome ou código de barras" onkeydown="if(event.key==='Enter')buscarConsultaPreco()">
 </div>
 <div style="display:flex;gap:8px;margin-top:10px">
 <button class="primary" style="flex:1" onclick="buscarConsultaPreco()">Consultar</button>
@@ -152,7 +152,7 @@ async function finalizarCompra(){if(carrinho.length===0)return;if(!supermercadoA
 async function carregarHistorico(){const container=document.getElementById("historico"),{data:compras,error}=await supabaseClient.from("compras").select(`id,data_compra,total,supermercados(nome)`).order("data_compra",{ascending:false}).limit(20);if(error){console.error(error);container.innerHTML='<div class="empty">Não foi possível carregar o histórico.</div>';return}if(!compras||compras.length===0){container.innerHTML='<div class="empty">Nenhuma compra finalizada ainda.</div>';return}container.innerHTML="";compras.forEach(compra=>{const div=document.createElement("div");div.className="history-item";const data=new Date(compra.data_compra),dataFormatada=data.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}),supermercado=compra.supermercados?compra.supermercados.nome:"Supermercado";div.innerHTML=`<div class="history-top"><div class="history-date">${dataFormatada}</div><div class="history-total">${formatarMoeda(compra.total)}</div></div><div class="history-market">${escaparHTML(supermercado)}</div>`;container.appendChild(div)})}
 function formatarMoeda(valor){return Number(valor||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
 function escaparHTML(texto){return String(texto).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-document.getElementById("produtoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalProduto()});document.getElementById("supermercadoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalSupermercado()});
+window.addEventListener("load",()=>{setTimeout(()=>{if(document.activeElement)document.activeElement.blur();},250)});document.getElementById("consultaBusca").addEventListener("focus",()=>{});document.getElementById("produtoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalProduto()});document.getElementById("supermercadoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalSupermercado()});
 </script>
 </body>
 </html>
