@@ -84,9 +84,9 @@ async function carregar(){
   const lista=document.getElementById("lista");
   try{
     const [rp,rs,rc]=await Promise.all([
-      supabaseClient.from("produtos").select("id,nome,codigo_barras,ativo").order("nome"),
+      supabaseClient.from("produtos").select("id,nome,codigo_barras,ativo").eq("ativo",true).order("nome"),
       supabaseClient.from("supermercados").select("id,nome").order("nome"),
-      supabaseClient.from("precos").select("id,produto_id,supermercado_id,preco,registrado_em").order("registrado_em",{ascending:false}).limit(5000)
+      supabaseClient.from("precos").select("id,produto_id,supermercado_id,preco,registrado_em").order("registrado_em",{ascending:false}).limit(10000)
     ]);
     if(rp.error)throw rp.error;
     if(rs.error)throw rs.error;
