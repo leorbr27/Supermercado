@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Consultar produtos — Supermercado</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.container{max-width:900px;margin:auto;padding:16px 16px 40px}
 header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0;background:#e5e7eb;border-radius:10px;width:44px;height:44px;font-size:22px}.subtitle,.note,.date,.code{color:#6b7280;font-size:13px}.card,.product{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
@@ -29,66 +28,50 @@ header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0
 <script>
 const URL="https://lbehdmxfkakwygwoozyr.supabase.co";
 const KEY="sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
-const db=window.supabase.createClient(URL,KEY);
+const API=URL+"/rest/v1";
+const headers={apikey:KEY,Authorization:"Bearer "+KEY};
 let produtos=[],mercados=[],precos=[];
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function moeda(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
 function data(v){return v?new Date(v).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"—";}
-
+async function api(path){
+ const r=await fetch(API+path,{headers,cache:"no-store"});
+ const txt=await r.text();
+ if(!r.ok) throw new Error("Supabase "+r.status+": "+txt);
+ try{return JSON.parse(txt)}catch(e){throw new Error("Resposta inválida do banco.");}
+}
 async function carregar(){
-  $("lista").innerHTML='<div class="loading">Carregando produtos e preços...</div>';
-  try{
-    const [p,m,r]=await Promise.all([
-      db.from("produtos").select("id,nome,codigo_barras,ativo").eq("ativo",true).order("nome"),
-      db.from("supermercados").select("id,nome").order("nome"),
-      db.from("precos").select("id,produto_id,supermercado_id,preco,registrado_em").order("registrado_em",{ascending:false}).limit(10000)
-    ]);
-    if(p.error)throw new Error("Produtos: "+p.error.message);
-    if(m.error)throw new Error("Supermercados: "+m.error.message);
-    if(r.error)throw new Error("Preços: "+r.error.message);
-    produtos=p.data||[];mercados=m.data||[];precos=r.data||[];
-    $("totalProdutos").textContent=produtos.length;
-    $("totalMercados").textContent=mercados.length;
-    $("totalPrecos").textContent=precos.length;
-    $("mercado").innerHTML='<option value="">Todos os supermercados</option>'+mercados.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.nome)+'</option>').join("");
-    renderizar();
-  }catch(e){
-    console.error(e);
-    $("contador").textContent="Erro ao carregar";
-    $("lista").innerHTML='<div class="error"><strong>Não foi possível carregar os dados.</strong><br>'+esc(e.message||"Erro desconhecido")+'<br><br>Recarregue a página. Se o problema continuar, verifique a conexão com o Supabase.</div>';
-  }
+ $("lista").innerHTML='<div class="loading">Carregando produtos e preços...</div>';
+ try{
+  const [p,m,r]=await Promise.all([
+   api("/produtos?select=id,nome,codigo_barras,ativo&ativo=eq.true&order=nome.asc"),
+   api("/supermercados?select=id,nome&order=nome.asc"),
+   api("/precos?select=id,produto_id,supermercado_id,preco,registrado_em&order=registrado_em.desc&limit=10000")
+  ]);
+  produtos=Array.isArray(p)?p:[];mercados=Array.isArray(m)?m:[];precos=Array.isArray(r)?r:[];
+  $("totalProdutos").textContent=produtos.length;$("totalMercados").textContent=mercados.length;$("totalPrecos").textContent=precos.length;
+  $("mercado").innerHTML='<option value="">Todos os supermercados</option>'+mercados.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.nome)+'</option>').join("");
+  renderizar();
+ }catch(e){
+  console.error("Erro consulta:",e);$("contador").textContent="Erro ao carregar";
+  $("lista").innerHTML='<div class="error"><strong>Não foi possível acessar o banco de dados.</strong><br>'+esc(e.message||"Erro desconhecido")+'<br><br>O problema foi identificado na conexão com o Supabase.</div>';
+ }
 }
 function renderizar(){
-  const termo=$("busca").value.trim().toLocaleLowerCase("pt-BR"),mercado=$("mercado").value,ordem=$("ordenacao").value;
-  const mMap=new Map(mercados.map(x=>[String(x.id),x.nome]));
-  const latest=new Map();
-  for(const x of precos){
-    const k=String(x.produto_id)+"|"+String(x.supermercado_id);
-    if(!latest.has(k))latest.set(k,x);
-  }
-  const arr=[];
-  for(const p of produtos){
-    if(termo && !String(p.nome||"").toLocaleLowerCase("pt-BR").includes(termo) && !String(p.codigo_barras||"").includes(termo))continue;
-    const rows=[...latest.values()].filter(x=>String(x.produto_id)===String(p.id)&&( !mercado || String(x.supermercado_id)===String(mercado))).map(x=>({...x,nomeMercado:mMap.get(String(x.supermercado_id))||"Supermercado"}));
-    if(mercado&&!rows.length)continue;
-    rows.sort((a,b)=>Number(a.preco)-Number(b.preco));
-    arr.push({produto:p,rows});
-  }
-  arr.sort((a,b)=>{
-    if(ordem==="menor")return (a.rows.length?Number(a.rows[0].preco):Infinity)-(b.rows.length?Number(b.rows[0].preco):Infinity);
-    if(ordem==="maior")return (b.rows.length?Number(b.rows[0].preco):-Infinity)-(a.rows.length?Number(a.rows[0].preco):-Infinity);
-    if(ordem==="recente")return new Date(b.rows[0]?.registrado_em||0)-new Date(a.rows[0]?.registrado_em||0);
-    return String(a.produto.nome).localeCompare(String(b.produto.nome),"pt-BR");
-  });
-  $("contador").textContent=arr.length+" produto"+(arr.length===1?"":"s")+" encontrado"+(arr.length===1?"":"s");
-  if(!arr.length){$("lista").innerHTML='<div class="empty">Nenhum produto encontrado com os filtros atuais.</div>';return;}
-  $("lista").innerHTML=arr.map(g=>{
-    const menor=g.rows.length?Math.min(...g.rows.map(x=>Number(x.preco))):null;
-    let linhas=g.rows.map(x=>{const low=menor!==null&&Number(x.preco)===menor;return '<div class="row"><div><div class="market">'+esc(x.nomeMercado)+(low?'<span class="badge">menor preço</span>':'')+'</div><div class="date">Atualizado em '+esc(data(x.registrado_em))+'</div></div><div class="price '+(low?"lowest":"")+'">'+moeda(x.preco)+'</div></div>';}).join("");
-    if(!linhas)linhas='<div class="empty">Nenhum preço registrado.</div>';
-    return '<div class="product"><div class="product-head"><div class="name">'+esc(g.produto.nome)+'</div><div class="code">Código de barras: '+esc(g.produto.codigo_barras||"—")+'</div></div><div class="rows">'+linhas+'</div></div>';
-  }).join("");
+ const termo=$("busca").value.trim().toLocaleLowerCase("pt-BR"),mercado=$("mercado").value,ordem=$("ordenacao").value;
+ const mMap=new Map(mercados.map(x=>[String(x.id),x.nome])),latest=new Map();
+ for(const x of precos){const k=String(x.produto_id)+"|"+String(x.supermercado_id);if(!latest.has(k))latest.set(k,x);}
+ const arr=[];
+ for(const p of produtos){
+  if(termo&&!String(p.nome||"").toLocaleLowerCase("pt-BR").includes(termo)&&!String(p.codigo_barras||"").includes(termo))continue;
+  const rows=[...latest.values()].filter(x=>String(x.produto_id)===String(p.id)&&(!mercado||String(x.supermercado_id)===String(mercado))).map(x=>({...x,nomeMercado:mMap.get(String(x.supermercado_id))||"Supermercado"}));
+  if(mercado&&!rows.length)continue;rows.sort((a,b)=>Number(a.preco)-Number(b.preco));arr.push({produto:p,rows});
+ }
+ arr.sort((a,b)=>ordem==="menor"?(a.rows.length?Number(a.rows[0].preco):Infinity)-(b.rows.length?Number(b.rows[0].preco):Infinity):ordem==="maior"?(b.rows.length?Number(b.rows[0].preco):-Infinity)-(a.rows.length?Number(a.rows[0].preco):-Infinity):ordem==="recente"?new Date(b.rows[0]?.registrado_em||0)-new Date(a.rows[0]?.registrado_em||0):String(a.produto.nome).localeCompare(String(b.produto.nome),"pt-BR"));
+ $("contador").textContent=arr.length+" produto"+(arr.length===1?"":"s")+" encontrado"+(arr.length===1?"":"s");
+ if(!arr.length){$("lista").innerHTML='<div class="empty">Nenhum produto encontrado com os filtros atuais.</div>';return;}
+ $("lista").innerHTML=arr.map(g=>{const menor=g.rows.length?Math.min(...g.rows.map(x=>Number(x.preco))):null;let linhas=g.rows.map(x=>{const low=menor!==null&&Number(x.preco)===menor;return '<div class="row"><div><div class="market">'+esc(x.nomeMercado)+(low?'<span class="badge">menor preço</span>':'')+'</div><div class="date">Atualizado em '+esc(data(x.registrado_em))+'</div></div><div class="price '+(low?"lowest":"")+'">'+moeda(x.preco)+'</div></div>';}).join("");if(!linhas)linhas='<div class="empty">Nenhum preço registrado.</div>';return '<div class="product"><div class="product-head"><div class="name">'+esc(g.produto.nome)+'</div><div class="code">Código de barras: '+esc(g.produto.codigo_barras||"—")+'</div></div><div class="rows">'+linhas+'</div></div>';}).join("");
 }
 $("busca").addEventListener("input",renderizar);$("mercado").addEventListener("change",renderizar);$("ordenacao").addEventListener("change",renderizar);
 $("limpar").addEventListener("click",()=>{$("busca").value="";$("mercado").value="";$("ordenacao").value="nome";renderizar();});
