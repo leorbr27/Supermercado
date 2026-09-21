@@ -152,5 +152,21 @@ function formatarMoeda(valor){return Number(valor||0).toLocaleString("pt-BR",{st
 function escaparHTML(texto){return String(texto).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
 window.addEventListener("load",()=>{setTimeout(()=>{if(document.activeElement)document.activeElement.blur();},250)});document.getElementById("consultaBusca").addEventListener("focus",()=>{});document.getElementById("produtoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalProduto()});document.getElementById("supermercadoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalSupermercado()});
 </script>
-</body>
+<script>
+(function(){
+  function removeFocus(){
+    var el=document.activeElement;
+    if(el && el.matches('input,textarea,select,button')) el.blur();
+  }
+  window.addEventListener('DOMContentLoaded',function(){
+    removeFocus();
+    setTimeout(removeFocus,50);
+    setTimeout(removeFocus,300);
+  });
+  window.addEventListener('load',function(){
+    removeFocus();
+    setTimeout(removeFocus,150);
+  });
+})();
+</script>\n</body>
 </html>
