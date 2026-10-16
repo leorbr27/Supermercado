@@ -27,6 +27,41 @@ td:before{font-size:14px}
 <header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1>💰 Pesquisa de preços</h1><div class="subtitle">Grande Vitória · ES</div></div></header>
 <section class="card">
 <h2>1. Importar lista de compras</h2>
+<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="secondary" type="button" onclick="alternarPromptGemini()" aria-expanded="false" id="botaoPromptGemini">Prompt para o Google Gemini (até 10 imagens)</button></div>
+<div id="painelPromptGemini" class="hidden" style="border:1px solid #cfd9e6;border-radius:12px;padding:12px;margin-bottom:14px;background:#f8fbff">
+<p class="note">Copie o prompt abaixo para o Gemini. Processe até 10 imagens por rodada. Nas rodadas seguintes, cole a última versão completa do JSON no campo indicado dentro do prompt para acumular os resultados sem perder os lotes anteriores.</p>
+<label for="promptGemini">Prompt pronto para copiar</label>
+<textarea id="promptGemini" style="min-height:320px">Você é um extrator de dados de encartes de supermercados. Analise TODAS as imagens anexadas NESTA mensagem (no máximo 10 imagens por lote) e extraia cada oferta legível. Não invente dados. Se algo estiver ilegível, use string vazia ou null conforme o campo e registre a dúvida em "conditions".
+
+OBJETIVO: gerar o conteúdo completo do arquivo precos-registrados.json usado por um site. O arquivo deve ser um ARRAY JSON válido, sem Markdown, sem cercas de código e sem texto antes/depois.
+
+MODO DE TRABALHO EM LOTES — MUITO IMPORTANTE:
+1. Se eu fornecer abaixo um JSON acumulado de lotes anteriores, use-o como base e PRESERVE todos os registros existentes. Acrescente somente as ofertas extraídas das novas imagens. Não substitua a base pelos dados do lote atual.
+2. Se não houver JSON acumulado anterior, comece um array novo com os registros deste lote.
+3. Remova duplicatas entre lotes. Considere duplicata a mesma loja + produto + embalagem/variante + preço + validade; mantenha registros com preços ou condições diferentes.
+4. Em cada resposta, devolva o ARRAY COMPLETO acumulado, incluindo os lotes anteriores e o lote atual, para que eu possa substituir o conteúdo do arquivo por essa versão completa. Nunca devolva apenas os registros novos quando houver base anterior.
+5. Não omita ofertas válidas para encurtar a resposta. Se o volume exceder o limite de resposta, avise claramente e divida em partes numeradas de JSON que possam ser concatenadas em um único array; nunca declare que o arquivo está completo se não estiver.
+6. Nas próximas rodadas, vou reutilizar este mesmo prompt, anexar até 10 imagens novas e colar a última versão completa do JSON no campo BASE JSON ACUMULADO. Se o campo estiver vazio, trate como primeiro lote.
+
+REGRAS DE EXTRAÇÃO:
+- Extraia todas as ofertas de todas as imagens: nome do supermercado, produto, marca quando visível, variante/sabor, peso ou quantidade, preço, data de registro e validade do encarte, condições/restrições (ex.: clube, CPF, limite por cliente) e link da fonte somente se estiver explícito na imagem.
+- Não confunda preço por kg/litro/unidade com preço total da embalagem. Registre o preço anunciado da oferta em "price" e a unidade/preço por medida em "conditions" quando necessário.
+- Use números em "price" (ex.: 12.99), nunca texto com símbolo de moeda.
+- Datas no formato AAAA-MM-DD quando forem identificáveis; caso contrário use null.
+- Não una produtos diferentes. Para ofertas repetidas, mantenha uma entrada por combinação de produto/embalagem/preço/condição.
+- Preserve nomes de loja e produto como aparecem, corrigindo apenas erros evidentes de OCR. Não adivinhe o que não estiver legível.
+- "source" deve ser uma URL apenas se estiver claramente informada; caso contrário, string vazia.
+- Cada objeto deve usar exatamente estas chaves compatíveis com o site:
+  {"store":"nome do supermercado","product":"nome completo do produto","brand":"marca ou string vazia","variant":"variante/sabor ou string vazia","package":"peso/volume/quantidade ou string vazia","price":12.99,"recordedAt":"AAAA-MM-DD ou null","validUntil":"AAAA-MM-DD ou null","conditions":"condições e preço por medida se houver, senão string vazia","source":"URL explícita ou string vazia"}
+- O JSON final deve ser sintaticamente válido: aspas duplas, sem comentários, sem vírgula sobrando. Não inclua campos extras.
+
+BASE JSON ACUMULADO — cole aqui a versão completa mais recente do arquivo precos-registrados.json antes de processar o próximo lote. No primeiro lote, deixe vazio:
+[COLE AQUI O JSON ACUMULADO OU DEIXE VAZIO]
+
+Agora processe as imagens anexadas e devolva o ARRAY JSON COMPLETO acumulado, pronto para substituir integralmente o arquivo precos-registrados.json no GitHub.</textarea>
+<div class="actions"><button class="primary" type="button" onclick="copiarPromptGemini()">Copiar prompt</button><button class="secondary" type="button" onclick="alternarPromptGemini()">Fechar</button></div>
+<div id="statusPromptGemini" class="status" aria-live="polite"></div>
+</div>
 <p class="note">Cole os lembretes, um produto por linha. Você também pode colar o conteúdo do arquivo TXT gerado pelo Atalho do iPhone. Os dados ficam neste navegador e não são enviados para um banco de dados.</p>
 <label for="listaProdutos">Produtos</label>
 <textarea id="listaProdutos" placeholder="Pasta de dente&#10;Leite integral&#10;Chocolate quente&#10;Refrigerante"></textarea>
@@ -54,6 +89,25 @@ const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
 let produtos = [];
 let ofertas = [];
 const normalizar = s => String(s||"").trim().replace(/\s+/g," ");
+function alternarPromptGemini(){
+ const painel=document.getElementById("painelPromptGemini");
+ const botao=document.getElementById("botaoPromptGemini");
+ const abrir=painel.classList.contains("hidden");
+ painel.classList.toggle("hidden",!abrir);
+ botao.setAttribute("aria-expanded",String(abrir));
+ if(abrir)document.getElementById("promptGemini").focus();
+}
+async function copiarPromptGemini(){
+ const campo=document.getElementById("promptGemini");
+ const status=document.getElementById("statusPromptGemini");
+ try{
+  await navigator.clipboard.writeText(campo.value);
+  status.textContent="Prompt copiado. Agora cole no Google Gemini e anexe até 10 imagens.";
+ }catch(e){
+  campo.focus();campo.select();
+  status.textContent="Não foi possível copiar automaticamente. O texto está selecionado; use Copiar no menu do navegador.";
+ }
+}
 function carregarProdutos(){
  const linhas=[...new Set(document.getElementById("listaProdutos").value.split(/\r?\n/).map(normalizar).filter(Boolean))];
  produtos=linhas.map((nome,i)=>({id:i,nome}));
