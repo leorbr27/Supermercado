@@ -56,6 +56,8 @@ function renderizarProdutos(){
   const box=document.createElement("article");box.className="product";
   const titulo=document.createElement("div");titulo.className="product-title";titulo.textContent=p.nome;box.appendChild(titulo);
   const automatico=document.createElement("div");automatico.className="automatic-results status";automatico.dataset.product=p.nome;automatico.textContent="Aguardando pesquisa automática gratuita…";box.appendChild(automatico);
+  const registradosTitulo=document.createElement("div");registradosTitulo.className="offer-name";registradosTitulo.style.marginTop="14px";registradosTitulo.textContent="Preços registrados dos encartes";box.appendChild(registradosTitulo);
+  const registrados=document.createElement("div");registrados.className="registered-results status";registrados.dataset.product=p.nome;registrados.textContent="Carregando preços registrados…";box.appendChild(registrados);
   const links=document.createElement("div");links.className="search-links";
   const redes=[
    ["Extrabom","site:extrabom.com.br"],
@@ -88,6 +90,68 @@ function renderizarProdutos(){
   root.appendChild(box);
  });
  renderizarResumo();
+ carregarPrecosRegistrados().then(renderizarPrecosRegistrados);
+}
+
+let precosRegistrados=[];
+let precosRegistradosPromise=null;
+async function carregarPrecosRegistrados(){
+ if(!precosRegistradosPromise){
+  precosRegistradosPromise=fetch("precos-registrados.json?v="+Date.now(),{cache:"no-store"})
+   .then(res=>{if(!res.ok)throw new Error("HTTP "+res.status);return res.json()})
+   .then(data=>{precosRegistrados=Array.isArray(data.offers)?data.offers:[];return precosRegistrados})
+   .catch(()=>{precosRegistrados=[];return precosRegistrados});
+ }
+ return precosRegistradosPromise;
+}
+function normalizarBusca(valor){
+ return String(valor||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+}
+function formatarData(valor){
+ if(!valor)return "";
+ const partes=String(valor).slice(0,10).split("-");
+ if(partes.length!==3)return String(valor);
+ return partes[2]+"/"+partes[1]+"/"+partes[0];
+}
+function renderizarPrecosRegistrados(){
+ document.querySelectorAll(".registered-results").forEach(root=>{
+  const termo=normalizarBusca(root.dataset.product);
+  const encontrados=precosRegistrados.filter(o=>{
+   const nome=normalizarBusca(o.product||"");
+   return nome && (nome===termo || nome.includes(termo) || termo.includes(nome));
+  }).filter(o=>Number.isFinite(Number(o.price)) && Number(o.price)>=0)
+    .sort((a,b)=>Number(a.price)-Number(b.price));
+  root.innerHTML="";
+  if(!encontrados.length){
+   root.textContent="Nenhuma oferta registrada para este produto.";
+   return;
+  }
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+  encontrados.forEach((o,index)=>{
+   const vencida=!!o.validUntil && new Date(String(o.validUntil).slice(0,10)+"T00:00:00")<hoje;
+   const row=document.createElement("div");row.className="offer";
+   const main=document.createElement("div");main.className="offer-main";
+   const nome=document.createElement("div");nome.className="offer-name";
+   nome.textContent=(o.store||"Supermercado não identificado")+(o.brand?" · "+o.brand:"")+(o.variant?" · "+o.variant:"")+(o.package?" · "+o.package:"");
+   const meta=document.createElement("div");meta.className="offer-meta";
+   const detalhes=[];
+   if(o.recordedAt)detalhes.push("Registrado em "+formatarData(o.recordedAt));
+   if(o.validUntil)detalhes.push((vencida?"Oferta vencida em ":"Validade: ")+formatarData(o.validUntil));
+   else detalhes.push("Validade não informada; confirme na loja.");
+   if(o.conditions)detalhes.push(o.conditions);
+   meta.textContent=detalhes.join(" · ");
+   if(o.source){
+    try{const u=new URL(o.source);if(["http:","https:"].includes(u.protocol)){const a=document.createElement("a");a.href=u.href;a.target="_blank";a.rel="noopener noreferrer";a.className="note";a.textContent="Abrir fonte";meta.appendChild(document.createTextNode(" · "));meta.appendChild(a)}}catch(e){}
+   }
+   const preco=document.createElement("div");preco.className="price";preco.textContent=moeda(Number(o.price));
+   if(index===0&&!vencida)preco.classList.add("lowest");
+   if(vencida){nome.textContent+=" · OFERTA VENCIDA";preco.classList.remove("lowest");}
+   main.appendChild(nome);main.appendChild(meta);row.appendChild(main);row.appendChild(preco);root.appendChild(row);
+  });
+  const nota=document.createElement("div");nota.className="note";nota.style.marginTop="8px";
+  nota.textContent="Ordenado pelo menor preço registrado. Confira se embalagem e condições são equivalentes; preços de encartes não garantem disponibilidade atual.";
+  root.appendChild(nota);
+ });
 }
 
 const URL_PESQUISA_AUTOMATICA="https://lbehdmxfkakwygwoozyr.supabase.co/functions/v1/pesquisa-precos";
