@@ -20,14 +20,15 @@
 <div id="mensagemColagem" class="status" aria-live="polite"></div>
 </section>
 <section class="card">
-<h2>2. Correspondência com a lista de compras</h2>
-<p class="note">Compara automaticamente cada item da sua lista com os produtos de <code>precos-registrados.json</code>, priorizando nomes iguais ou semelhantes. Confira marca, embalagem e condições antes de comprar.</p>
+<h2>3. Resultado da comparação</h2>
+<p class="note">Resultado final: compara cada produto importado no card 1 com os produtos e preços registrados no arquivo <code>precos-registrados.json</code>, exibindo o produto correspondente, supermercado, peso/quantidade, preço e grau de correspondência.</p>
 <div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select></div>
 <div id="statusTabela" class="table-status" role="status" aria-live="polite">Importe sua lista de compras para encontrar correspondências.</div>
 <div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Aguardando a lista de compras.</td></tr></tbody></table></div>
 </section>
+
 <section class="card">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">3. Resumo das ofertas</h2><button class="secondary" onclick="exportarCSV()">Exportar CSV</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">2. Resumo das ofertas</h2><button class="secondary" onclick="exportarCSV()">Exportar CSV</button></div>
 <div id="resumo"><div class="empty">As ofertas adicionadas aparecerão aqui, ordenadas por preço.</div></div>
 <p class="note">O menor preço só é comparável quando embalagem, quantidade e unidade forem equivalentes. Confira disponibilidade, frete e validade da oferta no site da loja.</p>
 </section>
