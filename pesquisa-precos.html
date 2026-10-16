@@ -25,6 +25,8 @@
 <div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select></div>
 <div id="statusTabela" class="table-status" role="status" aria-live="polite">Importe sua lista de compras para encontrar correspondências.</div>
 <div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Aguardando a lista de compras.</td></tr></tbody></table></div>
+<div class="actions"><button class="success" type="button" onclick="enviarResultadoParaWhatsApp()">Enviar resultado para WhatsApp</button></div>
+<p class="note">O WhatsApp será aberto para você escolher o contato ou grupo. Os produtos serão organizados por supermercado.</p>
 </section>
 
 <section class="card">
@@ -181,6 +183,21 @@ function renderizarTabelaRegistrados(){
   :lista.length+" produto(s) e preço(s) registrado(s) no JSON. Importe sua lista para comparar.";
 }
 
+function enviarResultadoParaWhatsApp(){
+ const linhas=[...document.querySelectorAll("#corpoTabela tr")].map(tr=>[...tr.querySelectorAll("td")].map(td=>td.innerText.trim()));
+ const grupos=new Map();
+ linhas.forEach(c=>{
+  if(c.length<6||!c[2]||c[2]==="Supermercado"||c[2].includes("Nenhum produto encontrado")||c[2].includes("Não foi possível"))return;
+  const loja=c[2], produto=c[1], peso=c[3], preco=c[4], correspondencia=c[5];
+  if(!grupos.has(loja))grupos.set(loja,[]);
+  const detalhes=[produto,peso&&peso!=="—"?peso:"",preco,correspondencia&&correspondencia!=="Aguardando comparação"?correspondencia:""].filter(Boolean);
+  grupos.get(loja).push("- "+(c[0]&&c[0]!=="—"?c[0]+" → ":"")+detalhes.join(" | "));
+ });
+ if(!grupos.size){alert("Não há resultados na tabela para enviar. Prepare sua lista e confira as correspondências.");return;}
+ const secoes=[...grupos.entries()].map(([loja,items])=>"*"+loja+"*\n"+items.join("\n"));
+ const mensagem="*Resultado da pesquisa de preços*\n\n"+secoes.join("\n\n");
+ window.open("https://wa.me/?text="+encodeURIComponent(mensagem),"_blank","noopener,noreferrer");
+}
 function normalizarBusca(valor){
  return String(valor||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
 }
