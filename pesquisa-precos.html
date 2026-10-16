@@ -21,7 +21,7 @@
 </section>
 <section class="card">
 <h2>2. Pesquisar e comparar</h2>
-<p class="note">Os links abrem pesquisas na internet direcionadas à Grande Vitória. Como nem todas as lojas disponibilizam preços em formato consultável, registre abaixo os valores que confirmar na fonte. O site não inventa nem presume preços.</p>
+<p class="note">Cada produto terá pesquisas direcionadas às 15 redes selecionadas e uma pesquisa geral que reúne as redes em uma única busca. Os preços exibidos pelos próprios supermercados nem sempre podem ser extraídos automaticamente: alguns sites exigem CEP/login ou bloqueiam consultas externas. Confirme o preço e registre a oferta abaixo; o sistema não inventa valores.</p>
 <div id="produtos"><div class="empty">Cole sua lista e toque em “Preparar pesquisa”.</div></div>
 </section>
 <section class="card">
@@ -55,7 +55,25 @@ function renderizarProdutos(){
   const box=document.createElement("article");box.className="product";
   const titulo=document.createElement("div");titulo.className="product-title";titulo.textContent=p.nome;box.appendChild(titulo);
   const links=document.createElement("div");links.className="search-links";
-  [["Pesquisar na web",urlPesquisa(p.nome,"")],["Instagram",urlPesquisa(p.nome,"site:instagram.com")],["Extrabom",urlPesquisa(p.nome,"site:extrabom.com.br")],["Ofertas/encartes",urlPesquisa(p.nome,"encarte ofertas supermercado")]].forEach(([label,url])=>{const a=document.createElement("a");a.className="link-button secondary";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;links.appendChild(a)});
+  const redes=[
+   ["Extrabom","site:extrabom.com.br"],
+   ["Extraplus","site:extraplus.com.br"],
+   ["EPA","site:epa.com.br"],
+   ["Supermercados BH","site:supermercadosbh.com.br"],
+   ["Carone","site:carone.com.br OR site:fs.carone.com.br"],
+   ["Perim","site:superperim.com.br OR site:perim.com.br"],
+   ["RB Supermercados","site:rbsupermercados.com.br"],
+   ["Atacadão","site:atacadao.com.br"],
+   ["Assaí","site:assai.com.br"],
+   ["Sam's Club","site:samsclub.com.br"],
+   ["São José","São José Supermercados"],
+   ["Ovelha","Supermercados Ovelha"],
+   ["SempreTem","Superatacado SempreTem"],
+   ["Multishow","Multishow Supermercados Espírito Santo"],
+   ["Castelo","Castelo Supermercados Espírito Santo"]
+  ];
+  const pesquisarTodas=document.createElement("button");pesquisarTodas.type="button";pesquisarTodas.className="link-button primary";pesquisarTodas.textContent="Pesquisar em todas as redes";pesquisarTodas.addEventListener("click",()=>{const q=redes.map(([nome,site])=>site.includes("site:")?site:"\""+site+"\"").join(" OR ");window.open(urlPesquisa(p.nome,q),"\u005fblank","noopener,noreferrer");});links.appendChild(pesquisarTodas);
+  [["Pesquisa geral",urlPesquisa(p.nome,"")],["Ofertas/encartes",urlPesquisa(p.nome,"encarte ofertas supermercado")],...redes.map(([nome,site])=>[nome,urlPesquisa(p.nome,site)])].forEach(([label,url])=>{const a=document.createElement("a");a.className="link-button secondary";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;a.title="Pesquisar "+p.nome+" em "+label;links.appendChild(a)});
   box.appendChild(links);
   const form=document.createElement("div");form.className="fields";
   form.innerHTML='<div><label>Supermercado</label><input data-field="loja" placeholder="Nome da loja"></div><div><label>Marca / embalagem</label><input data-field="marca" placeholder="Ex.: Colgate 90 g"></div><div><label>Preço (R$)</label><input data-field="preco" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div><div class="wide"><label>Link da oferta (opcional)</label><input data-field="url" type="url" placeholder="https://..."></div>';
