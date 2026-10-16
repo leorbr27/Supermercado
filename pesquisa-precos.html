@@ -213,11 +213,12 @@ function exportarCSV(){
 
 function importarListaDaURL(){
  const params=new URLSearchParams(window.location.search);
- const texto=params.get("produtos")||params.get("lista");
+ const texto=params.get("produtos")||params.get("lista")||params.get("texto")||params.get("clipboard");
  if(!texto||!texto.trim())return;
  document.getElementById("listaProdutos").value=texto;
  carregarProdutos();
  document.getElementById("mensagemColagem").textContent="Lista recebida automaticamente do Atalho: "+produtos.length+" produto(s).";
+ history.replaceState(null,"",window.location.pathname);
  document.getElementById("listaProdutos").scrollIntoView({behavior:"smooth",block:"center"});
 }
 window.addEventListener("DOMContentLoaded",()=>{
