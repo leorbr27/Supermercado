@@ -21,7 +21,7 @@
 </section>
 <section class="card">
 <h2>2. Pesquisar e comparar</h2>
-<p class="note">Cada produto terá pesquisas direcionadas às 15 redes selecionadas e uma pesquisa geral que reúne as redes em uma única busca. Os preços exibidos pelos próprios supermercados nem sempre podem ser extraídos automaticamente: alguns sites exigem CEP/login ou bloqueiam consultas externas. Confirme o preço e registre a oferta abaixo; o sistema não inventa valores.</p>
+<p class="note">Ao preparar a lista, a página consulta gratuitamente resultados públicos indexados para as 15 redes. Preços só aparecem quando o resultado contém um valor explícito em reais; eles podem estar desatualizados e devem ser confirmados no site da loja. Se uma fonte não retornar preço, isso será informado. A pesquisa não usa banco de dados para guardar sua lista.</p>
 <div id="produtos"><div class="empty">Cole sua lista e toque em “Preparar pesquisa”.</div></div>
 </section>
 <section class="card">
@@ -40,6 +40,7 @@ function carregarProdutos(){
  produtos=linhas.map((nome,i)=>({id:i,nome}));
  renderizarProdutos();
  document.getElementById("mensagemColagem").textContent=linhas.length?linhas.length+" produto(s) preparado(s).":"Cole pelo menos um produto.";
+ if(linhas.length) pesquisarPrecosAutomaticamente(linhas);
 }
 async function colarDaAreaDeTransferencia(){
  const status=document.getElementById("mensagemColagem");
@@ -54,6 +55,7 @@ function renderizarProdutos(){
  produtos.forEach(p=>{
   const box=document.createElement("article");box.className="product";
   const titulo=document.createElement("div");titulo.className="product-title";titulo.textContent=p.nome;box.appendChild(titulo);
+  const automatico=document.createElement("div");automatico.className="automatic-results status";automatico.dataset.product=p.nome;automatico.textContent="Aguardando pesquisa automática gratuita…";box.appendChild(automatico);
   const links=document.createElement("div");links.className="search-links";
   const redes=[
    ["Extrabom","site:extrabom.com.br"],
@@ -87,6 +89,50 @@ function renderizarProdutos(){
  });
  renderizarResumo();
 }
+
+const URL_PESQUISA_AUTOMATICA="https://lbehdmxfkakwygwoozyr.supabase.co/functions/v1/pesquisa-precos";
+async function pesquisarPrecosAutomaticamente(lista){
+ const status=document.getElementById("mensagemColagem");
+ const grupos=[];
+ for(let i=0;i<lista.length;i+=5) grupos.push(lista.slice(i,i+5));
+ let concluidos=0;
+ for(const grupo of grupos){
+  try{
+   status.textContent="Pesquisando preços em fontes públicas… "+concluidos+"/"+lista.length+" produto(s) processado(s).";
+   const resposta=await fetch(URL_PESQUISA_AUTOMATICA,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({products:grupo})});
+   if(!resposta.ok) throw new Error("HTTP "+resposta.status);
+   const dados=await resposta.json();
+   grupo.forEach(nome=>{
+    const resultados=(dados.results&&dados.results[nome])||[];
+    const alvo=[...document.querySelectorAll(".automatic-results")].find(el=>el.dataset.product===nome);
+    if(!alvo)return;
+    alvo.className="automatic-results";
+    alvo.innerHTML="";
+    const titulo=document.createElement("div");titulo.className="offer-name";titulo.textContent=resultados.length?"Preços encontrados em resultados públicos":"Nenhum preço explícito encontrado nas fontes públicas consultadas.";alvo.appendChild(titulo);
+    if(resultados.length){
+     resultados.sort((a,b)=>a.price-b.price).forEach((r,index)=>{
+      const row=document.createElement("div");row.className="offer";
+      const main=document.createElement("div");main.className="offer-main";
+      const name=document.createElement("div");name.className="offer-name";name.textContent=r.store+" · "+r.title;
+      const meta=document.createElement("div");meta.className="offer-meta";meta.textContent=(r.snippet||"Preço localizado em resultado indexado.")+" — confirme no site da loja.";
+      const price=document.createElement("div");price.className="price";price.textContent=moeda(r.price);if(index===0)price.classList.add("lowest");
+      const link=document.createElement("a");link.href=r.url;link.target="_blank";link.rel="noopener noreferrer";link.className="note";link.textContent="Abrir fonte";link.style.display="inline-block";link.style.marginTop="5px";meta.appendChild(document.createTextNode(" "));meta.appendChild(link);
+      main.appendChild(name);main.appendChild(meta);row.appendChild(main);row.appendChild(price);alvo.appendChild(row);
+     });
+    }
+   });
+   concluidos+=grupo.length;
+  }catch(e){
+   grupo.forEach(nome=>{
+    const alvo=[...document.querySelectorAll(".automatic-results")].find(el=>el.dataset.product===nome);
+    if(alvo){alvo.className="automatic-results status";alvo.textContent="Não foi possível consultar as fontes gratuitas agora. Tente novamente ou use as pesquisas manuais abaixo.";}
+   });
+   concluidos+=grupo.length;
+  }
+ }
+ status.textContent="Pesquisa automática concluída para "+concluidos+" produto(s). Os preços encontrados são indicativos e precisam ser confirmados na loja.";
+}
+
 function moeda(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
 function renderizarResumo(){
  const root=document.getElementById("resumo");root.innerHTML="";
