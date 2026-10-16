@@ -92,7 +92,28 @@ function importarListaDaURL(){
  document.getElementById("mensagemColagem").textContent="Lista recebida automaticamente do Atalho: "+produtos.length+" produto(s).";
  document.getElementById("listaProdutos").scrollIntoView({behavior:"smooth",block:"center"});
 }
-window.addEventListener("DOMContentLoaded",importarListaDaURL);
+window.addEventListener("DOMContentLoaded",()=>{
+ importarListaDaURL();
+ colarAutomaticamenteAoAbrir();
+});
+async function colarAutomaticamenteAoAbrir(){
+ const campo=document.getElementById("listaProdutos");
+ const status=document.getElementById("mensagemColagem");
+ if(campo.value.trim())return;
+ try{
+  if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error("clipboard");
+  const texto=await navigator.clipboard.readText();
+  if(!texto.trim()){
+   status.textContent="A área de transferência está vazia.";
+   return;
+  }
+  campo.value=texto;
+  carregarProdutos();
+  status.textContent="Conteúdo da área de transferência carregado automaticamente.";
+ }catch(e){
+  status.textContent="O navegador bloqueou a leitura automática. Use “Colar da área de transferência” para autorizar a colagem.";
+ }
+}
 </script>
 </body>
 </html>
