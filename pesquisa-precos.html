@@ -82,6 +82,17 @@ function exportarCSV(){
  const csv="\\uFEFF"+linhas.map(l=>l.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\\r\\n");
  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="pesquisa_precos_grande_vitoria.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
+
+function importarListaDaURL(){
+ const params=new URLSearchParams(window.location.search);
+ const texto=params.get("produtos")||params.get("lista");
+ if(!texto||!texto.trim())return;
+ document.getElementById("listaProdutos").value=texto;
+ carregarProdutos();
+ document.getElementById("mensagemColagem").textContent="Lista recebida automaticamente do Atalho: "+produtos.length+" produto(s).";
+ document.getElementById("listaProdutos").scrollIntoView({behavior:"smooth",block:"center"});
+}
+window.addEventListener("DOMContentLoaded",importarListaDaURL);
 </script>
 </body>
 </html>
