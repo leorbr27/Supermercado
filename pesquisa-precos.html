@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pesquisa de preços — Supermercado</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f8fc;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.container{max-width:900px;margin:auto;padding:16px 14px 42px}header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0;background:#e8f0fb;color:#2456a6;border-radius:11px;width:44px;height:44px;font-size:22px;cursor:pointer}h1{font-size:25px;line-height:1.2;color:#163b65;margin:0}h2{font-size:19px;color:#1d3557;margin:0 0 12px}.subtitle,.note{color:#68778d;font-size:13px;line-height:1.45}.card,.product{background:#fff;border:1px solid #e7edf5;border-radius:17px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(30,70,110,.06)}textarea,input{width:100%;border:1px solid #cfd9e6;border-radius:11px;padding:12px;font:inherit;font-size:16px;background:#fff;color:#172033}textarea{min-height:145px;resize:vertical;line-height:1.45}label{display:block;font-size:13px;font-weight:700;margin:0 0 6px}button,.link-button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;border:0;border-radius:10px;padding:10px 13px;font:inherit;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}.primary{background:#2563eb;color:white;width:100%}.secondary{background:#eef3f8;color:#29415f}.success{background:#16845a;color:#fff}.danger{background:#fee9e9;color:#b42318}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.actions>*{flex:1}.product-title{font-size:17px;font-weight:750;margin-bottom:9px;overflow-wrap:anywhere}.search-links{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 14px}.search-links a{font-size:13px}.fields{display:grid;grid-template-columns:1.1fr 1fr .8fr;gap:8px}.fields .wide{grid-column:1/-1}.fields input{height:43px;padding:9px 10px}.offer{border-top:1px solid #e7edf5;padding:11px 0;display:grid;grid-template-columns:1fr auto;gap:8px}.offer:first-child{margin-top:12px}.offer-main{min-width:0}.offer-name{font-weight:700;overflow-wrap:anywhere}.offer-meta{font-size:12px;color:#68778d;margin-top:3px;overflow-wrap:anywhere}.price{font-size:18px;font-weight:800;white-space:nowrap;color:#183b63}.lowest{color:#087443}.empty{padding:16px 4px;text-align:center;color:#68778d;font-size:14px}.status{font-size:13px;color:#68778d;margin-top:8px}.pill{display:inline-block;background:#e8f7ee;color:#087443;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:750;margin-left:6px}.hidden{display:none!important}@media(max-width:600px){.container{padding:12px 10px 30px}h1{font-size:22px}.card,.product{padding:13px}.fields{grid-template-columns:1fr 1fr}.fields .wide{grid-column:1/-1}.actions button,.actions a{flex-basis:100%}.offer{grid-template-columns:1fr auto}}
+</style>
+</head>
+<body>
+<main class="container">
+<header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1>💰 Pesquisa de preços</h1><div class="subtitle">Grande Vitória · ES</div></div></header>
+<section class="card">
+<h2>1. Importar lista de compras</h2>
+<p class="note">Cole os lembretes, um produto por linha. Você também pode colar o conteúdo do arquivo TXT gerado pelo Atalho do iPhone. Os dados ficam neste navegador e não são enviados para um banco de dados.</p>
+<label for="listaProdutos">Produtos</label>
+<textarea id="listaProdutos" placeholder="Pasta de dente&#10;Leite integral&#10;Chocolate quente&#10;Refrigerante"></textarea>
+<div class="actions"><button class="primary" onclick="carregarProdutos()">Preparar pesquisa</button><button class="secondary" onclick="colarDaAreaDeTransferencia()">Colar da área de transferência</button></div>
+<div id="mensagemColagem" class="status" aria-live="polite"></div>
+</section>
+<section class="card">
+<h2>2. Pesquisar e comparar</h2>
+<p class="note">Os links abrem pesquisas na internet direcionadas à Grande Vitória. Como nem todas as lojas disponibilizam preços em formato consultável, registre abaixo os valores que confirmar na fonte. O site não inventa nem presume preços.</p>
+<div id="produtos"><div class="empty">Cole sua lista e toque em “Preparar pesquisa”.</div></div>
+</section>
+<section class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">3. Resumo das ofertas</h2><button class="secondary" onclick="exportarCSV()">Exportar CSV</button></div>
+<div id="resumo"><div class="empty">As ofertas adicionadas aparecerão aqui, ordenadas por preço.</div></div>
+<p class="note">O menor preço só é comparável quando embalagem, quantidade e unidade forem equivalentes. Confira disponibilidade, frete e validade da oferta no site da loja.</p>
+</section>
+</main>
+<script>
+const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
+let produtos = [];
+let ofertas = [];
+const normalizar = s => String(s||"").trim().replace(/\\s+/g," ");
+function carregarProdutos(){
+ const linhas=[...new Set(document.getElementById("listaProdutos").value.split(/\\r?\\n/).map(normalizar).filter(Boolean))];
+ produtos=linhas.map((nome,i)=>({id:i,nome}));
+ renderizarProdutos();
+ document.getElementById("mensagemColagem").textContent=linhas.length?linhas.length+" produto(s) preparado(s).":"Cole pelo menos um produto.";
+}
+async function colarDaAreaDeTransferencia(){
+ const status=document.getElementById("mensagemColagem");
+ try{if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error("clipboard");const texto=await navigator.clipboard.readText();if(!texto.trim()){status.textContent="A área de transferência está vazia.";return}document.getElementById("listaProdutos").value=texto;carregarProdutos();status.textContent="Lista colada com sucesso."}
+ catch(e){status.textContent="O navegador não permitiu ler a área de transferência. Toque no campo Produtos e use Colar pelo menu do celular ou computador."}
+}
+function urlPesquisa(nome,site){const q=site?site+" "+nome+" "+CIDADES:nome+" preço supermercado "+CIDADES;return "https://www.google.com/search?q="+encodeURIComponent(q)}
+function renderizarProdutos(){
+ const root=document.getElementById("produtos");
+ if(!produtos.length){root.innerHTML='<div class="empty">Nenhum produto na lista.</div>';document.getElementById("resumo").innerHTML='<div class="empty">As ofertas adicionadas aparecerão aqui.</div>';return}
+ root.innerHTML="";
+ produtos.forEach(p=>{
+  const box=document.createElement("article");box.className="product";
+  const titulo=document.createElement("div");titulo.className="product-title";titulo.textContent=p.nome;box.appendChild(titulo);
+  const links=document.createElement("div");links.className="search-links";
+  [["Pesquisar na web",urlPesquisa(p.nome,"")],["Instagram",urlPesquisa(p.nome,"site:instagram.com")],["Extrabom",urlPesquisa(p.nome,"site:extrabom.com.br")],["Ofertas/encartes",urlPesquisa(p.nome,"encarte ofertas supermercado")]].forEach(([label,url])=>{const a=document.createElement("a");a.className="link-button secondary";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;links.appendChild(a)});
+  box.appendChild(links);
+  const form=document.createElement("div");form.className="fields";
+  form.innerHTML='<div><label>Supermercado</label><input data-field="loja" placeholder="Nome da loja"></div><div><label>Marca / embalagem</label><input data-field="marca" placeholder="Ex.: Colgate 90 g"></div><div><label>Preço (R$)</label><input data-field="preco" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div><div class="wide"><label>Link da oferta (opcional)</label><input data-field="url" type="url" placeholder="https://..."></div>';
+  box.appendChild(form);
+  const btn=document.createElement("button");btn.className="success";btn.style.width="100%";btn.style.marginTop="10px";btn.textContent="Adicionar oferta confirmada";
+  btn.addEventListener("click",()=>{const get=k=>form.querySelector('[data-field="'+k+'"]').value.trim();const loja=get("loja"),marca=get("marca"),preco=Number(get("preco")),url=get("url");if(!loja){alert("Informe o supermercado.");return}if(get("preco")===""||!Number.isFinite(preco)||preco<0){alert("Informe um preço válido.");return}if(url){try{const u=new URL(url);if(!["http:","https:"].includes(u.protocol))throw 0}catch(e){alert("Informe um link http ou https válido.");return}}ofertas.push({produto:p.nome,loja,marca,preco,url});renderizarResumo();form.querySelector('[data-field="preco"]').value="";});
+  box.appendChild(btn);
+  const current=ofertas.filter(o=>o.produto===p.nome).sort((a,b)=>a.preco-b.preco);
+  if(current.length){const list=document.createElement("div");current.forEach(o=>{const row=document.createElement("div");row.className="offer";row.innerHTML='<div class="offer-main"><div class="offer-name"></div><div class="offer-meta"></div></div><div class="price"></div>';row.querySelector(".offer-name").textContent=o.loja+(o.marca?" · "+o.marca:"");row.querySelector(".offer-meta").textContent=o.url||"Preço registrado manualmente";row.querySelector(".price").textContent=moeda(o.preco);list.appendChild(row)});box.appendChild(list)}
+  root.appendChild(box);
+ });
+ renderizarResumo();
+}
+function moeda(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function renderizarResumo(){
+ const root=document.getElementById("resumo");root.innerHTML="";
+ if(!ofertas.length){root.innerHTML='<div class="empty">As ofertas adicionadas aparecerão aqui, ordenadas por preço.</div>';return}
+ const ordenadas=[...ofertas].sort((a,b)=>a.preco-b.preco);
+ ordenadas.forEach((o,i)=>{const row=document.createElement("div");row.className="offer";row.innerHTML='<div class="offer-main"><div class="offer-name"></div><div class="offer-meta"></div></div><div class="price"></div>';row.querySelector(".offer-name").textContent=o.produto+" — "+o.loja+(o.marca?" · "+o.marca:"");row.querySelector(".offer-meta").textContent=o.url||"Sem link informado";row.querySelector(".price").textContent=moeda(o.preco);if(i===0)row.querySelector(".price").classList.add("lowest");if(o.url){const a=document.createElement("a");a.href=o.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=" Abrir oferta";a.className="note";row.querySelector(".offer-meta").appendChild(a)}root.appendChild(row)});
+}
+function exportarCSV(){
+ if(!ofertas.length){alert("Adicione pelo menos uma oferta antes de exportar.");return}
+ const linhas=[["Produto","Supermercado","Marca / embalagem","Preço (R$)","Link"],...ofertas.map(o=>[o.produto,o.loja,o.marca,o.preco.toFixed(2).replace(".",","),o.url])];
+ const csv="\\uFEFF"+linhas.map(l=>l.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\\r\\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="pesquisa_precos_grande_vitoria.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
