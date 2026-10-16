@@ -53,6 +53,9 @@ function urlPesquisa(nome,site){const q=site?site+" "+nome+" "+CIDADES:nome+" pr
 function renderizarProdutos(){
  renderizarTabelaRegistrados();
  const root=document.getElementById("produtos");
+ // O card de pesquisa manual foi substituído pela tabela de correspondências.
+ // Se o contêiner antigo não existir, a tabela já foi atualizada acima; não interrompa a importação.
+ if(!root){renderizarResumo();carregarPrecosRegistrados().then(renderizarPrecosRegistrados);return;}
  if(!produtos.length){root.innerHTML='<div class="empty">Nenhum produto na lista.</div>';document.getElementById("resumo").innerHTML='<div class="empty">As ofertas adicionadas aparecerão aqui.</div>';return}
  root.innerHTML="";
  produtos.forEach(p=>{
