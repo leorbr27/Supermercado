@@ -20,11 +20,11 @@
 <div id="mensagemColagem" class="status" aria-live="polite"></div>
 </section>
 <section class="card">
-<h2>2. Produtos e preços registrados</h2>
-<p class="note">Esta tabela é carregada automaticamente do arquivo <code>precos-registrados.json</code> do GitHub. Mostra todos os registros, com pesquisa, filtro por supermercado e ordenação. Os preços são os registrados no arquivo e devem ser confirmados na loja.</p>
-<div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar produto ou descrição"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar produtos"><option value="supermercado">Ordenar por supermercado</option><option value="produto">Ordenar por produto</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option></select></div>
-<div id="statusTabela" class="table-status" role="status" aria-live="polite">Carregando produtos do arquivo JSON…</div>
-<div class="table-wrap"><table><thead><tr><th>Supermercado</th><th>Produto</th><th>Peso / quantidade</th><th>Preço</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="4">Carregando…</td></tr></tbody></table></div>
+<h2>2. Correspondência com a lista de compras</h2>
+<p class="note">Compara automaticamente cada item da sua lista com os produtos de <code>precos-registrados.json</code>, priorizando nomes iguais ou semelhantes. Confira marca, embalagem e condições antes de comprar.</p>
+<div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select></div>
+<div id="statusTabela" class="table-status" role="status" aria-live="polite">Importe sua lista de compras para encontrar correspondências.</div>
+<div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Aguardando a lista de compras.</td></tr></tbody></table></div>
 </section>
 <section class="card">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">3. Resumo das ofertas</h2><button class="secondary" onclick="exportarCSV()">Exportar CSV</button></div>
@@ -51,6 +51,7 @@ async function colarDaAreaDeTransferencia(){
 }
 function urlPesquisa(nome,site){const q=site?site+" "+nome+" "+CIDADES:nome+" preço supermercado "+CIDADES;return "https://www.google.com/search?q="+encodeURIComponent(q)}
 function renderizarProdutos(){
+ renderizarTabelaRegistrados();
  const root=document.getElementById("produtos");
  if(!produtos.length){root.innerHTML='<div class="empty">Nenhum produto na lista.</div>';document.getElementById("resumo").innerHTML='<div class="empty">As ofertas adicionadas aparecerão aqui.</div>';return}
  root.innerHTML="";
@@ -117,26 +118,54 @@ function preencherFiltroSupermercado(){
  select.innerHTML='<option value="">Todos os supermercados</option>'+lojas.map(loja=>'<option value="'+escaparHtmlTabela(loja)+'">'+escaparHtmlTabela(loja)+'</option>').join("");
  if(lojas.includes(atual))select.value=atual;
 }
+function pontuarCorrespondencia(item, produto){
+ const a=normalizarBusca(item), b=normalizarBusca(produto);
+ if(!a||!b)return 0;
+ if(a===b)return 1;
+ if(b.includes(a)||a.includes(b))return Math.min(0.96,0.78+Math.min(a.length,b.length)/Math.max(a.length,b.length)*0.18);
+ const stop=new Set(["de","da","do","das","dos","com","sem","para","por","e","ou","em","na","no","pacote","produto","unidade"]);
+ const ta=[...new Set(a.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
+ const tb=[...new Set(b.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
+ if(!ta.length||!tb.length)return 0;
+ const comuns=ta.filter(t=>tb.some(u=>u===t||(t.length>=5&&u.length>=5&&(t.startsWith(u)||u.startsWith(t)))));
+ const cobertura=comuns.length/ta.length, precisao=comuns.length/tb.length;
+ return (2*cobertura*precisao/(cobertura+precisao||1))*0.92;
+}
+function gerarCorrespondencias(){
+ const linhas=[];
+ produtos.forEach(p=>{
+  const candidatos=precosRegistrados.filter(o=>o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0)
+   .map(o=>({...o,score:pontuarCorrespondencia(p.nome,o.product)}))
+   .filter(o=>o.score>=0.30)
+   .sort((a,b)=>b.score-a.score||Number(a.price)-Number(b.price));
+  candidatos.forEach(o=>linhas.push({item:p.nome,...o}));
+ });
+ return linhas;
+}
 function renderizarTabelaRegistrados(){
  const corpo=document.getElementById("corpoTabela");
  if(!corpo)return;
  const termo=normalizarBusca(document.getElementById("filtroTabela").value);
  const loja=document.getElementById("filtroSupermercado").value;
  const ordem=document.getElementById("ordenarTabela").value;
- const lista=precosRegistrados.filter(o=>{
-  const texto=normalizarBusca([o.store,o.product,o.package].join(" "));
-  return (!termo||texto.includes(termo))&&(!loja||o.store===loja)&&o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0;
+ const correspondencias=gerarCorrespondencias();
+ const lista=correspondencias.filter(o=>{
+  const texto=normalizarBusca([o.item,o.store,o.product,o.package].join(" "));
+  return (!termo||texto.includes(termo))&&(!loja||o.store===loja);
  });
  lista.sort((a,b)=>{
   if(ordem==="menor")return Number(a.price)-Number(b.price);
   if(ordem==="maior")return Number(b.price)-Number(a.price);
-  if(ordem==="produto")return a.product.localeCompare(b.product,"pt-BR");
-  return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");
+  if(ordem==="supermercado")return a.store.localeCompare(b.store,"pt-BR")||a.item.localeCompare(b.item,"pt-BR");
+  return b.score-a.score||a.item.localeCompare(b.item,"pt-BR")||Number(a.price)-Number(b.price);
  });
  corpo.innerHTML="";
- if(!lista.length){corpo.innerHTML='<tr><td colspan="4">Nenhum produto encontrado com esses filtros.</td></tr>';}
- else{corpo.innerHTML=lista.map(o=>'<tr><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Produto">'+escaparHtmlTabela(o.product)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'</td></tr>').join("");}
- document.getElementById("statusTabela").textContent=lista.length+" de "+precosRegistrados.length+" registro(s) exibido(s).";
+ if(!produtos.length){corpo.innerHTML='<tr><td colspan="6">Importe sua lista de compras no primeiro card.</td></tr>';}
+ else if(!lista.length){corpo.innerHTML='<tr><td colspan="6">Nenhuma correspondência encontrada com esses filtros.</td></tr>';}
+ else{corpo.innerHTML=lista.map(o=>'<tr><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'</td><td data-label="Correspondência">'+(o.score>=0.8?"Alta":o.score>=0.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)</td></tr>').join("");}
+ document.getElementById("statusTabela").textContent=produtos.length
+  ?lista.length+" correspondência(s) para "+produtos.length+" item(ns) da lista."
+  :"Importe sua lista de compras para comparar com "+precosRegistrados.length+" preço(s) registrado(s).";
 }
 function normalizarBusca(valor){
  return String(valor||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
