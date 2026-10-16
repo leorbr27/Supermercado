@@ -34,9 +34,9 @@
 const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
 let produtos = [];
 let ofertas = [];
-const normalizar = s => String(s||"").trim().replace(/\\s+/g," ");
+const normalizar = s => String(s||"").trim().replace(/\s+/g," ");
 function carregarProdutos(){
- const linhas=[...new Set(document.getElementById("listaProdutos").value.split(/\\r?\\n/).map(normalizar).filter(Boolean))];
+ const linhas=[...new Set(document.getElementById("listaProdutos").value.split(/\r?\n/).map(normalizar).filter(Boolean))];
  produtos=linhas.map((nome,i)=>({id:i,nome}));
  renderizarProdutos();
  document.getElementById("mensagemColagem").textContent=linhas.length?linhas.length+" produto(s) preparado(s).":"Cole pelo menos um produto.";
