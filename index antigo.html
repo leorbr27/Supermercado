@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Supermercado</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<style>*{box-sizing:border-box}body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f5f8fc;color:#172033}.container{width:100%;max-width:700px;margin:0 auto;padding:16px 16px 110px}h1{margin:5px 0 18px;font-size:27px;text-align:center;color:#163b65}h2{font-size:20px;margin:22px 0 12px;color:#1d3557}.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:15px;box-shadow:0 3px 14px rgba(30,70,110,.07);border:1px solid #e7edf5}label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}select,input{width:100%;height:48px;border:1px solid #cfd9e6;border-radius:11px;padding:0 13px;font-size:16px;background:#fff;color:#172033}select:focus,input:focus{outline:3px solid rgba(37,99,235,.12);border-color:#5b8def}.row{display:flex;gap:8px;align-items:center}.row select{flex:1;min-width:0}.row>button.small{flex:0 0 46px;width:46px;min-width:46px;height:46px;padding:0;border-radius:11px;font-size:25px}button{border:0;border-radius:12px;min-height:46px;padding:0 16px;font-size:16px;font-weight:650;cursor:pointer;transition:.15s}button:active{transform:scale(.98)}button:disabled{opacity:.6;cursor:not-allowed}.primary{width:100%;background:#2563eb;color:#fff;box-shadow:0 2px 5px rgba(37,99,235,.2)}.secondary{background:#eef3f8;color:#29415f}.danger{background:#fee9e9;color:#b42318}.success{background:#16a36a;color:#fff;box-shadow:0 2px 5px rgba(22,163,106,.18)}#scannerArea{display:none;margin-top:15px}#reader{width:100%;overflow:hidden;border-radius:14px;background:#16243a}#reader video{width:100%!important;height:auto!important;border-radius:14px}#status{text-align:center;font-size:14px;color:#607089;margin:10px 0;min-height:20px}.manual-area{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #e4eaf1}.product-info{background:#f7faff;border-radius:13px;padding:14px;margin-top:14px;border:1px solid #e3ebf5}.product-name{font-size:19px;font-weight:700;margin-bottom:14px;color:#183b63}.field-label{font-size:14px;font-weight:600;margin-bottom:6px}.price-input{font-size:24px;font-weight:750;height:54px}.quantity-input{font-size:20px;font-weight:700;height:50px}.product-field{margin-bottom:13px}.barcode{color:#68778d;font-size:13px;margin-top:8px}.cart-item{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #e4eaf1}.cart-item:last-child{border-bottom:0}.cart-left{flex:1;min-width:0}.cart-name{font-weight:650;line-height:1.25}.cart-price{color:#68778d;font-size:14px;margin-top:4px}.cart-right{text-align:right;min-width:105px}.subtotal{font-weight:750;color:#183b63}.qty{display:flex;justify-content:flex-end;align-items:center;gap:7px;margin-top:6px}.qty button{width:30px;min-width:30px;height:30px;min-height:30px;padding:0;border-radius:8px;background:#e8f0fb;color:#2456a6;font-size:18px}.qty span{min-width:20px;text-align:center;font-weight:700}.empty{text-align:center;color:#68778d;padding:18px 5px}.total-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #dce5ef;box-shadow:0 -3px 15px rgba(30,70,110,.1);padding:12px 16px;z-index:100}.total-inner{width:100%;max-width:700px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.total-label{font-size:14px;color:#68778d}.total-value{font-size:26px;font-weight:850;color:#183b63}.total-bar button{min-width:150px}.history-item{padding:13px 0;border-bottom:1px solid #e4eaf1}.history-item:last-child{border-bottom:0}.history-top{display:flex;justify-content:space-between;gap:10px}.history-date{font-weight:650}.history-total{font-weight:800;color:#183b63}.history-market{font-size:14px;color:#68778d;margin-top:4px}.modal{display:none;position:fixed;inset:0;background:rgba(20,38,60,.55);z-index:200;padding:20px;align-items:center;justify-content:center}.modal-box{width:100%;max-width:500px;background:#fff;border-radius:20px;padding:20px;max-height:90vh;overflow:auto}.modal-title{font-size:21px;font-weight:800;margin-bottom:16px;color:#183b63}.field{margin-bottom:15px}.modal-actions{display:flex;gap:8px;margin-top:18px}.modal-actions button{flex:1}.notice{font-size:13px;color:#68778d;line-height:1.45;margin-top:8px}.hidden{display:none!important}
+.last-update{width:100%;text-align:center;font-size:10px;line-height:1.3;color:#8a8f98;margin:18px 0 10px;padding:0 12px;font-weight:400;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🛒 Supermercado</h1>
+<div class="card">
+<h2>🏪 Supermercado</h2>
+<label for="supermercado">Supermercado</label>
+<div class="row"><select id="supermercado"><option value="">Selecione o supermercado</option></select><button class="secondary small" onclick="abrirModalSupermercado()" title="Adicionar supermercado">+</button></div>
+</div>
+<div class="card" style="margin-top:-3px;margin-bottom:15px"><button class="primary" onclick="window.location.href='produtos.html'">📋 Consultar produtos</button><div class="notice" style="text-align:center;margin-top:8px">Veja todos os produtos, supermercados e os preços registrados.</div></div>
+<div class="card" style="margin-top:-3px;margin-bottom:15px"><button class="primary" onclick="window.location.href='pesquisa-precos.html'">💰 Pesquisa de preços</button><div class="notice" style="text-align:center;margin-top:8px">Pesquise ofertas na Grande Vitória e compare preços de produtos.</div></div>
+<div class="card" id="consultaPrecoCard">
+<h2>🔎 Consulta de preços</h2>
+<div class="notice">Procure um produto por nome ou código de barras. Você também pode escanear o código.</div>
+<div style="margin-top:12px">
+<input id="consultaBusca" type="search" autocomplete="off" inputmode="search" placeholder="Nome ou código de barras" onkeydown="if(event.key==='Enter')buscarConsultaPreco()">
+</div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="primary" style="flex:1" onclick="buscarConsultaPreco()">Consultar</button>
+<button class="secondary" style="flex:0 0 54px;padding:0" onclick="abrirScannerConsulta()" title="Escanear código de barras">📷</button>
+</div>
+<div id="consultaScannerArea" style="display:none;margin-top:14px">
+<div id="consultaReader" style="width:100%;overflow:hidden;border-radius:14px;background:#111"></div>
+<div id="consultaStatus" class="notice" style="text-align:center">Abrindo câmera...</div>
+<button class="secondary" style="width:100%;margin-top:8px" onclick="fecharScannerConsulta()">Fechar câmera</button>
+</div>
+<div id="consultaResultados" style="margin-top:12px">
+<div class="empty">Digite o nome ou código de barras para consultar.</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📷 Adicionar produto</h2>
+<button id="scanButton" class="primary" onclick="abrirScanner()">📷 Escanear produto</button>
+<button class="secondary" style="width:100%;margin-top:10px" onclick="abrirEntradaManual()">⌨️ Digitar código de barras</button>
+<div id="manualArea" class="manual-area">
+<label for="codigoManual">Código de barras</label>
+<input id="codigoManual" type="text" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="Digite o código de barras" onkeydown="if(event.key==='Enter')processarCodigoManual()">
+<button class="success" style="width:100%;margin-top:10px" onclick="processarCodigoManual()">Continuar</button>
+</div>
+<div id="scannerArea"><div id="reader"></div><div id="status">Abrindo câmera...</div><button class="secondary" style="width:100%" onclick="fecharScanner()">Fechar câmera</button></div>
+</div>
+<div id="produtoCard" class="card hidden">
+<h2>🛍️ Produto</h2>
+<div class="product-info"><div id="produtoNome" class="product-name"></div>
+<div class="product-field"><div class="field-label">Preço neste supermercado</div><input id="produtoPreco" class="price-input" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00"></div>
+<div class="product-field"><div class="field-label">Quantidade</div><input id="produtoQuantidade" class="quantity-input" type="number" inputmode="numeric" step="1" min="1" value="1"></div>
+<div id="produtoCodigo" class="barcode"></div></div>
+<button id="adicionarProdutoButton" class="success" style="width:100%;margin-top:12px" onclick="salvarPrecoEAdicionar()">Salvar preço e adicionar ao carrinho</button>
+</div>
+<div class="card"><h2>🛒 Carrinho</h2><div id="carrinho"><div class="empty">Nenhum produto adicionado.</div></div><button id="limparCarrinhoButton" class="danger" style="width:100%;margin-top:12px;display:none" onclick="limparCarrinho()">Limpar carrinho</button></div>
+<div class="card"><h2>📋 Histórico de compras</h2><div id="historico"><div class="empty">Carregando...</div></div></div>
+</div>
+<div class="total-bar"><div class="total-inner"><div><div class="total-label">Total da compra</div><div id="total" class="total-value">R$ 0,00</div></div><button id="finalizarButton" class="success" onclick="finalizarCompra()" disabled>Finalizar compra</button></div></div>
+<div id="produtoModal" class="modal"><div class="modal-box"><div class="modal-title">Produto não cadastrado</div><div class="notice">Este código de barras ainda não está cadastrado. Informe os dados do produto.</div><div class="field"><label>Código de barras</label><input id="novoProdutoCodigo" type="text" readonly></div><div class="field"><label for="novoProdutoNome">Nome do produto</label><input id="novoProdutoNome" type="text" placeholder="Ex.: Coca-Cola 350ml"></div><div class="field"><label for="novoProdutoPreco">Preço</label><input id="novoProdutoPreco" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00"></div><div class="modal-actions"><button class="secondary" onclick="fecharModalProduto()">Cancelar</button><button class="success" onclick="cadastrarProduto()">Cadastrar</button></div></div></div>
+<div id="supermercadoModal" class="modal"><div class="modal-box"><div class="modal-title">Novo supermercado</div><div class="field"><label for="novoSupermercadoNome">Nome</label><input id="novoSupermercadoNome" type="text" placeholder="Ex.: Carone"></div><div class="modal-actions"><button class="secondary" onclick="fecharModalSupermercado()">Cancelar</button><button class="success" onclick="cadastrarSupermercado()">Adicionar</button></div></div></div>
+<script>
+const SUPABASE_URL="https://lbehdmxfkakwygwoozyr.supabase.co";
+const SUPABASE_KEY="sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let scanner=null,scannerRodando=false,produtoAtual=null,supermercadoAtual=null,carrinho=[];
+const STORAGE_CARRINHO="supermercado_carrinho_v1",STORAGE_DATA="supermercado_carrinho_criado_em",STORAGE_SUPERMERCADO="supermercado_selecionado",STORAGE_HORAS=12;
+document.addEventListener("DOMContentLoaded",async()=>{await carregarSupermercados();restaurarCarrinho();await carregarHistorico()});
+async function carregarSupermercados(){const select=document.getElementById("supermercado");select.innerHTML='<option value="">Selecione o supermercado</option>';const {data,error}=await supabaseClient.from("supermercados").select("*").order("nome");if(error){console.error(error);alert("Não foi possível carregar os supermercados.");return}data.forEach(s=>{const option=document.createElement("option");option.value=s.id;option.textContent=s.nome;select.appendChild(option)});const salvo=localStorage.getItem(STORAGE_SUPERMERCADO);if(salvo&&[...select.options].some(o=>o.value===salvo)){select.value=salvo;supermercadoAtual=Number(salvo)}select.onchange=trocarSupermercado}
+function trocarSupermercado(){const novo=document.getElementById("supermercado").value;if(!novo){supermercadoAtual=null;localStorage.removeItem(STORAGE_SUPERMERCADO);return}if(carrinho.length>0&&supermercadoAtual&&Number(novo)!==Number(supermercadoAtual)){if(!confirm("Existe uma compra em andamento neste carrinho.\n\nSe você trocar de supermercado, o carrinho atual será apagado.\n\nDeseja continuar?")){document.getElementById("supermercado").value=supermercadoAtual;return}limparCarrinhoSilencioso()}supermercadoAtual=Number(novo);localStorage.setItem(STORAGE_SUPERMERCADO,novo);produtoAtual=null;esconderProduto()}
+function abrirModalSupermercado(){document.getElementById("novoSupermercadoNome").value="";document.getElementById("supermercadoModal").style.display="flex"}
+function fecharModalSupermercado(){document.getElementById("supermercadoModal").style.display="none"}
+async function cadastrarSupermercado(){const nome=document.getElementById("novoSupermercadoNome").value.trim();if(!nome){alert("Digite o nome do supermercado.");return}const {data,error}=await supabaseClient.from("supermercados").insert({nome}).select().single();if(error){console.error(error);alert(error.code==="23505"?"Esse supermercado já está cadastrado.":"Não foi possível cadastrar o supermercado.");return}fecharModalSupermercado();await carregarSupermercados();document.getElementById("supermercado").value=data.id;supermercadoAtual=Number(data.id);localStorage.setItem(STORAGE_SUPERMERCADO,data.id)}
+function abrirEntradaManual(){if(!document.getElementById("supermercado").value){alert("Selecione um supermercado primeiro.");return}const area=document.getElementById("manualArea");area.style.display="block";const campo=document.getElementById("codigoManual");campo.value="";setTimeout(()=>campo.focus(),100)}
+async function processarCodigoManual(){const campo=document.getElementById("codigoManual");const codigo=campo.value.trim();if(!codigo){alert("Digite o código de barras.");campo.focus();return}if(!/^\d+$/.test(codigo)){alert("Digite somente números no código de barras.");campo.focus();return}if(codigo.length<8||codigo.length>14){alert("Digite um código de barras válido, com 8 a 14 números.");campo.focus();return}document.getElementById("manualArea").style.display="none";await processarCodigo(codigo)}
+async function abrirScanner(){if(scannerRodando)return;if(!document.getElementById("supermercado").value){alert("Selecione um supermercado primeiro.");return}document.getElementById("scannerArea").style.display="block";document.getElementById("scanButton").style.display="none";document.getElementById("manualArea").style.display="none";document.getElementById("status").textContent="Abrindo câmera...";scanner=new Html5Qrcode("reader");try{await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:280,height:140},aspectRatio:1.777778},codigo=>{if(scannerRodando){scannerRodando=false;processarCodigo(codigo)}},()=>{});scannerRodando=true;document.getElementById("status").textContent="Aponte a câmera para o código de barras."}catch(error){console.error("Erro ao abrir câmera:",error);scanner=null;scannerRodando=false;document.getElementById("scannerArea").style.display="none";document.getElementById("scanButton").style.display="block";document.getElementById("status").textContent="";alert("Não foi possível abrir a câmera.\n\nVerifique se o Safari possui permissão para usar a câmera.")}}
+async function fecharScanner(){const s=scanner;scanner=null;scannerRodando=false;if(s){try{await s.stop()}catch(e){console.log("Câmera já estava parada.",e)}try{s.clear()}catch(e){console.log("Scanner já estava limpo.",e)}}document.getElementById("scannerArea").style.display="none";document.getElementById("scanButton").style.display="block";document.getElementById("status").textContent=""}
+let scannerConsulta=null,scannerConsultaRodando=false;
+
+async function buscarConsultaPreco(){
+  const termo=document.getElementById("consultaBusca").value.trim();
+  if(!termo){alert("Digite o nome ou código de barras do produto.");return}
+  if(scannerConsultaRodando)await fecharScannerConsulta();
+  const resultados=document.getElementById("consultaResultados");
+  resultados.innerHTML='<div class="empty">Consultando...</div>';
+  const {data,error}=await supabaseClient.from("produtos").select("*").or(`nome.ilike.%${termo}%,codigo_barras.eq.${termo}`).order("nome").limit(20);
+  if(error){console.error(error);resultados.innerHTML='<div class="empty">Não foi possível consultar os produtos.</div>';return}
+  if(!data||data.length===0){resultados.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return}
+  let html='';
+  for(const produto of data){
+    const {data:precos,error:erroPreco}=await supabaseClient.from("precos").select("preco,registrado_em,supermercado_id,supermercados(nome)").eq("produto_id",produto.id).order("registrado_em",{ascending:false}).limit(100);
+    if(erroPreco){console.error(erroPreco);continue}
+    const ultimos={};
+    (precos||[]).forEach(p=>{if(!ultimos[p.supermercado_id])ultimos[p.supermercado_id]=p});
+    const lista=Object.values(ultimos).sort((a,b)=>Number(a.preco)-Number(b.preco));
+    html+=`<div class="product-info" style="margin-top:10px"><div class="product-name">${escaparHtml(produto.nome)}</div><div class="barcode">Código: ${escaparHtml(produto.codigo_barras)}</div>`;
+    if(lista.length===0){html+='<div class="notice" style="margin-top:10px">Nenhum preço cadastrado.</div>'}
+    else {html+='<div style="margin-top:10px">';lista.forEach(p=>{html+=`<div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #e5e7eb"><span>${escaparHtml(p.supermercados?.nome||"Supermercado")}</span><strong>R$ ${Number(p.preco).toFixed(2).replace('.',',')}</strong></div>`});html+='</div>'}
+    html+=`<button class="success" style="width:100%;margin-top:10px" onclick="usarProdutoConsulta(${produto.id})">Adicionar ao carrinho</button></div>`;
+  }
+  resultados.innerHTML=html||'<div class="empty">Nenhum preço cadastrado.</div>';
+}
+
+function escaparHtml(valor){return String(valor??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+async function usarProdutoConsulta(produtoId){
+  if(!supermercadoAtual){alert("Selecione um supermercado primeiro.");return}
+  const {data:produto,error}=await supabaseClient.from("produtos").select("*").eq("id",produtoId).single();
+  if(error||!produto){alert("Não foi possível carregar o produto.");return}
+  const {data:precos}=await supabaseClient.from("precos").select("preco,registrado_em").eq("produto_id",produto.id).eq("supermercado_id",supermercadoAtual).order("registrado_em",{ascending:false}).limit(1);
+  produtoAtual=produto;
+  document.getElementById("produtoNome").textContent=produto.nome;
+  document.getElementById("produtoCodigo").textContent="Código: "+produto.codigo_barras;
+  document.getElementById("produtoPreco").value=precos&&precos.length?Number(precos[0].preco).toFixed(2):'';
+  document.getElementById("produtoQuantidade").value=1;
+  document.getElementById("produtoCard").classList.remove("hidden");
+  document.getElementById("produtoCard").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+async function abrirScannerConsulta(){
+  if(scannerConsultaRodando)return;
+  document.getElementById("consultaScannerArea").style.display="block";
+  document.getElementById("consultaStatus").textContent="Abrindo câmera...";
+  scannerConsulta=new Html5Qrcode("consultaReader");
+  try{await scannerConsulta.start({facingMode:"environment"},{fps:10,qrbox:{width:280,height:140},aspectRatio:1.777778},codigo=>{if(scannerConsultaRodando){scannerConsultaRodando=false;buscarConsultaPorCodigoEscaneado(codigo)}},()=>{});scannerConsultaRodando=true;document.getElementById("consultaStatus").textContent="Aponte a câmera para o código de barras."}
+  catch(error){console.error(error);scannerConsulta=null;scannerConsultaRodando=false;document.getElementById("consultaScannerArea").style.display="none";alert("Não foi possível abrir a câmera. Verifique a permissão do Safari.")}
+}
+
+async function fecharScannerConsulta(){const s=scannerConsulta;scannerConsulta=null;scannerConsultaRodando=false;if(s){try{await s.stop()}catch(e){}try{s.clear()}catch(e){}}document.getElementById("consultaScannerArea").style.display="none";}
+
+async function buscarConsultaPorCodigoEscaneado(codigo){await fecharScannerConsulta();document.getElementById("consultaBusca").value=String(codigo).trim();await buscarConsultaPreco()}
+
+async function processarCodigo(codigo){codigo=String(codigo).trim();await fecharScanner();if(!codigo)return;if(!supermercadoAtual){alert("Selecione um supermercado primeiro.");return}const {data:produtos,error}=await supabaseClient.from("produtos").select("*").eq("codigo_barras",codigo).order("id",{ascending:true}).limit(1);if(error){console.error(error);alert("Erro ao consultar o produto.");return}if(!produtos||produtos.length===0){abrirModalNovoProduto(codigo);return}const produto=produtos[0];const {data:precos,error:erroPreco}=await supabaseClient.from("precos").select("preco,registrado_em").eq("produto_id",produto.id).eq("supermercado_id",supermercadoAtual).order("registrado_em",{ascending:false}).limit(1);if(erroPreco){console.error(erroPreco);alert("Erro ao consultar o preço.");return}let ultimoPreco=0;if(precos&&precos.length>0&&precos[0].preco!==null)ultimoPreco=Number(precos[0].preco);produtoAtual={id:produto.id,codigo_barras:produto.codigo_barras,nome:produto.nome,preco:ultimoPreco};mostrarProduto()}
+function mostrarProduto(){if(!produtoAtual)return;document.getElementById("produtoNome").textContent=produtoAtual.nome;document.getElementById("produtoPreco").value=Number(produtoAtual.preco).toFixed(2);document.getElementById("produtoQuantidade").value=1;document.getElementById("produtoCodigo").textContent="Código: "+produtoAtual.codigo_barras;document.getElementById("produtoCard").classList.remove("hidden");setTimeout(()=>document.getElementById("produtoPreco").focus(),150)}
+function esconderProduto(){document.getElementById("produtoCard").classList.add("hidden")}
+function abrirModalNovoProduto(codigo){document.getElementById("novoProdutoCodigo").value=codigo;document.getElementById("novoProdutoNome").value="";document.getElementById("novoProdutoPreco").value="";document.getElementById("produtoModal").style.display="flex";setTimeout(()=>document.getElementById("novoProdutoNome").focus(),200)}
+function fecharModalProduto(){document.getElementById("produtoModal").style.display="none"}
+async function cadastrarProduto(){const codigo=document.getElementById("novoProdutoCodigo").value.trim(),nome=document.getElementById("novoProdutoNome").value.trim(),preco=Number(document.getElementById("novoProdutoPreco").value);if(!nome){alert("Digite o nome do produto.");return}if(!Number.isFinite(preco)||preco<0){alert("Digite um preço válido.");return}const {data:produto,error:erroProduto}=await supabaseClient.from("produtos").insert({codigo_barras:codigo,nome}).select().single();if(erroProduto){console.error(erroProduto);alert("Não foi possível cadastrar o produto.");return}const {error:erroPreco}=await supabaseClient.from("precos").insert({produto_id:produto.id,supermercado_id:supermercadoAtual,preco});if(erroPreco){console.error(erroPreco);alert("Produto cadastrado, mas houve erro ao salvar o preço.");return}fecharModalProduto();produtoAtual={id:produto.id,codigo_barras:codigo,nome,preco};mostrarProduto()}
+async function salvarPrecoEAdicionar(){if(!produtoAtual)return;const campoPreco=document.getElementById("produtoPreco"),campoQuantidade=document.getElementById("produtoQuantidade"),preco=Number(campoPreco.value),quantidade=Number(campoQuantidade.value);if(!Number.isFinite(preco)||preco<0){alert("Digite um preço válido.");campoPreco.focus();return}if(!Number.isInteger(quantidade)||quantidade<1){alert("A quantidade deve ser pelo menos 1.");campoQuantidade.focus();return}if(!supermercadoAtual){alert("Selecione um supermercado.");return}const botao=document.getElementById("adicionarProdutoButton");botao.disabled=true;botao.textContent="Salvando...";const {error}=await supabaseClient.from("precos").insert({produto_id:produtoAtual.id,supermercado_id:supermercadoAtual,preco});if(error){console.error(error);alert("Não foi possível salvar o preço.");botao.disabled=false;botao.textContent="Salvar preço e adicionar ao carrinho";return}produtoAtual.preco=preco;adicionarAoCarrinho(produtoAtual,quantidade);botao.disabled=false;botao.textContent="Salvar preço e adicionar ao carrinho"}
+function adicionarAoCarrinho(produto,quantidade){if(!produto)return;const existente=carrinho.find(item=>Number(item.produto_id)===Number(produto.id));if(existente){existente.preco_unitario=Number(produto.preco);existente.quantidade+=quantidade}else{carrinho.push({produto_id:produto.id,codigo_barras:produto.codigo_barras,nome:produto.nome,preco_unitario:Number(produto.preco),quantidade})}salvarCarrinho();renderizarCarrinho();produtoAtual=null;esconderProduto()}
+function renderizarCarrinho(){const container=document.getElementById("carrinho");if(carrinho.length===0){container.innerHTML='<div class="empty">Nenhum produto adicionado.</div>';document.getElementById("limparCarrinhoButton").style.display="none";document.getElementById("finalizarButton").disabled=true;atualizarTotal();return}container.innerHTML="";carrinho.forEach((item,index)=>{const subtotal=Number(item.preco_unitario)*Number(item.quantidade),div=document.createElement("div");div.className="cart-item";div.innerHTML=`<div class="cart-left"><div class="cart-name">${escaparHTML(item.nome)}</div><div class="cart-price">${formatarMoeda(item.preco_unitario)} cada</div></div><div class="cart-right"><div class="subtotal">${formatarMoeda(subtotal)}</div><div class="qty"><button onclick="alterarQuantidade(${index},-1)">−</button><span>${item.quantidade}</span><button onclick="alterarQuantidade(${index},1)">+</button></div></div>`;container.appendChild(div)});document.getElementById("limparCarrinhoButton").style.display="block";document.getElementById("finalizarButton").disabled=false;atualizarTotal()}
+function alterarQuantidade(index,delta){if(!carrinho[index])return;carrinho[index].quantidade+=delta;if(carrinho[index].quantidade<=0)carrinho.splice(index,1);salvarCarrinho();renderizarCarrinho()}
+function calcularTotal(){return carrinho.reduce((total,item)=>total+Number(item.preco_unitario)*Number(item.quantidade),0)}
+function atualizarTotal(){document.getElementById("total").textContent=formatarMoeda(calcularTotal())}
+function salvarCarrinho(){localStorage.setItem(STORAGE_CARRINHO,JSON.stringify(carrinho));if(carrinho.length>0){if(!localStorage.getItem(STORAGE_DATA))localStorage.setItem(STORAGE_DATA,Date.now().toString())}else localStorage.removeItem(STORAGE_DATA)}
+function restaurarCarrinho(){const dados=localStorage.getItem(STORAGE_CARRINHO),dataCriacao=localStorage.getItem(STORAGE_DATA);if(!dados){carrinho=[];renderizarCarrinho();return}if(dataCriacao){const idade=Date.now()-Number(dataCriacao),limite=STORAGE_HORAS*60*60*1000;if(idade>limite){localStorage.removeItem(STORAGE_CARRINHO);localStorage.removeItem(STORAGE_DATA);carrinho=[];renderizarCarrinho();return}}try{carrinho=JSON.parse(dados);if(!Array.isArray(carrinho))carrinho=[]}catch(e){carrinho=[]}renderizarCarrinho()}
+function limparCarrinhoSilencioso(){carrinho=[];localStorage.removeItem(STORAGE_CARRINHO);localStorage.removeItem(STORAGE_DATA);renderizarCarrinho()}
+function limparCarrinho(){if(carrinho.length===0)return;if(!confirm("Deseja realmente limpar todo o carrinho?"))return;limparCarrinhoSilencioso()}
+async function finalizarCompra(){if(carrinho.length===0)return;if(!supermercadoAtual){alert("Selecione um supermercado.");return}if(!confirm("Finalizar esta compra?\n\nTotal: "+formatarMoeda(calcularTotal())))return;const button=document.getElementById("finalizarButton");button.disabled=true;button.textContent="Salvando...";const total=calcularTotal();const {data:compra,error:erroCompra}=await supabaseClient.from("compras").insert({supermercado_id:supermercadoAtual,total}).select().single();if(erroCompra){console.error(erroCompra);alert("Não foi possível salvar a compra.");button.disabled=false;button.textContent="Finalizar compra";return}const itens=carrinho.map(item=>({compra_id:compra.id,produto_id:item.produto_id,quantidade:item.quantidade,preco_unitario:item.preco_unitario,subtotal:Number(item.preco_unitario)*Number(item.quantidade)}));const {error:erroItens}=await supabaseClient.from("itens_compra").insert(itens);if(erroItens){console.error(erroItens);alert("A compra foi criada, mas houve erro ao salvar os produtos.");button.disabled=false;button.textContent="Finalizar compra";return}localStorage.removeItem(STORAGE_CARRINHO);localStorage.removeItem(STORAGE_DATA);carrinho=[];renderizarCarrinho();button.textContent="Compra finalizada ✓";await carregarHistorico();alert("Compra salva com sucesso!");setTimeout(()=>button.textContent="Finalizar compra",2000)}
+async function carregarHistorico(){const container=document.getElementById("historico"),{data:compras,error}=await supabaseClient.from("compras").select(`id,data_compra,total,supermercados(nome)`).order("data_compra",{ascending:false}).limit(20);if(error){console.error(error);container.innerHTML='<div class="empty">Não foi possível carregar o histórico.</div>';return}if(!compras||compras.length===0){container.innerHTML='<div class="empty">Nenhuma compra finalizada ainda.</div>';return}container.innerHTML="";compras.forEach(compra=>{const div=document.createElement("div");div.className="history-item";const data=new Date(compra.data_compra),dataFormatada=data.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}),supermercado=compra.supermercados?compra.supermercados.nome:"Supermercado";div.innerHTML=`<div class="history-top"><div class="history-date">${dataFormatada}</div><div class="history-total">${formatarMoeda(compra.total)}</div></div><div class="history-market">${escaparHTML(supermercado)}</div>`;container.appendChild(div)})}
+function formatarMoeda(valor){return Number(valor||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function escaparHTML(texto){return String(texto).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+window.addEventListener("load",()=>{setTimeout(()=>{if(document.activeElement)document.activeElement.blur();},250)});document.getElementById("consultaBusca").addEventListener("focus",()=>{});document.getElementById("produtoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalProduto()});document.getElementById("supermercadoModal").addEventListener("click",e=>{if(e.target===e.currentTarget)fecharModalSupermercado()});
+</script>
+<script>
+(function(){
+  function removeFocus(){
+    var el=document.activeElement;
+    if(el && el.matches('input,textarea,select,button')) el.blur();
+  }
+  window.addEventListener('DOMContentLoaded',function(){
+    removeFocus();
+    setTimeout(removeFocus,50);
+    setTimeout(removeFocus,300);
+  });
+  window.addEventListener('load',function(){
+    removeFocus();
+    setTimeout(removeFocus,150);
+  });
+})();
+</script>\n<div class="last-update" aria-label="Última atualização"><span id="lastUpdate">Última atualização: carregando...</span></div>
+<script>
+(async()=>{
+  const el=document.getElementById("lastUpdate");
+  try{
+    const response=await fetch("https://api.github.com/repos/leorbr27/Supermercado/commits?per_page=1");
+    if(!response.ok) throw new Error("GitHub API");
+    const commits=await response.json();
+    const iso=commits?.[0]?.commit?.committer?.date;
+    if(!iso) throw new Error("Commit não encontrado");
+    const date=new Date(iso);
+    const parts=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(date);
+    const get=t=>parts.find(p=>p.type===t)?.value||"";
+    el.textContent="Última atualização: "+get("day")+"/"+get("month")+"/"+get("year")+", "+get("hour")+":"+get("minute");
+  }catch(e){
+    console.error("Não foi possível obter o último commit do GitHub:",e);
+    el.textContent="Última atualização: indisponível";
+  }
+})();
+</script>
+</body>
+</html>
