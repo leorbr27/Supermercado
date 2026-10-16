@@ -119,7 +119,7 @@ function renderizarPrecosRegistrados(){
   const encontrados=precosRegistrados.filter(o=>{
    const nome=normalizarBusca(o.product||"");
    return nome && (nome===termo || nome.includes(termo) || termo.includes(nome));
-  }).filter(o=>Number.isFinite(Number(o.price)) && Number(o.price)>=0)
+  }).filter(o=>o.price!==null && o.price!==undefined && o.price!=="" && Number.isFinite(Number(o.price)) && Number(o.price)>=0)
     .sort((a,b)=>Number(a.price)-Number(b.price));
   root.innerHTML="";
   if(!encontrados.length){
