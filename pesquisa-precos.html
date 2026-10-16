@@ -152,25 +152,35 @@ function renderizarTabelaRegistrados(){
  const termo=normalizarBusca(document.getElementById("filtroTabela").value);
  const loja=document.getElementById("filtroSupermercado").value;
  const ordem=document.getElementById("ordenarTabela").value;
- const correspondencias=gerarCorrespondencias();
- const lista=correspondencias.filter(o=>{
+ const temLista=produtos.length>0;
+ // Antes de importar a lista pessoal, exibe todos os registros do JSON.
+ const linhas=temLista?gerarCorrespondencias():precosRegistrados
+  .filter(o=>o.product&&o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0)
+  .map(o=>({...o,item:"—",score:null}));
+ const lista=linhas.filter(o=>{
   const texto=normalizarBusca([o.item,o.store,o.product,o.package].join(" "));
   return (!termo||texto.includes(termo))&&(!loja||o.store===loja);
  });
  lista.sort((a,b)=>{
   if(ordem==="menor")return Number(a.price)-Number(b.price);
   if(ordem==="maior")return Number(b.price)-Number(a.price);
-  if(ordem==="supermercado")return a.store.localeCompare(b.store,"pt-BR")||a.item.localeCompare(b.item,"pt-BR");
+  if(ordem==="supermercado")return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");
+  if(!temLista)return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");
   return b.score-a.score||a.item.localeCompare(b.item,"pt-BR")||Number(a.price)-Number(b.price);
  });
  corpo.innerHTML="";
- if(!produtos.length){corpo.innerHTML='<tr><td colspan="6">Importe sua lista de compras no primeiro card.</td></tr>';}
- else if(!lista.length){corpo.innerHTML='<tr><td colspan="6">Nenhuma correspondência encontrada com esses filtros.</td></tr>';}
- else{corpo.innerHTML=lista.map(o=>'<tr><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'</td><td data-label="Correspondência">'+(o.score>=0.8?"Alta":o.score>=0.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)</td></tr>').join("");}
- document.getElementById("statusTabela").textContent=produtos.length
-  ?lista.length+" correspondência(s) para "+produtos.length+" item(ns) da lista."
-  :"Importe sua lista de compras para comparar com "+precosRegistrados.length+" preço(s) registrado(s).";
+ if(!precosRegistrados.length){
+  corpo.innerHTML='<tr><td colspan="6">Não foi possível carregar os produtos de precos-registrados.json.</td></tr>';
+ }else if(!lista.length){
+  corpo.innerHTML='<tr><td colspan="6">Nenhum produto encontrado com esses filtros.</td></tr>';
+ }else{
+  corpo.innerHTML=lista.map(o=>'<tr><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'</td><td data-label="Correspondência">'+(temLista?(o.score>=0.8?"Alta":o.score>=0.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)':"Aguardando comparação")+'</td></tr>').join("");
+ }
+ document.getElementById("statusTabela").textContent=temLista
+  ?lista.length+" correspondência(s) exibida(s) para "+produtos.length+" item(ns) da lista."
+  :lista.length+" produto(s) e preço(s) registrado(s) no JSON. Importe sua lista para comparar.";
 }
+
 function normalizarBusca(valor){
  return String(valor||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
 }
