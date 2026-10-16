@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": null,
+  "currency": "BRL",
+  "instructions": "Adicione ofertas extraídas dos encartes. price deve ser número; recordedAt e validUntil usam AAAA-MM-DD. Use validUntil null quando a validade não estiver informada. Não invente dados.",
+  "offers": []
+}
