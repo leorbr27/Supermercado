@@ -65,8 +65,9 @@ Agora processe as imagens anexadas e devolva o ARRAY JSON COMPLETO acumulado, pr
 <p class="note">Cole os lembretes, um produto por linha. Você também pode colar o conteúdo do arquivo TXT gerado pelo Atalho do iPhone. Os dados ficam neste navegador e não são enviados para um banco de dados.</p>
 <label for="listaProdutos">Produtos</label>
 <textarea id="listaProdutos" placeholder="Pasta de dente&#10;Leite integral&#10;Chocolate quente&#10;Refrigerante"></textarea>
-<div class="actions"><button class="primary" onclick="carregarProdutos()">Preparar pesquisa</button><button class="secondary" onclick="colarDaAreaDeTransferencia()">Colar da área de transferência</button></div>
+<div class="actions" style="flex-direction:column"><button class="secondary" onclick="colarDaAreaDeTransferencia()">Colar da área de transferência</button><button class="primary" onclick="carregarProdutos()">Preparar pesquisa</button><button class="success" type="button" onclick="enviarResultadoParaWhatsApp()">Enviar resultado para WhatsApp</button></div>
 <div id="mensagemColagem" class="status" aria-live="polite"></div>
+<p class="note">O WhatsApp será aberto para você escolher o contato ou grupo. Os produtos serão organizados por supermercado.</p>
 </section>
 <section class="card">
 <h2>3. Resultado da comparação</h2>
@@ -74,8 +75,7 @@ Agora processe as imagens anexadas e devolva o ARRAY JSON COMPLETO acumulado, pr
 <div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select></div>
 <div id="statusTabela" class="table-status" role="status" aria-live="polite">Importe sua lista de compras para encontrar correspondências.</div>
 <div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Aguardando a lista de compras.</td></tr></tbody></table></div>
-<div class="actions"><button class="success" type="button" onclick="enviarResultadoParaWhatsApp()">Enviar resultado para WhatsApp</button></div>
-<p class="note">O WhatsApp será aberto para você escolher o contato ou grupo. Os produtos serão organizados por supermercado.</p>
+
 </section>
 
 <section class="card">
