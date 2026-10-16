@@ -1,7 +1,632 @@
-{
-  "schemaVersion": 1,
-  "updatedAt": null,
-  "currency": "BRL",
-  "instructions": "Adicione ofertas extraídas dos encartes. price deve ser número; recordedAt e validUntil usam AAAA-MM-DD. Use validUntil null quando a validade não estiver informada. Não invente dados.",
-  "offers": []
-}
+[
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Presunto Cozido Perdigão Peça/Pedaço",
+    "peso_quantidade": "Peça / Pedaço (kg)",
+    "preco": 22.9
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Margarina com/sem Sal Doriana",
+    "peso_quantidade": "500g",
+    "preco": 6.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Feijão Vermelho Tipo 1 Berger Pacote",
+    "peso_quantidade": "1kg",
+    "preco": 5.69
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Arroz Branco Tipo 1 Alegre Pacote",
+    "peso_quantidade": "5kg",
+    "preco": 17.9
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Leite Condensado Italac Integ. Gourmet",
+    "peso_quantidade": "395g",
+    "preco": 4.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Coxa e Sobrecoxa de Frango Congelado Kifrango com Porção Dorsal",
+    "peso_quantidade": "kg",
+    "preco": 7.19
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Filé de Peito de Frango Congelado Uniaves Bandeja",
+    "peso_quantidade": "1kg",
+    "preco": 17.98
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Hambúrguer Misto Congelado Bovino/Aves Grã Filé",
+    "peso_quantidade": "2,688kg",
+    "preco": 39.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Refrigerante Coca-Cola Tradicional/Zero",
+    "peso_quantidade": "2,5L",
+    "preco": 10.49
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Azeite Português Extra Virgem Oliveira da Serra",
+    "peso_quantidade": "500ml",
+    "preco": 24.9
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Leite Condensado Semidesnatado Italac TP",
+    "peso_quantidade": "395g",
+    "preco": 4.98
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Bebida de Uva Adoçada Abbraccio",
+    "peso_quantidade": "1,5L",
+    "preco": 11.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Arroz Branco Tipo 1 Calafate Pacote",
+    "peso_quantidade": "5kg",
+    "preco": 17.99
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Filé de Peito de Frango Oi Frango Bd.",
+    "peso_quantidade": "1kg",
+    "preco": 17.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Amaciante Concentrado Suprema Suave Encanto",
+    "peso_quantidade": "1,5L",
+    "preco": 13.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Arroz Branco Tipo 1 Alegre Pacote",
+    "peso_quantidade": "5kg",
+    "preco": 18.79
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Feijão Carioca Berger",
+    "peso_quantidade": "1kg",
+    "preco": 5.89
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Peito de Frango Congelado Gujão Envelopado",
+    "peso_quantidade": "kg",
+    "preco": 12.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Massa de Espaguete Supradely",
+    "peso_quantidade": "400g",
+    "preco": 1.89
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Hambúrguer Bovino Congelado Frisa Novilha",
+    "peso_quantidade": "140g",
+    "preco": 5.98
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Cerveja Pilsen Budweiser",
+    "peso_quantidade": "350ml",
+    "preco": 3.69
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Lava Roupas em Pó Tixan Ypê Concentrado",
+    "peso_quantidade": "2,2kg",
+    "preco": 19.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Lava Roupas em Pó Tixan Ypê Concentrado",
+    "peso_quantidade": "2,2kg",
+    "preco": 24.9
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Desinfetante Suprema",
+    "peso_quantidade": "5L",
+    "preco": 14.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Amaciante Concentrado Baby Soft",
+    "peso_quantidade": "500ml",
+    "preco": 4.75
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Papel Higiênico Neutro Primavera Fit Folha Dupla 12x20m",
+    "peso_quantidade": "12 unidades",
+    "preco": 7.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Batata Congelada Easychef OK Fries Tradicional",
+    "peso_quantidade": "1,5kg",
+    "preco": 12.98
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Queijo Mussarela Latvida Peça/Pedaço",
+    "peso_quantidade": "Peça / Pedaço (kg)",
+    "preco": 35.99
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Filé de Peito de Frango Congelado Seara Bandeja",
+    "peso_quantidade": "1kg",
+    "preco": 16.49
+  },
+  {
+    "supermercado": "Sempretem",
+    "descricao": "Cerveja Puro Malte Spaten Munich Lata",
+    "peso_quantidade": "473ml",
+    "preco": 4.99
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Massa Sêmola Yara Espaguete N.8",
+    "peso_quantidade": "1kg",
+    "preco": 4.99
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Feijão Preto Tipo 1 Combrasil (Oferta Loja)",
+    "peso_quantidade": "1kg",
+    "preco": 8.49
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Feijão Preto Tipo 1 Combrasil (Clube Carone)",
+    "peso_quantidade": "1kg",
+    "preco": 6.99
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Azeite de Oliva Português Dia a Dia Gallo (Oferta Loja)",
+    "peso_quantidade": "400ml",
+    "preco": 27.99
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Azeite de Oliva Português Dia a Dia Gallo (Clube Carone)",
+    "peso_quantidade": "400ml",
+    "preco": 24.99
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Filé de Coxa e Sobrecoxa de Frango Congelado Seara Bandeja (Oferta Loja)",
+    "peso_quantidade": "1kg",
+    "preco": 17.99
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Filé de Coxa e Sobrecoxa de Frango Congelado Seara Bandeja (Clube Carone)",
+    "peso_quantidade": "1kg",
+    "preco": 15.98
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Achocolatado em Pó Nescau Act-Go (Oferta Loja)",
+    "peso_quantidade": "550g",
+    "preco": 21.98
+  },
+  {
+    "supermercado": "Carone",
+    "descricao": "Achocolatado em Pó Nescau Act-Go (Clube Carone)",
+    "peso_quantidade": "550g",
+    "preco": 15.98
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Feijão Preto Tipo 1 Norte",
+    "peso_quantidade": "1kg",
+    "preco": 4.19
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Feijão Preto Tipo 1 Norte (App Meu Assaí)",
+    "peso_quantidade": "1kg",
+    "preco": 3.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Feijão Carioca Tipo 1 Nico",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 6.89
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Farinha de Trigo Tipo 1 Três Coroas",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 2.49
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Café Tradicional ou Extraforte Grão da Roça",
+    "peso_quantidade": "Pacote 250g",
+    "preco": 7.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Açúcar Cristal Comcro",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 4.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Macarrão com Ovos Lança Cortes (exceto Ninho)",
+    "peso_quantidade": "Pacote 500g",
+    "preco": 3.49
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Hambúrguer Misto Carne Bovina e Frango Perdigão",
+    "peso_quantidade": "Caixa 672g",
+    "preco": 15.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Hambúrguer Misto Carne Bovina e Frango Perdigão (App Meu Assaí)",
+    "peso_quantidade": "Caixa 672g",
+    "preco": 14.39
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Batata Palito Congelada Chic Bem Brasil",
+    "peso_quantidade": "Pacote 2kg",
+    "preco": 17.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Tirinhas de Frango Empanado ou Mini Chicken Empanado Perdigão",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 15.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Linguiça Tipo Calabresa Defumada Nobre",
+    "peso_quantidade": "kg",
+    "preco": 39.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Salsicha para Hot-Dog Congelada Perdigão",
+    "peso_quantidade": "Pacote 3kg",
+    "preco": 44.5
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Bacon Rezende",
+    "peso_quantidade": "Preço por quilo na peça (kg)",
+    "preco": 24.98
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Leite em Pó Integral ou Integral Instantâneo Aurora",
+    "peso_quantidade": "Sachê 400g",
+    "preco": 11.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Creme Culinário UHT Damare",
+    "peso_quantidade": "TP 200g",
+    "preco": 1.59
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Milho-Verde Fugini",
+    "peso_quantidade": "Sachê 170g",
+    "preco": 2.49
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Molho de Tomate Tradicional Fugini",
+    "peso_quantidade": "Pouch 300g",
+    "preco": 1.19
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Biscoito Recheado Poraquê Sabores",
+    "peso_quantidade": "Pacote 126g",
+    "preco": 2.65
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Achocolatado em Pó Original Toddy",
+    "peso_quantidade": "Pacote 750g",
+    "preco": 19.89
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Sobrecoxas de Frango Congeladas Oi Frango",
+    "peso_quantidade": "Bandeja 1kg",
+    "preco": 12.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Filezinho Sassami de Frango Congelado Perdigão",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 14.59
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Filé de Peito de Frango Congelado IQF Canção",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 14.5
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Cupim Bovino Resfriado Friboi",
+    "peso_quantidade": "Preço por quilo na peça (kg)",
+    "preco": 42.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Alcatra com Maminha Resfriada Fracionada Friboi",
+    "peso_quantidade": "Preço por quilo na peça (kg)",
+    "preco": 48.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Costelinha Suína Resfriada Friella",
+    "peso_quantidade": "kg",
+    "preco": 22.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Meu Menu Perdigão Sabores",
+    "peso_quantidade": "Pacote 300g",
+    "preco": 6.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Meu Menu Perdigão Sabores (App Meu Assaí)",
+    "peso_quantidade": "Pacote 300g",
+    "preco": 5.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Sanduíche Congelado Hot Pocket Sadia Sabores",
+    "peso_quantidade": "Pacote 145g",
+    "preco": 7.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Sanduíche Congelado Hot Pocket Sadia Sabores (App Meu Assaí)",
+    "peso_quantidade": "Pacote 145g",
+    "preco": 6.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Pizza Congelada Perdigão Sabores",
+    "peso_quantidade": "Caixa 460g",
+    "preco": 13.5
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Pizza Congelada Perdigão Sabores (App Meu Assaí)",
+    "peso_quantidade": "Caixa 460g",
+    "preco": 12.5
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Margarina Cremosa com Sal Qualy",
+    "peso_quantidade": "Pote 1kg",
+    "preco": 16.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Requeijão Cremoso Tradicional ou Light Damare",
+    "peso_quantidade": "Pote 200g",
+    "preco": 5.49
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Maionese Arisco",
+    "peso_quantidade": "Pote 500g",
+    "preco": 6.59
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Maionese Arisco (App Meu Assaí)",
+    "peso_quantidade": "Pote 500g",
+    "preco": 5.69
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Batata Palha Tradicional ou Extra Fina Crac",
+    "peso_quantidade": "Pacote 400g",
+    "preco": 15.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Bebida Láctea Sabor Chocolate Toddynho Tipos",
+    "peso_quantidade": "TP 200ml",
+    "preco": 2.19
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Farinha de Mandioca Branca Pachá",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 3.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Farinha de Mandioca Branca Pachá (App Meu Assaí)",
+    "peso_quantidade": "Pacote 1kg",
+    "preco": 3.69
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Biscoito Petyan",
+    "peso_quantidade": "Pacote 2kg",
+    "preco": 15.59
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Cerveja Chopp Brahma",
+    "peso_quantidade": "Lata 473ml",
+    "preco": 4.59
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Cerveja Spaten",
+    "peso_quantidade": "Lata 473ml",
+    "preco": 4.79
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Cerveja Stella Artois",
+    "peso_quantidade": "Lata 473ml",
+    "preco": 4.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Coquetel Alcoólico Drinkball Sabores",
+    "peso_quantidade": "Garrafa 300ml",
+    "preco": 4.49
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Gin Dry Cat Tipos",
+    "peso_quantidade": "Garrafa 750ml",
+    "preco": 58.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Bebida Energética Start",
+    "peso_quantidade": "PET 2L",
+    "preco": 8.89
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Refrigerante Uai Sabores",
+    "peso_quantidade": "PET 200ml",
+    "preco": 0.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Refrigerante Original Coca-Cola",
+    "peso_quantidade": "PET 2L",
+    "preco": 9.79
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Suco de Caju Tropical Docampo",
+    "peso_quantidade": "PET 1L",
+    "preco": 3.19
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Refresco de Guaraná Guaravita Sabores",
+    "peso_quantidade": "Copo 290ml",
+    "preco": 0.89
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Lava-Roupas Líquido Omo Tipos",
+    "peso_quantidade": "Galão 3L",
+    "preco": 57.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Lava-Roupas Líquido Omo Tipos (App Meu Assaí)",
+    "peso_quantidade": "Galão 3L",
+    "preco": 51.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Lava-Roupas em Pó Omo Tipos",
+    "peso_quantidade": "Caixa 1,6kg",
+    "preco": 19.9
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Amaciante Concentrado Comfort Fragrâncias",
+    "peso_quantidade": "Pacote Refil 900ml",
+    "preco": 17.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Amaciante Concentrado Comfort Fragrâncias (App Meu Assaí)",
+    "peso_quantidade": "Pacote Refil 900ml",
+    "preco": 15.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Detergente Líquido Limpadua Fragrâncias",
+    "peso_quantidade": "Frasco 500ml",
+    "preco": 1.99
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Detergente Líquido Limpadua Fragrâncias (App Meu Assaí)",
+    "peso_quantidade": "Frasco 500ml",
+    "preco": 1.79
+  },
+  {
+    "supermercado": "Assaí Atacadista",
+    "descricao": "Água Sanitária Qboa",
+    "peso_quantidade": "Galão 5L",
+    "preco": 6.59
+  },
+  {
+    "supermercado": "RB Supermercados",
+    "descricao": "Peito de Frango Resfriado c/ Osso",
+    "peso_quantidade": "kg (Granel)",
+    "preco": 15.99
+  },
+  {
+    "supermercado": "RB Supermercados",
+    "descricao": "Peito Bovino",
+    "peso_quantidade": "kg",
+    "preco": 39.9
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Leite Longa Vida Selita (Desnatado/Semidesnatado/Integral)",
+    "peso_quantidade": "1L",
+    "preco": 4.99
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Chã de Fora Bovino",
+    "peso_quantidade": "kg",
+    "preco": 39.98
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Pera PT",
+    "peso_quantidade": "kg",
+    "preco": 9.98
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Amaciante Downy",
+    "peso_quantidade": "1,35L / 1,5L",
+    "preco": 25.9
+  },
+  {
+    "supermercado": "Rede Casagrande",
+    "descricao": "Manteiga Damare com Sal",
+    "peso_quantidade": "200g",
+    "preco": 7.99
+  }
+]
