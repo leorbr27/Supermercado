@@ -4,78 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#173b63">
-<title>Teste de encartes · Supermercado</title>
+<title>Pesquisa de preços · Supermercado</title>
 <style>
-:root{color-scheme:light;--blue:#173b63;--blue2:#24578b;--bg:#f2f5f9;--line:#dfe7f0;--muted:#63748a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#182538;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.wrap{max-width:1100px;margin:auto;padding:18px 14px 42px}header{display:flex;align-items:center;gap:12px;margin-bottom:18px}header a{font-size:28px;color:var(--blue);text-decoration:none}h1{font-size:clamp(22px,4vw,29px);margin:0;color:var(--blue)}.sub{color:var(--muted);font-size:14px;margin-top:4px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 3px 12px #1e466e08}
-.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric{background:#f5f8fc;border-radius:12px;padding:12px}.metric strong{display:block;font-size:22px;color:var(--blue)}.metric span{font-size:12px;color:var(--muted)}
-.controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}label{display:block;font-size:12px;font-weight:700;color:#4b5d73;margin-bottom:6px}input,select{width:100%;min-height:43px;padding:10px 11px;border:1px solid #cbd6e3;border-radius:10px;background:#fff;color:#182538;font-size:15px}
-.status{font-size:14px;line-height:1.5;color:var(--muted);padding:5px 0}.status.error{color:#b42318}.table-wrap{overflow-x:auto;margin-top:12px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid #e7edf4;vertical-align:top}th{background:#f5f8fc;color:#43566d;font-size:12px;white-space:nowrap}tbody tr:hover{background:#fafcff}.price{font-weight:750;color:#087443;white-space:nowrap}.store{font-weight:650}.empty{text-align:center;padding:28px 10px;color:var(--muted)}.bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:12px}
-@media(max-width:650px){.wrap{padding:14px 10px 30px}.summary{gap:7px}.metric{padding:10px 8px}.metric strong{font-size:19px}.metric span{font-size:11px}.controls{grid-template-columns:1fr}.card{padding:12px}table{font-size:13px}th,td{padding:9px 8px}}
+:root{--blue:#173b63;--bg:#f2f5f9;--line:#dfe7f0;--muted:#63748a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#182538;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:1000px;margin:auto;padding:18px 14px 40px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:18px}header a{font-size:28px;color:var(--blue);text-decoration:none}h1{font-size:clamp(22px,4vw,29px);margin:0;color:var(--blue)}h2{font-size:18px;color:var(--blue);margin:0 0 12px}.sub,.note{color:var(--muted);font-size:13px;line-height:1.5;margin-top:5px}
+.card,.result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 3px 12px #1e466e08}
+textarea,input,select{width:100%;border:1px solid #cbd6e3;border-radius:10px;background:#fff;color:#182538;font:inherit;font-size:15px;padding:11px}textarea{min-height:115px;resize:vertical;line-height:1.45}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}button{border:0;border-radius:10px;min-height:42px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}.primary{background:#2563eb;color:#fff}.secondary{background:#eef3f8;color:#29415f}.actions button{flex:1}
+.status{font-size:13px;color:var(--muted);margin-top:10px}.error{color:#b42318}.result{padding:14px}.item-name{font-size:17px;font-weight:800;margin-bottom:8px}.recommend{font-size:16px;line-height:1.45}.market{color:#087443;font-weight:850}.price{font-weight:850;white-space:nowrap}.match{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 0;border-top:1px solid #e7edf4}.meta{font-size:12px;color:var(--muted);margin-top:3px}.tag{display:inline-block;background:#e8f7ee;color:#087443;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:800;margin-left:6px}.empty{text-align:center;padding:20px 5px;color:var(--muted)}
+@media(max-width:600px){.wrap{padding:13px 10px 28px}.card{padding:13px}.result{padding:12px}.actions{flex-direction:column}.match{grid-template-columns:1fr auto}}
 </style>
 </head>
 <body><main class="wrap">
-<header><a href="index.html" aria-label="Voltar à página inicial">‹</a><div><h1>🛒 Teste de encartes</h1><div class="sub">Consulta automática dos preços registrados no arquivo JSON do GitHub.</div></div></header>
-<section class="card"><div class="summary">
-<div class="metric"><strong id="total">—</strong><span>Produtos registrados</span></div>
-<div class="metric"><strong id="stores">—</strong><span>Supermercados</span></div>
-<div class="metric"><strong id="shown">—</strong><span>Resultados exibidos</span></div>
-</div><div id="status" class="status" role="status" aria-live="polite">Carregando os preços registrados…</div></section>
+<header><a href="index.html" aria-label="Voltar">‹</a><div><h1>🛒 Onde comprar mais barato</h1><div class="sub">Compara sua lista com os preços registrados no arquivo JSON.</div></div></header>
 <section class="card">
-<div class="controls">
-<div><label for="search">Buscar produto ou descrição</label><input id="search" type="search" placeholder="Ex.: arroz, café, frango…"></div>
-<div><label for="storeFilter">Supermercado</label><select id="storeFilter"><option value="">Todos os supermercados</option></select></div>
-<div><label for="sort">Ordenar por</label><select id="sort"><option value="store">Supermercado</option><option value="name">Nome do produto</option><option value="low">Menor preço</option><option value="high">Maior preço</option></select></div>
-</div>
-<div class="table-wrap"><table><thead><tr><th>Supermercado</th><th>Produto</th><th>Peso / quantidade</th><th>Preço</th></tr></thead><tbody id="products"><tr><td colspan="4" class="empty">Carregando dados…</td></tr></tbody></table></div>
-<div class="bottom"><span id="resultInfo">Aguardando o arquivo JSON.</span><button id="reload" type="button">↻ Atualizar dados</button></div>
+<h2>Lista de produtos</h2>
+<p class="note">Ao abrir pelo Atalho, o texto pode ser enviado no endereço da página. Se a lista não aparecer automaticamente, cole-a abaixo e toque em Comparar.</p>
+<textarea id="lista" placeholder="Um produto por linha&#10;Ex.: leite integral&#10;café 500 g"></textarea>
+<div class="actions"><button class="primary" id="compare">Comparar preços</button><button class="secondary" id="paste">Colar da área de transferência</button></div>
+<div id="status" class="status" role="status" aria-live="polite">Carregando preços registrados…</div>
 </section>
+<section class="card"><h2>Recomendação por produto</h2><div id="results"><div class="empty">A lista será comparada com os produtos registrados.</div></div></section>
 </main>
 <script>
 const JSON_URL="precos-registrados.json";
 const $=id=>document.getElementById(id);
-let allProducts=[];
-const money=value=>Number(value).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-function setStatus(message,error=false){$("status").textContent=message;$("status").className="status"+(error?" error":"")}
-function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-async function loadProducts(){
- $("reload").disabled=true;setStatus("Lendo automaticamente precos-registrados.json…");
+let database=[];
+const money=n=>Number(n).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const normalize=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function similarity(query,product){
+ const q=normalize(query),p=normalize(product);
+ if(!q||!p)return 0;
+ if(q===p)return 100;
+ if(p.includes(q)||q.includes(p))return 90;
+ const qa=new Set(q.split(" ")),pa=new Set(p.split(" "));
+ const common=[...qa].filter(t=>pa.has(t)).length;
+ return common/Math.max(qa.size,pa.size)*80;
+}
+async function loadDatabase(){
  try{
-  const response=await fetch(JSON_URL+"?t="+Date.now(),{cache:"no-store"});
-  if(!response.ok)throw new Error("Não foi possível acessar o arquivo JSON (HTTP "+response.status+").");
-  const data=await response.json();
-  if(!Array.isArray(data))throw new Error("O arquivo JSON precisa conter uma lista de produtos.");
-  allProducts=data.filter(p=>p&&typeof p==="object").map(p=>({
-   supermercado:String(p.supermercado??"Não informado"),
-   descricao:String(p.descricao??"Produto sem descrição"),
-   peso_quantidade:String(p.peso_quantidade??"—"),
-   preco:Number(p.preco)
-  })).filter(p=>Number.isFinite(p.preco)&&p.preco>=0);
-  const stores=[...new Set(allProducts.map(p=>p.supermercado))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
-  const previous=$("storeFilter").value;
-  $("storeFilter").innerHTML='<option value="">Todos os supermercados</option>'+stores.map(s=>'<option value="'+escapeHtml(s)+'">'+escapeHtml(s)+'</option>').join("");
-  if(stores.includes(previous))$("storeFilter").value=previous;
-  $("total").textContent=allProducts.length.toLocaleString("pt-BR");
-  $("stores").textContent=stores.length.toLocaleString("pt-BR");
-  setStatus("Arquivo JSON carregado com sucesso. Os dados são lidos diretamente do repositório do GitHub.");
-  renderProducts();
- }catch(error){
-  allProducts=[];$("total").textContent="0";$("stores").textContent="0";$("shown").textContent="0";
-  $("products").innerHTML='<tr><td colspan="4" class="empty">Não foi possível carregar os produtos.</td></tr>';
-  $("resultInfo").textContent="Verifique se precos-registrados.json existe e contém JSON válido.";
-  setStatus(error.message||"Erro ao carregar o arquivo JSON.",true);
- }finally{$("reload").disabled=false}
+  const res=await fetch(JSON_URL+"?t="+Date.now(),{cache:"no-store"});
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  const data=await res.json();if(!Array.isArray(data))throw new Error("Formato JSON inválido");
+  database=data.filter(x=>x&&typeof x==="object"&&Number.isFinite(Number(x.preco))&&Number(x.preco)>=0)
+    .map(x=>({store:String(x.supermercado||"Supermercado não informado"),product:String(x.descricao||""),package:String(x.peso_quantidade||""),price:Number(x.preco)}));
+  $("status").textContent="Arquivo JSON carregado: "+database.length+" preços disponíveis.";
+  if($("lista").value.trim())compare();
+ }catch(e){$("status").textContent="Não foi possível carregar precos-registrados.json: "+e.message;$("status").className="status error"}
 }
-function renderProducts(){
- const term=$("search").value.trim().toLocaleLowerCase("pt-BR"),store=$("storeFilter").value,sort=$("sort").value;
- let rows=allProducts.filter(p=>(!store||p.supermercado===store)&&(!term||(p.supermercado+" "+p.descricao+" "+p.peso_quantidade).toLocaleLowerCase("pt-BR").includes(term)));
- rows.sort((a,b)=>sort==="low"?a.preco-b.preco:sort==="high"?b.preco-a.preco:sort==="name"?a.descricao.localeCompare(b.descricao,"pt-BR"):a.supermercado.localeCompare(b.supermercado,"pt-BR")||a.descricao.localeCompare(b.descricao,"pt-BR"));
- $("shown").textContent=rows.length.toLocaleString("pt-BR");
- $("products").innerHTML=rows.length?rows.map(p=>'<tr><td class="store">'+escapeHtml(p.supermercado)+'</td><td>'+escapeHtml(p.descricao)+'</td><td>'+escapeHtml(p.peso_quantidade)+'</td><td class="price">'+money(p.preco)+'</td></tr>').join(""):'<tr><td colspan="4" class="empty">Nenhum produto encontrado para esses filtros.</td></tr>';
- $("resultInfo").textContent="Exibindo "+rows.length.toLocaleString("pt-BR")+" de "+allProducts.length.toLocaleString("pt-BR")+" produtos.";
+function compare(){
+ const items=[...new Set($("lista").value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean))];
+ const root=$("results");
+ if(!items.length){root.innerHTML='<div class="empty">Cole ou informe pelo menos um produto.</div>';return}
+ if(!database.length){root.innerHTML='<div class="empty">Ainda não foi possível carregar os preços registrados.</div>';return}
+ root.innerHTML="";
+ items.forEach(item=>{
+  const ranked=database.map(p=>({...p,score:similarity(item,p.product)})).filter(p=>p.score>=35)
+    .sort((a,b)=>b.score-a.score||a.price-b.price);
+  const exactish=ranked.filter(p=>p.score>=65);
+  const candidates=exactish.length?exactish:ranked.slice(0,5);
+  const bestByStore=new Map();
+  candidates.forEach(p=>{const key=p.store;if(!bestByStore.has(key)||p.price<bestByStore.get(key).price)bestByStore.set(key,p)});
+  const matches=[...bestByStore.values()].sort((a,b)=>a.price-b.price);
+  const box=document.createElement("article");box.className="result";
+  const title=document.createElement("div");title.className="item-name";title.textContent=item;box.appendChild(title);
+  if(!matches.length){const msg=document.createElement("div");msg.className="empty";msg.textContent="Não encontrei um produto parecido no JSON. Confira o nome ou atualize os preços registrados.";box.appendChild(msg);root.appendChild(box);return}
+  const winner=matches[0];
+  const rec=document.createElement("div");rec.className="recommend";
+  rec.innerHTML='Melhor opção registrada: <span class="market">'+escapeHtml(winner.store)+'</span> — <span class="price">'+money(winner.price)+'</span>';
+  box.appendChild(rec);
+  const detail=document.createElement("div");detail.className="meta";detail.textContent=winner.product+(winner.package?" · "+winner.package:"");box.appendChild(detail);
+  matches.forEach((p,i)=>{
+   const row=document.createElement("div");row.className="match";
+   const left=document.createElement("div");const name=document.createElement("div");name.textContent=p.store+(i===0?" · menor preço":"");if(i===0)name.style.fontWeight="800";
+   const meta=document.createElement("div");meta.className="meta";meta.textContent=p.product+(p.package?" · "+p.package:"");
+   left.append(name,meta);const price=document.createElement("div");price.className="price";price.textContent=money(p.price);row.append(left,price);box.appendChild(row);
+  });
+  const caution=document.createElement("div");caution.className="note";caution.textContent="Compare embalagem e quantidade antes de decidir. A recomendação considera apenas os preços registrados no JSON e não confirma estoque ou validade da oferta.";box.appendChild(caution);
+  root.appendChild(box);
+ });
+ $("status").textContent="Comparação concluída para "+items.length+" produto(s).";
 }
-$("search").addEventListener("input",renderProducts);$("storeFilter").addEventListener("change",renderProducts);$("sort").addEventListener("change",renderProducts);$("reload").addEventListener("click",loadProducts);
-loadProducts();
+async function pasteClipboard(){
+ try{const text=await navigator.clipboard.readText();if(!text.trim()){$("status").textContent="A área de transferência está vazia.";return}
+ $("lista").value=text;compare();}
+ catch(e){$("status").textContent="O navegador bloqueou o acesso automático à área de transferência. Use Colar no campo ou configure o Atalho para abrir esta página com o texto da área de transferência no endereço."; $("status").className="status error"}
+}
+function loadFromUrl(){
+ const params=new URLSearchParams(location.search);
+ const text=params.get("produtos")||params.get("texto")||params.get("clipboard");
+ if(text){$("lista").value=text;history.replaceState(null,"",location.pathname);}
+}
+$("compare").addEventListener("click",compare);
+$("paste").addEventListener("click",pasteClipboard);
+$("lista").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")compare()});
+loadFromUrl();
+loadDatabase();
+if(!$("lista").value.trim())pasteClipboard();
 </script></body></html>
