@@ -99,7 +99,7 @@ async function carregarPrecosRegistrados(){
  if(!precosRegistradosPromise){
   precosRegistradosPromise=fetch("precos-registrados.json?v="+Date.now(),{cache:"no-store"})
    .then(res=>{if(!res.ok)throw new Error("HTTP "+res.status);return res.json()})
-   .then(data=>{precosRegistrados=Array.isArray(data.offers)?data.offers:[];return precosRegistrados})
+   .then(data=>{const lista=Array.isArray(data)?data:(Array.isArray(data.offers)?data.offers:[]);precosRegistrados=lista.map(o=>({store:o.store||o.supermercado||"Supermercado não identificado",product:o.product||o.descricao||"",brand:o.brand||"",variant:o.variant||"",package:o.package||o.peso_quantidade||"",price:o.price!==undefined?o.price:o.preco,recordedAt:o.recordedAt||o.data_registro||null,validUntil:o.validUntil||o.validade||null,conditions:o.conditions||"",source:o.source||""}));return precosRegistrados})
    .catch(()=>{precosRegistrados=[];return precosRegistrados});
  }
  return precosRegistradosPromise;
