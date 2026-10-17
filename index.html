@@ -97,7 +97,7 @@ function alternarPromptGemini(){
  botao.setAttribute("aria-expanded",String(abrir));
  if(abrir)document.getElementById("promptGemini").focus();
 }
-async async function copiarPromptGemini(){
+async function copiarPromptGemini(){
  const campo=document.getElementById("promptGemini");
  try{
   await navigator.clipboard.writeText(campo.value);
