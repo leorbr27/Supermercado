@@ -101,11 +101,13 @@ const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
 let produtos = [];
 let ofertas = [];
 const normalizar = s => String(s||"").trim().replace(/\s+/g," ");
-function abrirGemini(){
+async function abrirGemini(){
+ const novaAba=window.open("about:blank","_blank");
  const painel=document.getElementById("painelPromptGemini");
  painel.classList.remove("hidden");
  document.getElementById("botaoPromptGemini").setAttribute("aria-expanded","true");
- window.open("https://gemini.google.com/app","_blank","noopener,noreferrer");
+ await copiarPromptGemini();
+ if(novaAba)novaAba.location.href="https://gemini.google.com/app";
 }
 function alternarPromptGemini(){
  const painel=document.getElementById("painelPromptGemini");
