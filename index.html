@@ -280,7 +280,8 @@ function enviarResultadoParaWhatsApp(){
   const loja=c[2], produto=c[1], peso=c[3], preco=c[4], correspondencia=c[5];
   if(!grupos.has(loja))grupos.set(loja,[]);
   const detalhes=[produto,peso&&peso!=="—"?peso:"",preco,correspondencia&&correspondencia!=="Aguardando comparação"?correspondencia:""].filter(Boolean);
-  grupos.get(loja).push("- "+(c[0]&&c[0]!=="—"?c[0]+" → ":"")+detalhes.join(" | "));
+  const item="- "+(c[0]&&c[0]!=="—"?c[0]+" → ":"")+detalhes.join(" | ");
+  grupos.get(loja).push(correspondencia.includes("MENOR PREÇO")?"*"+item+"*":item);
  });
  if(!grupos.size){alert("Não há resultados na tabela para enviar. Prepare sua lista e confira as correspondências.");return;}
  const secoes=[...grupos.entries()].map(([loja,items])=>"*"+loja+"*\n"+items.join("\n"));
