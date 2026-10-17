@@ -215,9 +215,11 @@ function gerarCorrespondencias(){
  produtos.forEach(p=>{
   const candidatos=precosRegistrados.filter(o=>o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0)
    .map(o=>({...o,score:pontuarCorrespondencia(p.nome,o.product)}))
-   .filter(o=>o.score>=0.30)
-   .sort((a,b)=>b.score-a.score||Number(a.price)-Number(b.price));
-  candidatos.forEach(o=>linhas.push({item:p.nome,...o}));
+   .filter(o=>o.score>=0.30);
+  // Exibe somente uma oferta por item da lista: a de menor preço entre as correspondências válidas.
+  // Em caso de empate de preço, prioriza a correspondência textual mais alta.
+  candidatos.sort((a,b)=>Number(a.price)-Number(b.price)||b.score-a.score);
+  if(candidatos.length)linhas.push({item:p.nome,...candidatos[0]});
  });
  return linhas;
 }
