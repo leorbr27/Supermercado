@@ -292,8 +292,8 @@ function enviarResultadoParaWhatsApp(){
   grupos.get(loja).push(correspondencia.includes("MENOR PREÇO")?"*"+item+"*":item);
  });
  if(!grupos.size){alert("Não há resultados na tabela para enviar. Prepare sua lista e confira as correspondências.");return;}
- const secoes=[...grupos.entries()].map(([loja,items])=>"*"+loja+"*\n"+items.join("\n"));
- const mensagem="*Resultado da pesquisa de preços*\n\n"+secoes.join("\n\n");
+ const secoes=[...grupos.entries()].map(([loja,items])=>"*"+loja+"*\n"+items.join("\n\n"));
+ const mensagem="*Resultado da pesquisa de preços*\n\n"+secoes.join("\n\n\n\n");
  window.open("https://wa.me/?text="+encodeURIComponent(mensagem),"_blank","noopener,noreferrer");
 }
 function normalizarBusca(valor){
