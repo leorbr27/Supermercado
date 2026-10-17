@@ -27,7 +27,7 @@ td:before{font-size:14px}
 <header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1>💰 Pesquisa de preços</h1><div class="subtitle">Grande Vitória · ES</div></div></header>
 <section class="card">
 <h2>1. Importar lista de compras</h2>
-<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="secondary" type="button" onclick="copiarPromptGemini()" id="botaoPromptGemini">Prompt para o Google Gemini (até 10 imagens)</button></div>
+<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="secondary" type="button" onclick="abrirGemini()" id="botaoPromptGemini">Prompt Gemini</button></div>
 <div id="painelPromptGemini" class="hidden" style="border:1px solid #cfd9e6;border-radius:12px;padding:12px;margin-bottom:14px;background:#f8fbff">
 <p class="note">Copie o prompt abaixo para o Gemini. Processe até 10 imagens por rodada. Nas rodadas seguintes, cole a última versão completa do JSON no campo indicado dentro do prompt para acumular os resultados sem perder os lotes anteriores.</p>
 <label for="promptGemini">Prompt pronto para copiar</label>
@@ -101,6 +101,12 @@ const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
 let produtos = [];
 let ofertas = [];
 const normalizar = s => String(s||"").trim().replace(/\s+/g," ");
+function abrirGemini(){
+ const painel=document.getElementById("painelPromptGemini");
+ painel.classList.remove("hidden");
+ document.getElementById("botaoPromptGemini").setAttribute("aria-expanded","true");
+ window.open("https://gemini.google.com/app","_blank","noopener,noreferrer");
+}
 function alternarPromptGemini(){
  const painel=document.getElementById("painelPromptGemini");
  const botao=document.getElementById("botaoPromptGemini");
