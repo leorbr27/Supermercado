@@ -43,7 +43,8 @@ export default {
                  o.dados_originais, o.registrado_em,
                  (SELECT h.preco
                     FROM public.historico_precos_gemini h
-                   WHERE h.oferta_id = o.id AND h.preco <> o.preco
+                   WHERE h.oferta_id = o.id
+                     AND h.registrado_em < o.registrado_em
                    ORDER BY h.registrado_em DESC LIMIT 1) AS preco_anterior
             FROM public.ofertas_gemini o
            WHERE (${store}::text IS NULL OR o.supermercado ILIKE '%' || ${store} || '%')
