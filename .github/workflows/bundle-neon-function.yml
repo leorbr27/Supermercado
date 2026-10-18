@@ -1,0 +1,41 @@
+name: Bundle Neon Function
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/geminiofertas/**"
+      - ".github/workflows/bundle-neon-function.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install bundler and API dependency
+        working-directory: api/geminiofertas
+        run: npm install --no-save --ignore-scripts esbuild @neondatabase/serverless@^0.9.0
+      - name: Bundle and validate function
+        working-directory: api/geminiofertas
+        run: |
+          mkdir -p dist
+          ./node_modules/.bin/esbuild index.mjs --bundle --platform=node --format=esm --target=node24 --outfile=dist/index.mjs
+          node --check dist/index.mjs
+          cd dist
+          zip -q ../geminiofertas.zip index.mjs
+      - name: Upload deployment bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: geminiofertas-bundle
+          path: api/geminiofertas/geminiofertas.zip
+          if-no-files-found: error
+          retention-days: 1
