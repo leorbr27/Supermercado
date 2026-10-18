@@ -1,6 +1,5 @@
 import { neon } from "@neondatabase/serverless";
 
-const sql = neon(process.env.DATABASE_URL || "");
 const ALLOWED_ORIGIN = "https://leorbr27.github.io";
 const cors = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
@@ -27,6 +26,7 @@ export default {
     if (origin && origin !== ALLOWED_ORIGIN) return reply({ error: "Origem não permitida." }, 403);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     if (!process.env.DATABASE_URL) return reply({ error: "DATABASE_URL não configurada na função Neon." }, 503);
+    const sql = neon(process.env.DATABASE_URL);
     const url = new URL(request.url);
 
     try {
