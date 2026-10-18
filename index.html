@@ -35,46 +35,27 @@ td:before{font-size:16px}
 <div id="painelPromptGemini" class="hidden" style="border:1px solid #cfd9e6;border-radius:12px;padding:12px;margin-bottom:14px;background:#f8fbff">
 <p class="note">Copie o prompt abaixo para o Gemini. Processe até 10 imagens por rodada. Nas rodadas seguintes, cole a última versão completa do JSON no campo indicado dentro do prompt para acumular os resultados sem perder os lotes anteriores.</p>
 <label for="promptGemini">Prompt pronto para copiar</label>
-<textarea id="promptGemini" style="min-height:320px">Você é um extrator de dados de encartes de supermercados. Analise TODAS as imagens anexadas NESTA mensagem (no máximo 10 imagens por lote) e extraia cada oferta legível. Não invente dados. Se algo estiver ilegível, use string vazia ou null conforme o campo e registre a dúvida em "conditions".
+<textarea id="promptGemini" style="min-height:320px">Você é um extrator de ofertas de supermercados. Analise todas as imagens anexadas, extraia apenas dados legíveis e não invente preços, marcas, embalagens ou validade.
 
-OBJETIVO: gerar o conteúdo completo do arquivo precos-registrados.json usado por um site. O arquivo deve ser um ARRAY JSON válido, sem Markdown, sem cercas de código e sem texto antes/depois.
+Devolva somente um ARRAY JSON válido, sem Markdown e sem texto fora do array. Cada objeto deve seguir este formato:
+{
+  "supermercado": "nome da loja",
+  "descricao": "nome do produto",
+  "peso_quantidade": "peso ou quantidade, se informado",
+  "preco": 0.00,
+  "marca": "marca, se legível",
+  "validade": "validade no formato AAAA-MM-DD ou null",
+  "condicoes": "condições da oferta, se houver",
+  "fonte": "encarte ou URL da fonte, se disponível"
+}
 
-MODO DE TRABALHO EM LOTES — MUITO IMPORTANTE:
-1. Se eu fornecer abaixo um JSON acumulado de lotes anteriores, use-o como base e PRESERVE todos os registros existentes. Acrescente somente as ofertas extraídas das novas imagens. Não substitua a base pelos dados do lote atual.
-2. Se não houver JSON acumulado anterior, comece um array novo com os registros deste lote.
-3. Remova duplicatas entre lotes. Considere duplicata a mesma loja + produto + embalagem/variante + preço + validade; mantenha registros com preços ou condições diferentes.
-4. Em cada resposta, devolva o ARRAY COMPLETO acumulado, incluindo os lotes anteriores e o lote atual, para que eu possa substituir o conteúdo do arquivo por essa versão completa. Nunca devolva apenas os registros novos quando houver base anterior.
-5. Não omita ofertas válidas para encurtar a resposta. Se o volume exceder o limite de resposta, avise claramente e divida em partes numeradas de JSON que possam ser concatenadas em um único array; nunca declare que o arquivo está completo se não estiver.
-6. Nas próximas rodadas, vou reutilizar este mesmo prompt, anexar até 10 imagens novas e colar a última versão completa do JSON no campo BASE JSON ACUMULADO. Se o campo estiver vazio, trate como primeiro lote.
-
-PESQUISA ADICIONAL NA WEB — OBRIGATÓRIA:
-Além das imagens anexadas e do JSON acumulado, pesquise na internet os sites oficiais e lojas virtuais dos 27 supermercados da Grande Vitória identificados anteriormente. Considere a Grande Vitória como Vitória, Vila Velha, Serra e Cariacica. Use a lista dos 27 supermercados/sites já levantada anteriormente nesta conversa; se ela não estiver disponível no contexto, pesquise e identifique os 27 sites antes de começar, sem inventar nomes ou endereços. Inclua também fontes públicas confiáveis de ofertas e catálogos online quando o site oficial direcionar para elas.
-- Percorra as páginas de produtos, categorias, catálogos e ofertas acessíveis de cada site, procurando todos os produtos encontrados, e não apenas uma seleção ou os produtos que aparecem nas imagens.
-- EXCLUA CERVEJA de todos os resultados, inclusive marcas, tipos, embalagens e ofertas de cerveja. Não exclua outras bebidas alcoólicas ou produtos sem relação com cerveja por suposição; se houver dúvida sobre um item ser cerveja, não o inclua.
-- Registre somente produtos e preços que estejam efetivamente visíveis em uma página ou catálogo consultado. Nunca invente preço, embalagem, marca, validade ou disponibilidade. Se um site não mostrar preço verificável, não crie um registro de preço para esse produto.
-- Para cada produto encontrado, registre o nome do supermercado, nome do produto, marca, variante, embalagem/quantidade, preço anunciado, data da consulta em "recordedAt", validade somente se publicada, condições/restrições e URL exata da página do produto ou oferta em "source".
-- Se o site apresentar preço normal e promocional, registre o preço promocional e suas condições; registre também o preço normal somente se for claramente informado e mantenha-o distinguível em "conditions". Não misture preços por kg/litro/unidade com preço total da embalagem.
-- Evite duplicatas do mesmo supermercado, produto, embalagem, preço e condição. Mantenha registros distintos quando preço, embalagem ou condição realmente forem diferentes.
-- Não afirme que pesquisou os 27 sites se algum não estiver acessível. Informe de forma objetiva quais sites foram consultados e quais não puderam ser verificados. Continue com os demais.
-- Faça a pesquisa em lotes se necessário, mas preserve e devolva sempre o JSON acumulado completo. Não apague registros anteriores válidos só porque não foram encontrados na pesquisa atual. Não substitua dados antigos por dados atuais sem manter os registros que ainda forem úteis; para o mesmo produto e loja com preço atualizado, mantenha o registro mais recente e evite deixar preços claramente vencidos como se fossem atuais.
-- Se o volume de produtos exceder o limite de uma resposta, não omita itens silenciosamente nem diga que concluiu. Divida a saída em partes numeradas claramente identificadas, mantendo um único array JSON concatenável, ou solicite que eu continue em novos lotes até concluir todos os sites.
-
-REGRAS DE EXTRAÇÃO:
-- Extraia todas as ofertas de todas as imagens: nome do supermercado, produto, marca quando visível, variante/sabor, peso ou quantidade, preço, data de registro e validade do encarte, condições/restrições (ex.: clube, CPF, limite por cliente) e link da fonte somente se estiver explícito na imagem.
-- Não confunda preço por kg/litro/unidade com preço total da embalagem. Registre o preço anunciado da oferta em "price" e a unidade/preço por medida em "conditions" quando necessário.
-- Use números em "price" (ex.: 12.99), nunca texto com símbolo de moeda.
-- Datas no formato AAAA-MM-DD quando forem identificáveis; caso contrário use null.
-- Não una produtos diferentes. Para ofertas repetidas, mantenha uma entrada por combinação de produto/embalagem/preço/condição.
-- Preserve nomes de loja e produto como aparecem, corrigindo apenas erros evidentes de OCR. Não adivinhe o que não estiver legível.
-- "source" deve ser uma URL apenas se estiver claramente informada; caso contrário, string vazia.
-- Cada objeto deve usar exatamente estas chaves compatíveis com o site:
-  {"store":"nome do supermercado","product":"nome completo do produto","brand":"marca ou string vazia","variant":"variante/sabor ou string vazia","package":"peso/volume/quantidade ou string vazia","price":12.99,"recordedAt":"AAAA-MM-DD ou null","validUntil":"AAAA-MM-DD ou null","conditions":"condições e preço por medida se houver, senão string vazia","source":"URL explícita ou string vazia"}
-- O JSON final deve ser sintaticamente válido: aspas duplas, sem comentários, sem vírgula sobrando. Não inclua campos extras.
-
-BASE JSON ACUMULADO — cole aqui a versão completa mais recente do arquivo precos-registrados.json antes de processar o próximo lote. No primeiro lote, deixe vazio:
-[COLE AQUI O JSON ACUMULADO OU DEIXE VAZIO]
-
-Agora processe as imagens anexadas e devolva o ARRAY JSON COMPLETO acumulado, pronto para substituir integralmente o arquivo precos-registrados.json no GitHub.</textarea>
+Regras:
+- O campo "preco" deve ser numérico, sem símbolo de moeda; use ponto decimal.
+- Não crie ofertas sem preço legível.
+- Preserve ofertas diferentes quando embalagem, preço ou condição forem diferentes.
+- Evite duplicatas exatas de supermercado + produto + embalagem + preço.
+- Se não conseguir identificar um campo opcional, use string vazia ou null.
+- O array resultante será colado na aplicação para gravar as ofertas na API Neon.</textarea>
 <div class="actions"><button class="primary" type="button" onclick="copiarPromptGemini()">Copiar prompt</button><button class="secondary" type="button" onclick="alternarPromptGemini()">Fechar</button></div>
 <div id="statusPromptGemini" class="status" aria-live="polite"></div>
 </div>
@@ -86,8 +67,16 @@ Agora processe as imagens anexadas e devolva o ARRAY JSON COMPLETO acumulado, pr
 <p class="note">O WhatsApp será aberto para você escolher o contato ou grupo. Os produtos serão organizados por supermercado.</p>
 </section>
 <section class="card">
+<h2>Importar ofertas para o Neon</h2>
+<p class="note">Cole abaixo o array JSON gerado pelo Gemini. As ofertas serão gravadas no banco e poderão atualizar registros existentes quando a assinatura do produto for igual.</p>
+<label for="jsonOfertasNeon">Ofertas em JSON</label>
+<textarea id="jsonOfertasNeon" placeholder='[{"supermercado":"Loja","descricao":"Produto","peso_quantidade":"500 g","preco":4.99}]' style="min-height:150px"></textarea>
+<div class="actions"><button class="primary" type="button" onclick="importarOfertasNeon()">Gravar ofertas no Neon</button></div>
+<div id="statusImportacaoNeon" class="status" role="status" aria-live="polite"></div>
+</section>
+<section class="card">
 <h2>2. Resultado da comparação</h2>
-<p class="note">Resultado final: compara cada produto importado no card 1 com os produtos e preços registrados no arquivo <code>precos-registrados.json</code>, exibindo o produto correspondente, supermercado, peso/quantidade, preço e grau de correspondência.</p>
+<p class="note">Resultado final: compara cada produto da sua lista com as ofertas salvas no banco Neon, exibindo produto, supermercado, embalagem, preço e grau de correspondência.</p>
 <div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select><input id="filtroData" type="date" aria-label="Filtrar pela data da última atualização" title="Data da última atualização"></div>
 <div id="statusTabela" class="table-status" role="status" aria-live="polite">Conectando à API do Neon...</div><div id="erroNeon" class="card hidden" role="alert"><strong>Não foi possível carregar as ofertas.</strong><p class="note" id="erroNeonTexto">Verifique sua conexão e tente novamente.</p><button type="button" class="secondary" onclick="carregarPrecosRegistrados(true)">Tentar Novamente</button></div>
 <div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Carregando ofertas do Neon…</td></tr></tbody></table></div>
@@ -275,6 +264,28 @@ async function editarPrecoNeon(id){
   if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
   await carregarPrecosRegistrados(true);alert("Preço atualizado e enviado ao histórico.");
  }catch(e){alert("Não foi possível atualizar o preço. "+(e.message||"Verifique o token e a conexão."));}
+}
+
+async function importarOfertasNeon(){
+ const campo=document.getElementById("jsonOfertasNeon"),status=document.getElementById("statusImportacaoNeon");
+ let dados;try{dados=JSON.parse(campo.value);}catch(e){status.textContent="JSON inválido. Confira as aspas, vírgulas e colchetes.";return;}
+ const lista=Array.isArray(dados)?dados:(Array.isArray(dados.offers)?dados.offers:null);
+ if(!lista||!lista.length){status.textContent="Informe um array JSON com pelo menos uma oferta.";return;}
+ const token=prompt("Informe o token administrativo APP_WRITE_TOKEN configurado na função Neon. Ele não será salvo no navegador:");if(!token)return;
+ let ok=0,erros=0;
+ for(let i=0;i<lista.length;i++){
+  const o=lista[i]||{},store=String(o.store??o.supermercado??"").trim(),product=String(o.product??o.descricao??o.produto??"").trim(),pack=String(o.package??o.peso_quantidade??o.embalagem??"").trim(),price=Number(o.price??o.preco);
+  if(!store||!product||!Number.isFinite(price)||price<0){erros++;continue;}
+  const signature=String(o.signature??o.assinatura??[store,product,pack].map(v=>normalizarBusca(v)).join("|")).slice(0,200);
+  status.textContent="Gravando oferta "+(i+1)+" de "+lista.length+" no Neon…";
+  try{
+   const res=await fetch(NEON_API,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({store,product,package:pack,price,signature,dados_originais:o})});
+   if(!res.ok)throw new Error("HTTP "+res.status);
+   ok++;
+  }catch(e){erros++;}
+ }
+ status.textContent="Importação concluída: "+ok+" oferta(s) gravada(s)/atualizada(s); "+erros+" com erro.";
+ if(ok){precosRegistradosPromise=null;await carregarPrecosRegistrados(true);campo.value="";}
 }
 
 function enviarResultadoParaWhatsApp(){
