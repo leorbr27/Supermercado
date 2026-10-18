@@ -1,7 +1,6 @@
-import pg from "pg";
+import { neon } from "@neondatabase/serverless";
 
-const { Pool } = pg;
-const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+const sql = neon(process.env.DATABASE_URL || "");
 const ALLOWED_ORIGIN = "https://leorbr27.github.io";
 const cors = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
@@ -32,24 +31,32 @@ export default {
 
     try {
       if (request.method === "GET" && (url.pathname === "/" || url.pathname === "/ofertas")) {
-        const store = text(url.searchParams.get("supermercado"), 200);
+        const store = text(url.searchParams.get("supermercado"), 200) || null;
         const min = url.searchParams.has("min") ? priceValue(url.searchParams.get("min")) : null;
         const max = url.searchParams.has("max") ? priceValue(url.searchParams.get("max")) : null;
         const after = url.searchParams.get("atualizadoDepois") || null;
         const order = url.searchParams.get("ordenar") === "supermercado"
-          ? "o.supermercado ASC NULLS LAST, o.registrado_em DESC"
-          : url.searchParams.get("ordenar") === "preco"
-            ? "o.preco ASC NULLS LAST, o.registrado_em DESC"
-            : "o.registrado_em DESC";
-        const result = await pool.query(
-          "SELECT o.id, o.supermercado, o.descricao, o.peso_quantidade, o.preco, o.dados_originais, o.registrado_em, " +
-          "(SELECT h.preco FROM public.historico_precos_gemini h WHERE h.oferta_id=o.id AND h.preco<>o.preco ORDER BY h.registrado_em DESC LIMIT 1) AS preco_anterior " +
-          "FROM public.ofertas_gemini o WHERE ($1::text IS NULL OR o.supermercado ILIKE '%' || $1 || '%') " +
-          "AND ($2::numeric IS NULL OR o.preco >= $2) AND ($3::numeric IS NULL OR o.preco <= $3) " +
-          "AND ($4::timestamptz IS NULL OR o.registrado_em >= $4) ORDER BY " + order + " LIMIT 5000",
-          [store || null, min, max, after]
-        );
-        return reply(result.rows);
+          ? "supermercado"
+          : url.searchParams.get("ordenar") === "preco" ? "preco" : "recentes";
+        const rows = await sql`
+          SELECT o.id, o.supermercado, o.descricao, o.peso_quantidade, o.preco,
+                 o.dados_originais, o.registrado_em,
+                 (SELECT h.preco
+                    FROM public.historico_precos_gemini h
+                   WHERE h.oferta_id = o.id AND h.preco <> o.preco
+                   ORDER BY h.registrado_em DESC LIMIT 1) AS preco_anterior
+            FROM public.ofertas_gemini o
+           WHERE (${store}::text IS NULL OR o.supermercado ILIKE '%' || ${store} || '%')
+             AND (${min}::numeric IS NULL OR o.preco >= ${min})
+             AND (${max}::numeric IS NULL OR o.preco <= ${max})
+             AND (${after}::timestamptz IS NULL OR o.registrado_em >= ${after})
+           ORDER BY
+             CASE WHEN ${order} = 'supermercado' THEN o.supermercado END ASC NULLS LAST,
+             CASE WHEN ${order} = 'preco' THEN o.preco END ASC NULLS LAST,
+             o.registrado_em DESC
+           LIMIT 5000
+        `;
+        return reply(rows);
       }
 
       if (request.method === "POST") {
@@ -62,29 +69,44 @@ export default {
         if (!store || !product) return reply({ error: "Informe supermercado e produto." }, 400);
         const signature = text(body.signature ?? body.assinatura, 200) || null;
         const original = JSON.stringify(body.dados_originais ?? body);
-        const client = await pool.connect();
-        try {
-          await client.query("BEGIN");
-          let saved;
-          if (signature) {
-            saved = await client.query(
-              "INSERT INTO public.ofertas_gemini (supermercado,descricao,peso_quantidade,preco,dados_originais,assinatura) VALUES ($1,$2,$3,$4,$5::jsonb,$6) " +
-              "ON CONFLICT (assinatura) DO UPDATE SET supermercado=EXCLUDED.supermercado,descricao=EXCLUDED.descricao,peso_quantidade=EXCLUDED.peso_quantidade,preco=EXCLUDED.preco,dados_originais=EXCLUDED.dados_originais,registrado_em=now() RETURNING *",
-              [store, product, pack, price, original, signature]
-            );
-          } else {
-            saved = await client.query(
-              "INSERT INTO public.ofertas_gemini (supermercado,descricao,peso_quantidade,preco,dados_originais) VALUES ($1,$2,$3,$4,$5::jsonb) RETURNING *",
-              [store, product, pack, price, original]
-            );
-          }
-          await client.query("INSERT INTO public.historico_precos_gemini (oferta_id,preco,origem) VALUES ($1,$2,'api')", [saved.rows[0].id, price]);
-          await client.query("COMMIT");
-          return reply({ offer: saved.rows[0] }, 201);
-        } catch (e) {
-          await client.query("ROLLBACK");
-          throw e;
-        } finally { client.release(); }
+        let saved;
+        if (signature) {
+          saved = await sql`
+            WITH offer AS (
+              INSERT INTO public.ofertas_gemini
+                (supermercado, descricao, peso_quantidade, preco, dados_originais, assinatura)
+              VALUES (${store}, ${product}, ${pack}, ${price}, ${original}::jsonb, ${signature})
+              ON CONFLICT (assinatura) DO UPDATE SET
+                supermercado = EXCLUDED.supermercado,
+                descricao = EXCLUDED.descricao,
+                peso_quantidade = EXCLUDED.peso_quantidade,
+                preco = EXCLUDED.preco,
+                dados_originais = EXCLUDED.dados_originais,
+                registrado_em = now()
+              RETURNING *
+            ), history AS (
+              INSERT INTO public.historico_precos_gemini (oferta_id, preco, origem)
+              SELECT id, ${price}, 'api' FROM offer
+              RETURNING id
+            )
+            SELECT offer.* FROM offer
+          `;
+        } else {
+          saved = await sql`
+            WITH offer AS (
+              INSERT INTO public.ofertas_gemini
+                (supermercado, descricao, peso_quantidade, preco, dados_originais)
+              VALUES (${store}, ${product}, ${pack}, ${price}, ${original}::jsonb)
+              RETURNING *
+            ), history AS (
+              INSERT INTO public.historico_precos_gemini (oferta_id, preco, origem)
+              SELECT id, ${price}, 'api' FROM offer
+              RETURNING id
+            )
+            SELECT offer.* FROM offer
+          `;
+        }
+        return reply({ offer: saved[0] }, 201);
       }
 
       if (request.method === "PUT") {
@@ -93,26 +115,28 @@ export default {
         const id = Number(body.id);
         if (!Number.isSafeInteger(id) || id < 1) return reply({ error: "ID inválido." }, 400);
         const price = priceValue(body.price ?? body.preco);
-        const client = await pool.connect();
-        try {
-          await client.query("BEGIN");
-          const current = await client.query("SELECT id,preco FROM public.ofertas_gemini WHERE id=$1 FOR UPDATE", [id]);
-          if (!current.rowCount) {
-            await client.query("ROLLBACK");
-            return reply({ error: "Oferta não encontrada." }, 404);
-          }
-          if (Number(current.rows[0].preco) !== price) {
-            await client.query("UPDATE public.ofertas_gemini SET preco=$1,registrado_em=now() WHERE id=$2", [price, id]);
-            await client.query("INSERT INTO public.historico_precos_gemini (oferta_id,preco,origem,observacao) VALUES ($1,$2,$3,$4)",
-              [id, price, body.confirmed ? "confirmacao" : "edicao", text(body.observacao, 500) || null]);
-          }
-          const updated = await client.query("SELECT * FROM public.ofertas_gemini WHERE id=$1", [id]);
-          await client.query("COMMIT");
-          return reply({ offer: updated.rows[0] });
-        } catch (e) {
-          await client.query("ROLLBACK");
-          throw e;
-        } finally { client.release(); }
+        const observation = text(body.observacao, 500) || null;
+        const source = body.confirmed ? "confirmacao" : "edicao";
+        const updated = await sql`
+          WITH changed AS (
+            UPDATE public.ofertas_gemini
+               SET preco = ${price}, registrado_em = now()
+             WHERE id = ${id} AND preco IS DISTINCT FROM ${price}::numeric
+             RETURNING *
+          ), history AS (
+            INSERT INTO public.historico_precos_gemini (oferta_id, preco, origem, observacao)
+            SELECT id, ${price}, ${source}, ${observation} FROM changed
+            RETURNING id
+          ), result AS (
+            SELECT * FROM changed
+            UNION ALL
+            SELECT o.* FROM public.ofertas_gemini o
+             WHERE o.id = ${id} AND NOT EXISTS (SELECT 1 FROM changed)
+          )
+          SELECT * FROM result LIMIT 1
+        `;
+        if (!updated.length) return reply({ error: "Oferta não encontrada." }, 404);
+        return reply({ offer: updated[0] });
       }
 
       return reply({ error: "Método ou rota não suportados." }, 405);
