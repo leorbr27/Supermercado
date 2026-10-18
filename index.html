@@ -22,6 +22,7 @@ td:before{font-size:16px}
 @media(max-width:600px){td:before{font-size:16px}}
 
 /* Tamanho mínimo de texto para novas implementações: 16px. */
+.neon-spinner{display:inline-block;width:18px;height:18px;border:3px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:neon-spin .8s linear infinite;vertical-align:middle;margin-right:8px}@keyframes neon-spin{to{transform:rotate(360deg)}}.trend{display:inline-block;margin-top:5px;font-size:16px;font-weight:750}.trend.down{color:#087443}.trend.up{color:#b42318}.trend.neutral{color:#68778d}.edit-price{font-size:16px}
 .table-controls input,.table-controls select{font-size:16px}
 </style>
 </head>
@@ -87,9 +88,9 @@ Agora processe as imagens anexadas e devolva o ARRAY JSON COMPLETO acumulado, pr
 <section class="card">
 <h2>2. Resultado da comparação</h2>
 <p class="note">Resultado final: compara cada produto importado no card 1 com os produtos e preços registrados no arquivo <code>precos-registrados.json</code>, exibindo o produto correspondente, supermercado, peso/quantidade, preço e grau de correspondência.</p>
-<div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select></div>
-<div id="statusTabela" class="table-status" role="status" aria-live="polite">Importe sua lista de compras para encontrar correspondências.</div>
-<div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Aguardando a lista de compras.</td></tr></tbody></table></div>
+<div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select><input id="filtroData" type="date" aria-label="Filtrar pela data da última atualização" title="Data da última atualização"></div>
+<div id="statusTabela" class="table-status" role="status" aria-live="polite">Conectando à API do Neon...</div><div id="erroNeon" class="card hidden" role="alert"><strong>Não foi possível carregar as ofertas.</strong><p class="note" id="erroNeonTexto">Verifique sua conexão e tente novamente.</p><button type="button" class="secondary" onclick="carregarPrecosRegistrados(true)">Tentar Novamente</button></div>
+<div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Carregando ofertas do Neon…</td></tr></tbody></table></div>
 
 </section>
 
@@ -200,87 +201,80 @@ function renderizarProdutos(){
 
 let precosRegistrados=[];
 let precosRegistradosPromise=null;
-async function carregarPrecosRegistrados(){
+const NEON_API="https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/";
+async function carregarPrecosRegistrados(force=false){
+ if(force)precosRegistradosPromise=null;
  if(!precosRegistradosPromise){
-  precosRegistradosPromise=fetch("precos-registrados.json?v="+Date.now(),{cache:"no-store"})
-   .then(res=>{if(!res.ok)throw new Error("HTTP "+res.status);return res.json()})
-   .then(data=>{const lista=Array.isArray(data)?data:(Array.isArray(data.offers)?data.offers:[]);precosRegistrados=lista.map(o=>({store:o.store||o.supermercado||"Supermercado não identificado",product:o.product||o.descricao||"",brand:o.brand||"",variant:o.variant||"",package:o.package||o.peso_quantidade||"",price:o.price!==undefined?o.price:o.preco,recordedAt:o.recordedAt||o.data_registro||null,validUntil:o.validUntil||o.validade||null,conditions:o.conditions||"",source:o.source||""}));return precosRegistrados})
-   .catch(()=>{precosRegistrados=[];return precosRegistrados});
+  const corpo=document.getElementById("corpoTabela");
+  const status=document.getElementById("statusTabela");
+  const erro=document.getElementById("erroNeon");
+  if(corpo)corpo.innerHTML='<tr><td colspan="6"><span class="neon-spinner" aria-hidden="true"></span> Carregando ofertas do Neon…</td></tr>';
+  if(status)status.textContent="Carregando ofertas do banco de dados…";
+  if(erro)erro.classList.add("hidden");
+  precosRegistradosPromise=fetch(NEON_API+"?"+new URLSearchParams({ordenar:"recentes"}),{cache:"no-store"})
+   .then(async res=>{if(!res.ok)throw new Error("A API respondeu HTTP "+res.status+".");const data=await res.json();if(!Array.isArray(data))throw new Error("A API retornou um formato inesperado.");return data.map(o=>({id:o.id,store:o.supermercado||"Supermercado não identificado",product:o.descricao||"",brand:"",variant:"",package:o.peso_quantidade||"",price:o.preco,recordedAt:o.registrado_em||null,previousPrice:o.preco_anterior,original:o.dados_originais||null}));})
+   .then(lista=>{precosRegistrados=lista;return lista;})
+   .catch(err=>{precosRegistradosPromise=null;precosRegistrados=[];const erro=document.getElementById("erroNeon");const msg=document.getElementById("erroNeonTexto");if(erro)erro.classList.remove("hidden");if(msg)msg.textContent=(err&&err.message?err.message:"Erro de conexão.")+" Confirme se a função Neon está implantada e tente novamente.";throw err;});
  }
- return precosRegistradosPromise.then(lista=>{preencherFiltroSupermercado();renderizarTabelaRegistrados();return lista;});
+ try{const lista=await precosRegistradosPromise;preencherFiltroSupermercado();renderizarTabelaRegistrados();return lista;}
+ catch(err){const corpo=document.getElementById("corpoTabela");if(corpo)corpo.innerHTML='<tr><td colspan="6">Não foi possível carregar as ofertas. Use “Tentar Novamente”.</td></tr>';const status=document.getElementById("statusTabela");if(status)status.textContent="Falha ao consultar a API do Neon.";return [];}
 }
 function escaparHtmlTabela(valor){
  return String(valor??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 function preencherFiltroSupermercado(){
- const select=document.getElementById("filtroSupermercado");
- if(!select)return;
+ const select=document.getElementById("filtroSupermercado");if(!select)return;
  const atual=select.value;
  const lojas=[...new Set(precosRegistrados.map(o=>o.store).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
  select.innerHTML='<option value="">Todos os supermercados</option>'+lojas.map(loja=>'<option value="'+escaparHtmlTabela(loja)+'">'+escaparHtmlTabela(loja)+'</option>').join("");
  if(lojas.includes(atual))select.value=atual;
 }
 function pontuarCorrespondencia(item, produto){
- const a=normalizarBusca(item), b=normalizarBusca(produto);
- if(!a||!b)return 0;
- if(a===b)return 1;
- if(b.includes(a)||a.includes(b))return Math.min(0.96,0.78+Math.min(a.length,b.length)/Math.max(a.length,b.length)*0.18);
+ const a=normalizarBusca(item),b=normalizarBusca(produto);if(!a||!b)return 0;if(a===b)return 1;
+ if(b.includes(a)||a.includes(b))return Math.min(.96,.78+Math.min(a.length,b.length)/Math.max(a.length,b.length)*.18);
  const stop=new Set(["de","da","do","das","dos","com","sem","para","por","e","ou","em","na","no","pacote","produto","unidade"]);
- const ta=[...new Set(a.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
- const tb=[...new Set(b.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
- if(!ta.length||!tb.length)return 0;
- const comuns=ta.filter(t=>tb.some(u=>u===t||(t.length>=5&&u.length>=5&&(t.startsWith(u)||u.startsWith(t)))));
- const cobertura=comuns.length/ta.length, precisao=comuns.length/tb.length;
- return (2*cobertura*precisao/(cobertura+precisao||1))*0.92;
+ const ta=[...new Set(a.split(" ").filter(t=>t.length>1&&!stop.has(t)))],tb=[...new Set(b.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
+ if(!ta.length||!tb.length)return 0;const comuns=ta.filter(t=>tb.some(u=>u===t||(t.length>=5&&u.length>=5&&(t.startsWith(u)||u.startsWith(t)))));
+ const cobertura=comuns.length/ta.length,precisao=comuns.length/tb.length;return (2*cobertura*precisao/(cobertura+precisao||1))*.92;
+}
+function dataLocalISO(v){if(!v)return "";const d=new Date(v);if(Number.isNaN(d.getTime()))return "";return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function indicadorTendencia(o){
+ if(o.previousPrice===null||o.previousPrice===undefined||o.previousPrice==="")return '<span class="trend neutral" title="Ainda não há preço anterior disponível">Sem histórico</span>';
+ const atual=Number(o.price),anterior=Number(o.previousPrice);
+ if(!Number.isFinite(anterior))return '<span class="trend neutral">Sem histórico</span>';
+ if(atual<anterior)return '<span class="trend down" title="Preço reduziu em relação ao registro anterior">↓ Reduziu</span>';
+ if(atual>anterior)return '<span class="trend up" title="Preço aumentou em relação ao registro anterior">↑ Aumentou</span>';
+ return '<span class="trend neutral" title="Preço igual ao registro anterior">→ Estável</span>';
 }
 function gerarCorrespondencias(){
- const linhas=[];
- produtos.forEach(p=>{
-  const candidatos=precosRegistrados.filter(o=>o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0)
-   .map(o=>({...o,score:pontuarCorrespondencia(p.nome,o.product)}))
-   .filter(o=>o.score>=0.30);
-  // Mantém todas as correspondências válidas e identifica a oferta mais barata para cada item.
-  candidatos.sort((a,b)=>Number(a.price)-Number(b.price)||b.score-a.score);
-  if(candidatos.length){
-   const menorPreco=Number(candidatos[0].price);
-   candidatos.forEach(o=>linhas.push({item:p.nome,...o,menorPreco:Number(o.price)===menorPreco}));
-  }
- });
- return linhas;
+ const linhas=[];produtos.forEach(p=>{const candidatos=precosRegistrados.filter(o=>o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0).map(o=>({...o,score:pontuarCorrespondencia(p.nome,o.product)})).filter(o=>o.score>=.30);candidatos.sort((a,b)=>Number(a.price)-Number(b.price)||b.score-a.score);if(candidatos.length){const menorPreco=Number(candidatos[0].price);candidatos.forEach(o=>linhas.push({item:p.nome,...o,menorPreco:Number(o.price)===menorPreco}));}});return linhas;
 }
 function renderizarTabelaRegistrados(){
- const corpo=document.getElementById("corpoTabela");
- if(!corpo)return;
- const termo=normalizarBusca(document.getElementById("filtroTabela").value);
- const loja=document.getElementById("filtroSupermercado").value;
- const ordem=document.getElementById("ordenarTabela").value;
- const temLista=produtos.length>0;
- // Antes de importar a lista pessoal, exibe todos os registros do JSON.
- const linhas=temLista?gerarCorrespondencias():precosRegistrados
-  .filter(o=>o.product&&o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0)
-  .map(o=>({...o,item:"—",score:null}));
- const lista=linhas.filter(o=>{
-  const texto=normalizarBusca([o.item,o.store,o.product,o.package].join(" "));
-  return (!termo||texto.includes(termo))&&(!loja||o.store===loja);
- });
- lista.sort((a,b)=>{
-  if(ordem==="menor")return Number(a.price)-Number(b.price);
-  if(ordem==="maior")return Number(b.price)-Number(a.price);
-  if(ordem==="supermercado")return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");
-  if(!temLista)return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");
-  return b.score-a.score||a.item.localeCompare(b.item,"pt-BR")||Number(a.price)-Number(b.price);
- });
+ const corpo=document.getElementById("corpoTabela");if(!corpo)return;
+ const termo=normalizarBusca(document.getElementById("filtroTabela").value),loja=document.getElementById("filtroSupermercado").value,ordem=document.getElementById("ordenarTabela").value,dataFiltro=document.getElementById("filtroData")?.value||"",temLista=produtos.length>0;
+ const linhas=temLista?gerarCorrespondencias():precosRegistrados.filter(o=>o.product&&o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0).map(o=>({...o,item:"—",score:null}));
+ const lista=linhas.filter(o=>{const texto=normalizarBusca([o.item,o.store,o.product,o.package].join(" "));return (!termo||texto.includes(termo))&&(!loja||o.store===loja)&&(!dataFiltro||dataLocalISO(o.recordedAt)===dataFiltro);});
+ lista.sort((a,b)=>{if(ordem==="menor")return Number(a.price)-Number(b.price);if(ordem==="maior")return Number(b.price)-Number(a.price);if(ordem==="supermercado")return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");if(!temLista)return a.store.localeCompare(b.store,"pt-BR")||a.product.localeCompare(b.product,"pt-BR");return b.score-a.score||a.item.localeCompare(b.item,"pt-BR")||Number(a.price)-Number(b.price);});
  corpo.innerHTML="";
- if(!precosRegistrados.length){
-  corpo.innerHTML='<tr><td colspan="6">Não foi possível carregar os produtos de precos-registrados.json.</td></tr>';
- }else if(!lista.length){
-  corpo.innerHTML='<tr><td colspan="6">Nenhum produto encontrado com esses filtros.</td></tr>';
- }else{
-  corpo.innerHTML=lista.map(o=>'<tr'+(temLista&&o.menorPreco?' class="lowest-match-row"':'')+'><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+(temLista&&o.menorPreco?' <span class="pill">MENOR PREÇO</span>':'')+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'</td><td data-label="Correspondência">'+(temLista?(o.score>=0.8?"Alta":o.score>=0.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)'+(o.menorPreco?' · MENOR PREÇO':''):"Aguardando comparação")+'</td></tr>').join("");
+ if(!precosRegistrados.length){corpo.innerHTML='<tr><td colspan="6">Nenhuma oferta registrada no Neon.</td></tr>';}
+ else if(!lista.length){corpo.innerHTML='<tr><td colspan="6">Nenhuma oferta encontrada com esses filtros.</td></tr>';}
+ else{
+  corpo.innerHTML=lista.map(o=>{const trend=indicadorTendencia(o);const when=o.recordedAt?new Date(o.recordedAt).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"—";return '<tr'+(temLista&&o.menorPreco?' class="lowest-match-row"':'')+'><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+(temLista&&o.menorPreco?' <span class="pill">MENOR PREÇO</span>':'')+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'<div>'+trend+'</div></td><td data-label="Correspondência">'+(temLista?(o.score>=.8?"Alta":o.score>=.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)':"Oferta salva no Neon")+'<div class="offer-meta">Atualizado: '+escaparHtmlTabela(when)+'</div><button type="button" class="secondary edit-price" data-id="'+Number(o.id)+'" style="margin-top:6px">Editar preço</button></td></tr>';}).join("");
+  corpo.querySelectorAll(".edit-price").forEach(btn=>btn.addEventListener("click",()=>editarPrecoNeon(Number(btn.dataset.id))));
  }
- document.getElementById("statusTabela").textContent=temLista
-  ?lista.length+" correspondência(s) exibida(s) para "+produtos.length+" item(ns) da lista."
-  :lista.length+" produto(s) e preço(s) registrado(s) no JSON. Importe sua lista para comparar.";
+ document.getElementById("statusTabela").textContent=temLista?lista.length+" correspondência(s) exibida(s) para "+produtos.length+" item(ns) da lista.":lista.length+" oferta(s) carregada(s) do Neon.";
+}
+async function editarPrecoNeon(id){
+ const oferta=precosRegistrados.find(o=>Number(o.id)===id);if(!oferta)return;
+ const informado=prompt("Informe o novo preço para "+oferta.product+" (R$):",String(oferta.price));if(informado===null)return;
+ const valor=Number(informado.replace(",", "."));if(!Number.isFinite(valor)||valor<0){alert("Informe um preço válido.");return;}
+ const token=prompt("Informe o token de edição configurado na função Neon (APP_WRITE_TOKEN). O token não será salvo no navegador:");if(!token)return;
+ try{
+  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id,price:valor,confirmed:true})});
+  const body=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
+  await carregarPrecosRegistrados(true);alert("Preço atualizado e enviado ao histórico.");
+ }catch(e){alert("Não foi possível atualizar o preço. "+(e.message||"Verifique o token e a conexão."));}
 }
 
 function enviarResultadoParaWhatsApp(){
@@ -349,47 +343,23 @@ function renderizarPrecosRegistrados(){
  });
 }
 
-const URL_PESQUISA_AUTOMATICA="https://lbehdmxfkakwygwoozyr.supabase.co/functions/v1/pesquisa-precos";
 async function pesquisarPrecosAutomaticamente(lista){
  const status=document.getElementById("mensagemColagem");
- const grupos=[];
- for(let i=0;i<lista.length;i+=5) grupos.push(lista.slice(i,i+5));
- let concluidos=0;
- for(const grupo of grupos){
-  try{
-   status.textContent="Pesquisando preços em fontes públicas… "+concluidos+"/"+lista.length+" produto(s) processado(s).";
-   const resposta=await fetch(URL_PESQUISA_AUTOMATICA,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({products:grupo})});
-   if(!resposta.ok) throw new Error("HTTP "+resposta.status);
-   const dados=await resposta.json();
-   grupo.forEach(nome=>{
-    const resultados=(dados.results&&dados.results[nome])||[];
-    const alvo=[...document.querySelectorAll(".automatic-results")].find(el=>el.dataset.product===nome);
-    if(!alvo)return;
-    alvo.className="automatic-results";
-    alvo.innerHTML="";
-    const titulo=document.createElement("div");titulo.className="offer-name";titulo.textContent=resultados.length?"Preços encontrados em resultados públicos":"Nenhum preço explícito encontrado nas fontes públicas consultadas.";alvo.appendChild(titulo);
-    if(resultados.length){
-     resultados.sort((a,b)=>a.price-b.price).forEach((r,index)=>{
-      const row=document.createElement("div");row.className="offer";
-      const main=document.createElement("div");main.className="offer-main";
-      const name=document.createElement("div");name.className="offer-name";name.textContent=r.store+" · "+r.title;
-      const meta=document.createElement("div");meta.className="offer-meta";meta.textContent=(r.snippet||"Preço localizado em resultado indexado.")+" — confirme no site da loja.";
-      const price=document.createElement("div");price.className="price";price.textContent=moeda(r.price);if(index===0)price.classList.add("lowest");
-      const link=document.createElement("a");link.href=r.url;link.target="_blank";link.rel="noopener noreferrer";link.className="note";link.textContent="Abrir fonte";link.style.display="inline-block";link.style.marginTop="5px";meta.appendChild(document.createTextNode(" "));meta.appendChild(link);
-      main.appendChild(name);main.appendChild(meta);row.appendChild(main);row.appendChild(price);alvo.appendChild(row);
-     });
-    }
-   });
-   concluidos+=grupo.length;
-  }catch(e){
-   grupo.forEach(nome=>{
-    const alvo=[...document.querySelectorAll(".automatic-results")].find(el=>el.dataset.product===nome);
-    if(alvo){alvo.className="automatic-results status";alvo.textContent="Não foi possível consultar as fontes gratuitas agora. Tente novamente ou use as pesquisas manuais abaixo.";}
-   });
-   concluidos+=grupo.length;
+ try{
+  status.textContent="Consultando ofertas já registradas no Neon…";
+  const response=await fetch(NEON_API,{cache:"no-store"});
+  if(!response.ok)throw new Error("HTTP "+response.status);
+  const dados=await response.json();
+  for(const nome of lista){
+   const alvo=[...document.querySelectorAll(".automatic-results")].find(el=>el.dataset.product===nome);if(!alvo)continue;
+   const termo=normalizarBusca(nome);
+   const resultados=dados.filter(o=>normalizarBusca(o.descricao).includes(termo)||termo.includes(normalizarBusca(o.descricao))||pontuarCorrespondencia(nome,o.descricao)>=.45);
+   alvo.className="automatic-results";alvo.innerHTML="";
+   const titulo=document.createElement("div");titulo.className="offer-name";titulo.textContent=resultados.length?"Ofertas encontradas no Neon":"Nenhuma oferta salva correspondeu a este produto.";alvo.appendChild(titulo);
+   resultados.sort((a,b)=>Number(a.preco)-Number(b.preco)).slice(0,10).forEach((r,index)=>{const row=document.createElement("div");row.className="offer";const main=document.createElement("div");main.className="offer-main";const name=document.createElement("div");name.className="offer-name";name.textContent=r.supermercado+" · "+r.descricao;const meta=document.createElement("div");meta.className="offer-meta";meta.textContent=(r.peso_quantidade||"")+ " — Atualizado: "+(r.registrado_em?new Date(r.registrado_em).toLocaleString("pt-BR"):"—");const price=document.createElement("div");price.className="price";price.textContent=moeda(Number(r.preco));if(index===0)price.classList.add("lowest");main.append(name,meta);row.append(main,price);alvo.appendChild(row);});
   }
- }
- status.textContent="Pesquisa automática concluída para "+concluidos+" produto(s). Os preços encontrados são indicativos e precisam ser confirmados na loja.";
+  status.textContent="Consulta ao Neon concluída. Os resultados são ofertas já registradas no banco.";
+ }catch(e){status.textContent="Não foi possível consultar as ofertas do Neon. Tente novamente mais tarde.";}
 }
 
 function moeda(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
@@ -440,8 +410,9 @@ async function colarAutomaticamenteAoAbrir(){
 }
 document.getElementById("filtroTabela").addEventListener("input",renderizarTabelaRegistrados);
 document.getElementById("filtroSupermercado").addEventListener("change",renderizarTabelaRegistrados);
+document.getElementById("filtroData").addEventListener("change",renderizarTabelaRegistrados);
 document.getElementById("ordenarTabela").addEventListener("change",renderizarTabelaRegistrados);
-carregarPrecosRegistrados().then(renderizarTabelaRegistrados).catch(()=>{document.getElementById("statusTabela").textContent="Não foi possível carregar precos-registrados.json.";});
+carregarPrecosRegistrados();
 </script>
 </body>
 </html>
