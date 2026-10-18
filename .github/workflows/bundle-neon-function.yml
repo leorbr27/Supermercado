@@ -4,12 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - "api/geminiofertas/**"
+      - "api/geminiofertas/index.mjs"
+      - "api/geminiofertas/package.json"
       - ".github/workflows/bundle-neon-function.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   bundle:
@@ -25,7 +26,7 @@ jobs:
           node-version: "24"
       - name: Install bundler and API dependency
         working-directory: api/geminiofertas
-        run: npm install --no-save --ignore-scripts esbuild @neondatabase/serverless@^0.9.0
+        run: npm install --no-save --ignore-scripts --package-lock=false esbuild @neondatabase/serverless@^0.9.0
       - name: Bundle and validate function
         working-directory: api/geminiofertas
         run: |
@@ -49,3 +50,31 @@ jobs:
         env:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         run: neon function deploy geminiofertas --src api/geminiofertas --project-id young-cherry-46155901 --branch br-wandering-resonance-b4w2m30c --api-key "$NEON_API_KEY"
+      - name: Smoke test public API
+        if: ${{ env.HAS_NEON_API_KEY == 'true' }}
+        run: |
+          status=$(curl --retry 8 --retry-delay 3 --retry-all-errors -sS -o /tmp/neon-response.json -w "%{http_code}" "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/")
+          echo "HTTP_STATUS=$status"
+          cat /tmp/neon-response.json
+          test "$status" = "200"
+          node -e "const d=require('/tmp/neon-response.json'); if(!Array.isArray(d)) process.exit(1); console.log('JSON_ARRAY_OK; COUNT='+d.length)"
+      - name: Record deployment result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          if [ "$HAS_NEON_API_KEY" != "true" ]; then
+            DEPLOY_STATUS="skipped_no_neon_api_key"
+          elif [ "$JOB_STATUS" = "success" ]; then
+            DEPLOY_STATUS="completed_http_200"
+          else
+            DEPLOY_STATUS="failed"
+          fi
+          printf '{\n  "status": "%s",\n  "checked_at": "%s",\n  "commit": "%s"\n}\n' "$DEPLOY_STATUS" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SHA" > api/geminiofertas/deploy-status.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+          git add api/geminiofertas/deploy-status.json
+          git commit -m "Registrar status do deploy Neon [skip ci]" || exit 0
+          git push
