@@ -2,71 +2,85 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Consultar produtos — Supermercado</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#f5f8fc;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.container{max-width:900px;margin:auto;padding:16px 16px 40px}header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0;background:#e8f0fb;color:#2456a6;border-radius:11px;width:44px;height:44px;font-size:22px}.subtitle,.note,.date,.code{color:#68778d;font-size:13px}.card,.product{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(30,70,110,.07);border:1px solid #e7edf5}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#f4f8fd;border-radius:13px;padding:12px;text-align:center;border:1px solid #e3ebf5}.stat b{display:block;font-size:22px;color:#2456a6}.stat span{font-size:12px;color:#68778d}.controls{display:grid;grid-template-columns:1.4fr 1fr;gap:9px}input,select{width:100%;height:46px;border:1px solid #cfd9e6;border-radius:11px;padding:0 12px;font-size:16px;background:#fff;color:#172033}input:focus,select:focus{outline:3px solid rgba(37,99,235,.12);border-color:#5b8def}.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}.clear{border:0;background:#eef3f8;color:#29415f;border-radius:10px;padding:8px 11px;font-weight:600}.product{padding:0;overflow:hidden}.product-head{padding:14px;background:#f4f8fd;border-bottom:1px solid #e5edf6}.name{font-weight:750;font-size:17px;color:#183b63}.rows{padding:0 14px}.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #edf0f2}.row:last-child{border-bottom:0}.market{font-weight:600}.price{font-size:18px;font-weight:800;white-space:nowrap;color:#1f4169}.lowest{color:#11845a}.badge{font-size:10px;background:#dff7eb;color:#11744f;padding:3px 6px;border-radius:20px;margin-left:5px}.empty{text-align:center;color:#68778d;padding:25px 5px}.loading{text-align:center;padding:28px;color:#68778d}.error{background:#fff1f2;color:#9f1239;border-radius:12px;padding:16px;line-height:1.45}@media(max-width:600px){.controls{grid-template-columns:1fr}.stat b{font-size:19px}}</style>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f8fc;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px}.container{max-width:1000px;margin:auto;padding:16px 14px 40px}header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0;background:#e8f0fb;color:#2456a6;border-radius:11px;width:44px;height:44px;font-size:24px;cursor:pointer}h1{font-size:25px;line-height:1.2;margin:0;color:#163b65}h2{font-size:20px;margin:0 0 12px}.subtitle,.note,.date,.code{color:#68778d;font-size:16px;line-height:1.45}.card,.product{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(30,70,110,.07);border:1px solid #e7edf5}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.stat{background:#f4f8fd;border-radius:13px;padding:12px;text-align:center;border:1px solid #e3ebf5}.stat b{display:block;font-size:22px;color:#2456a6}.stat span{font-size:16px;color:#68778d}.controls{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:9px}input,select{width:100%;min-height:46px;border:1px solid #cfd9e6;border-radius:11px;padding:9px 12px;font-size:16px;background:#fff;color:#172033}input:focus,select:focus{outline:3px solid rgba(37,99,235,.12);border-color:#5b8def}button{min-height:43px;border:0;border-radius:10px;padding:9px 12px;font-size:16px;font-weight:700;cursor:pointer}.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.clear,.secondary{background:#eef3f8;color:#29415f}.product{padding:0;overflow:hidden}.product-head{padding:14px;background:#f4f8fd;border-bottom:1px solid #e5edf6}.name{font-weight:750;font-size:18px;color:#183b63;overflow-wrap:anywhere}.rows{padding:0 14px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #edf0f2}.row:last-child{border-bottom:0}.market{font-weight:650;overflow-wrap:anywhere}.price{font-size:20px;font-weight:800;white-space:nowrap;color:#1f4169}.lowest{color:#11845a}.badge{display:inline-block;font-size:16px;background:#dff7eb;color:#11744f;padding:3px 8px;border-radius:20px;margin:5px 5px 0 0}.trend{display:inline-block;margin-top:5px;font-size:16px;font-weight:750}.trend.down{color:#087443}.trend.up{color:#b42318}.trend.neutral{color:#68778d}.edit{margin-top:7px;background:#eef3f8;color:#29415f}.empty{text-align:center;color:#68778d;padding:25px 5px;font-size:16px}.loading{text-align:center;padding:28px;color:#68778d;font-size:16px}.spinner{display:inline-block;width:20px;height:20px;border:3px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}@keyframes spin{to{transform:rotate(360deg)}}.error{background:#fff1f2;color:#9f1239;border-radius:12px;padding:16px;line-height:1.5;font-size:16px}.error button{margin-top:10px;background:#9f1239;color:#fff}.hidden{display:none!important}.footer-note{font-size:16px;color:#68778d;line-height:1.45}@media(max-width:700px){.controls{grid-template-columns:1fr}.container{padding:12px 10px 30px}h1{font-size:23px}.card{padding:13px}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.price{font-size:18px;white-space:normal;text-align:right}.name{font-size:17px}}@media(max-width:380px){.row{grid-template-columns:1fr}.price{text-align:left}}
+</style>
 </head>
 <body>
 <div class="container">
-<header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1 style="font-size:25px;margin:0">📋 Consultar produtos</h1><div class="subtitle">Produtos, supermercados e preços registrados</div></div></header>
+<header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1>📋 Consultar produtos</h1><div class="subtitle">Ofertas carregadas diretamente do banco Neon</div></div></header>
 <div class="card"><div class="stats"><div class="stat"><b id="totalProdutos">—</b><span>Produtos</span></div><div class="stat"><b id="totalMercados">—</b><span>Supermercados</span></div><div class="stat"><b id="totalPrecos">—</b><span>Registros de preços</span></div></div></div>
 <div class="card">
-<div class="controls"><input id="busca" type="search" autocomplete="off" placeholder="🔎 Produto ou código de barras"><select id="mercado"><option value="">Todos os supermercados</option></select></div>
-<div style="margin-top:9px"><select id="ordenacao"><option value="nome">Ordenar: produto (A–Z)</option><option value="menor">Ordenar: menor preço</option><option value="maior">Ordenar: maior preço</option><option value="recente">Ordenar: atualização mais recente</option></select></div>
-<div class="note" style="margin-top:10px">Para cada produto, é mostrado o preço mais recente de cada supermercado. O histórico permanece no banco.</div>
+<h2>Filtros</h2>
+<div class="controls"><input id="busca" type="search" autocomplete="off" placeholder="🔎 Produto, supermercado ou código"><select id="mercado" aria-label="Filtrar supermercado"><option value="">Todos os supermercados</option></select><select id="ordenacao" aria-label="Ordenar resultados"><option value="nome">Ordenar: produto (A–Z)</option><option value="menor">Preço: menor → maior</option><option value="maior">Preço: maior → menor</option><option value="recente">Atualização mais recente</option></select><input id="dataFiltro" type="date" aria-label="Data da última atualização" title="Filtrar pela data da última atualização"><button class="clear" id="limpar">Limpar filtros</button></div>
+<div class="note" style="margin-top:10px">A tendência compara o preço atual com o registro anterior salvo no histórico. Use “Editar preço” para atualizar o banco; a gravação exige o token administrativo configurado na função Neon.</div>
 </div>
-<div class="card"><div class="toolbar"><strong id="contador">Carregando...</strong><button class="clear" id="limpar">Limpar filtros</button></div><div id="lista"><div class="loading">Carregando produtos e preços...</div></div></div>
+<div class="card"><div class="toolbar"><strong id="contador" role="status" aria-live="polite">Carregando…</strong><button class="clear" id="atualizar" type="button">Atualizar dados</button></div><div id="erro" class="error hidden" role="alert"><strong>Não foi possível carregar os produtos.</strong><div id="erroTexto">Verifique a conexão com a API.</div><button type="button" id="tentarNovamente">Tentar Novamente</button></div><div id="lista"><div class="loading"><span class="spinner" aria-hidden="true"></span>Carregando produtos e preços do Neon…</div></div></div>
+<div class="footer-note">Fonte dos dados: API Neon PostgreSQL. Os preços e as atualizações são carregados do banco de dados.</div>
 </div>
 <script>
-const URL="https://lbehdmxfkakwygwoozyr.supabase.co";
-const KEY="sb_publishable_wJXFi-54JwNO9RIm8NZU_Q_-9bt7S7h";
-const API=URL+"/rest/v1";
-const headers={apikey:KEY,Authorization:"Bearer "+KEY};
-let produtos=[],mercados=[],precos=[];
+const API="https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/";
+let ofertas=[];
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function moeda(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
 function data(v){return v?new Date(v).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"—";}
-async function api(path){
- const r=await fetch(API+path,{headers,cache:"no-store"});
- const txt=await r.text();
- if(!r.ok) throw new Error("Supabase "+r.status+": "+txt);
- try{return JSON.parse(txt)}catch(e){throw new Error("Resposta inválida do banco.");}
-}
+function dataLocalISO(v){if(!v)return "";const d=new Date(v);if(Number.isNaN(d.getTime()))return "";return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function normalizar(v){return String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("pt-BR").trim();}
 async function carregar(){
- $("lista").innerHTML='<div class="loading">Carregando produtos e preços...</div>';
+ $("erro").classList.add("hidden");
+ $("lista").innerHTML='<div class="loading"><span class="spinner" aria-hidden="true"></span>Carregando produtos e preços do Neon…</div>';
+ $("contador").textContent="Consultando banco de dados…";
  try{
-  const [p,m,r]=await Promise.all([
-   api("/produtos?select=id,nome,codigo_barras,ativo&ativo=eq.true&order=nome.asc"),
-   api("/supermercados?select=id,nome&order=nome.asc"),
-   api("/precos?select=id,produto_id,supermercado_id,preco,registrado_em&order=registrado_em.desc&limit=10000")
-  ]);
-  produtos=Array.isArray(p)?p:[];mercados=Array.isArray(m)?m:[];precos=Array.isArray(r)?r:[];
-  $("totalProdutos").textContent=produtos.length;$("totalMercados").textContent=mercados.length;$("totalPrecos").textContent=precos.length;
-  $("mercado").innerHTML='<option value="">Todos os supermercados</option>'+mercados.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.nome)+'</option>').join("");
+  const res=await fetch(API,{cache:"no-store"});
+  if(!res.ok)throw new Error("A API respondeu HTTP "+res.status+".");
+  const data=await res.json();if(!Array.isArray(data))throw new Error("A API retornou um formato inesperado.");
+  ofertas=data.map(o=>({id:o.id,product:o.descricao||"",store:o.supermercado||"Supermercado não identificado",pack:o.peso_quantidade||"",price:Number(o.preco),updated:o.registrado_em||null,previous:o.preco_anterior,barcode:(o.dados_originais&&o.dados_originais.codigo_barras)||""})).filter(o=>Number.isFinite(o.price));
+  const produtos=new Set(ofertas.map(o=>normalizar(o.product))),mercados=new Set(ofertas.map(o=>o.store));
+  $("totalProdutos").textContent=produtos.size;$("totalMercados").textContent=mercados.size;$("totalPrecos").textContent=ofertas.length;
+  const selected=$("mercado").value;
+  $("mercado").innerHTML='<option value="">Todos os supermercados</option>'+[...mercados].sort((a,b)=>a.localeCompare(b,"pt-BR")).map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join("");
+  if(mercados.has(selected))$("mercado").value=selected;
   renderizar();
  }catch(e){
-  console.error("Erro consulta:",e);$("contador").textContent="Erro ao carregar";
-  $("lista").innerHTML='<div class="error"><strong>Não foi possível acessar o banco de dados.</strong><br>'+esc(e.message||"Erro desconhecido")+'<br><br>O problema foi identificado na conexão com o Supabase.</div>';
+  console.error("Erro ao carregar Neon:",e);$("contador").textContent="Falha na consulta";
+  $("erro").classList.remove("hidden");$("erroTexto").textContent=(e.message||"Erro desconhecido")+" Confirme se a função Neon está implantada e tente novamente.";
+  $("lista").innerHTML="";
  }
+}
+function tendencia(o){
+ if(o.previous===null||o.previous===undefined||o.previous==="")return '<span class="trend neutral">Sem histórico anterior</span>';
+ const prev=Number(o.previous);if(!Number.isFinite(prev))return '<span class="trend neutral">Sem histórico anterior</span>';
+ if(o.price<prev)return '<span class="trend down" title="Preço menor que o registro anterior">↓ Preço reduzido</span>';
+ if(o.price>prev)return '<span class="trend up" title="Preço maior que o registro anterior">↑ Preço aumentado</span>';
+ return '<span class="trend neutral" title="Preço igual ao registro anterior">→ Preço estável</span>';
 }
 function renderizar(){
- const termo=$("busca").value.trim().toLocaleLowerCase("pt-BR"),mercado=$("mercado").value,ordem=$("ordenacao").value;
- const mMap=new Map(mercados.map(x=>[String(x.id),x.nome])),latest=new Map();
- for(const x of precos){const k=String(x.produto_id)+"|"+String(x.supermercado_id);if(!latest.has(k))latest.set(k,x);}
- const arr=[];
- for(const p of produtos){
-  if(termo&&!String(p.nome||"").toLocaleLowerCase("pt-BR").includes(termo)&&!String(p.codigo_barras||"").includes(termo))continue;
-  const rows=[...latest.values()].filter(x=>String(x.produto_id)===String(p.id)&&(!mercado||String(x.supermercado_id)===String(mercado))).map(x=>({...x,nomeMercado:mMap.get(String(x.supermercado_id))||"Supermercado"}));
-  if(mercado&&!rows.length)continue;rows.sort((a,b)=>Number(a.preco)-Number(b.preco));arr.push({produto:p,rows});
- }
- arr.sort((a,b)=>ordem==="menor"?(a.rows.length?Number(a.rows[0].preco):Infinity)-(b.rows.length?Number(b.rows[0].preco):Infinity):ordem==="maior"?(b.rows.length?Number(b.rows[0].preco):-Infinity)-(a.rows.length?Number(a.rows[0].preco):-Infinity):ordem==="recente"?new Date(b.rows[0]?.registrado_em||0)-new Date(a.rows[0]?.registrado_em||0):String(a.produto.nome).localeCompare(String(b.produto.nome),"pt-BR"));
- $("contador").textContent=arr.length+" produto"+(arr.length===1?"":"s")+" encontrado"+(arr.length===1?"":"s");
- if(!arr.length){$("lista").innerHTML='<div class="empty">Nenhum produto encontrado com os filtros atuais.</div>';return;}
- $("lista").innerHTML=arr.map(g=>{const menor=g.rows.length?Math.min(...g.rows.map(x=>Number(x.preco))):null;let linhas=g.rows.map(x=>{const low=menor!==null&&Number(x.preco)===menor;return '<div class="row"><div><div class="market">'+esc(x.nomeMercado)+(low?'<span class="badge">menor preço</span>':'')+'</div><div class="date">Atualizado em '+esc(data(x.registrado_em))+'</div></div><div class="price '+(low?"lowest":"")+'">'+moeda(x.preco)+'</div></div>';}).join("");if(!linhas)linhas='<div class="empty">Nenhum preço registrado.</div>';return '<div class="product"><div class="product-head"><div class="name">'+esc(g.produto.nome)+'</div><div class="code">Código de barras: '+esc(g.produto.codigo_barras||"—")+'</div></div><div class="rows">'+linhas+'</div></div>';}).join("");
+ const termo=normalizar($("busca").value),mercado=$("mercado").value,ordem=$("ordenacao").value,dataFiltro=$("dataFiltro").value;
+ let arr=ofertas.filter(o=>(!termo||normalizar([o.product,o.store,o.pack,o.barcode].join(" ")).includes(termo))&&(!mercado||o.store===mercado)&&(!dataFiltro||dataLocalISO(o.updated)===dataFiltro));
+ arr.sort((a,b)=>ordem==="menor"?a.price-b.price:ordem==="maior"?b.price-a.price:ordem==="recente"?new Date(b.updated||0)-new Date(a.updated||0):a.product.localeCompare(b.product,"pt-BR")||a.store.localeCompare(b.store,"pt-BR"));
+ $("contador").textContent=arr.length+" oferta(s) encontrada(s)";
+ if(!arr.length){$("lista").innerHTML='<div class="empty">Nenhuma oferta encontrada com os filtros atuais.</div>';return;}
+ const grupos=new Map();for(const o of arr){const k=normalizar(o.product);if(!grupos.has(k))grupos.set(k,{name:o.product,items:[]});grupos.get(k).items.push(o);}
+ $("lista").innerHTML=[...grupos.values()].map(g=>{const min=Math.min(...g.items.map(o=>o.price));const rows=g.items.map(o=>'<div class="row"><div><div class="market">'+esc(o.store)+(o.price===min?'<span class="badge">Menor preço</span>':'')+'</div><div class="code">'+esc(o.pack||"")+'</div><div class="date">Atualizado em '+esc(data(o.updated))+'</div>'+tendencia(o)+'</div><div><div class="price '+(o.price===min?"lowest":"")+'">'+moeda(o.price)+'</div><button class="edit" type="button" data-id="'+Number(o.id)+'">Editar preço</button></div></div>').join("");return '<section class="product"><div class="product-head"><div class="name">'+esc(g.name)+'</div></div><div class="rows">'+rows+'</div></section>';}).join("");
+ $("lista").querySelectorAll(".edit").forEach(btn=>btn.addEventListener("click",()=>editarPreco(Number(btn.dataset.id))));
 }
-$("busca").addEventListener("input",renderizar);$("mercado").addEventListener("change",renderizar);$("ordenacao").addEventListener("change",renderizar);
-$("limpar").addEventListener("click",()=>{$("busca").value="";$("mercado").value="";$("ordenacao").value="nome";renderizar();});
+async function editarPreco(id){
+ const o=ofertas.find(x=>Number(x.id)===id);if(!o)return;
+ const raw=prompt("Novo preço para "+o.product+" — "+o.store+" (R$):",String(o.price));if(raw===null)return;
+ const price=Number(raw.replace(",", "."));if(!Number.isFinite(price)||price<0){alert("Informe um preço válido.");return;}
+ const token=prompt("Informe o token administrativo APP_WRITE_TOKEN. Ele não será salvo no navegador:");if(!token)return;
+ try{
+  const res=await fetch(API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id,price,confirmed:true})});
+  const body=await res.json().catch(()=>({}));if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
+  await carregar();alert("Preço atualizado. O histórico foi registrado pelo Neon.");
+ }catch(e){alert("Não foi possível atualizar o preço: "+(e.message||"verifique o token e a conexão."));}
+}
+$("busca").addEventListener("input",renderizar);$("mercado").addEventListener("change",renderizar);$("ordenacao").addEventListener("change",renderizar);$("dataFiltro").addEventListener("change",renderizar);
+$("limpar").addEventListener("click",()=>{$("busca").value="";$("mercado").value="";$("ordenacao").value="nome";$("dataFiltro").value="";renderizar();});
+$("atualizar").addEventListener("click",carregar);$("tentarNovamente").addEventListener("click",carregar);
 carregar();
 </script>
 </body>
