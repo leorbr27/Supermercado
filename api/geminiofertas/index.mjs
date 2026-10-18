@@ -49,7 +49,7 @@ export default {
           "AND ($4::timestamptz IS NULL OR o.registrado_em >= $4) ORDER BY " + order + " LIMIT 5000",
           [store || null, min, max, after]
         );
-        return reply({ offers: result.rows, count: result.rowCount });
+        return reply(result.rows);
       }
 
       if (request.method === "POST") {
