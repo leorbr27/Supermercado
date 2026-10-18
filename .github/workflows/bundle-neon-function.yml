@@ -39,3 +39,11 @@ jobs:
           path: api/geminiofertas/geminiofertas.zip
           if-no-files-found: error
           retention-days: 1
+      - name: Install Neon CLI
+        if: ${{ secrets.NEON_API_KEY != '' }}
+        run: npm install --global neonctl
+      - name: Deploy function to Neon
+        if: ${{ secrets.NEON_API_KEY != '' }}
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: neonctl functions deploy geminiofertas --src api/geminiofertas --project-id young-cherry-46155901 --branch-id br-wandering-resonance-b4w2m30c
