@@ -43,9 +43,9 @@ jobs:
           retention-days: 1
       - name: Install Neon CLI
         if: ${{ env.HAS_NEON_API_KEY == 'true' }}
-        run: npm install --global neonctl
+        run: npm install --global neon
       - name: Deploy function to Neon
         if: ${{ env.HAS_NEON_API_KEY == 'true' }}
         env:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
-        run: neonctl functions deploy geminiofertas --src api/geminiofertas --project-id young-cherry-46155901 --branch-id br-wandering-resonance-b4w2m30c
+        run: neon function deploy geminiofertas --src api/geminiofertas --project-id young-cherry-46155901 --branch br-wandering-resonance-b4w2m30c --api-key "$NEON_API_KEY"
