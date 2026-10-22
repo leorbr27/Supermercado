@@ -19,6 +19,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Smoke test active Neon API read endpoint
+        run: |
+          curl --retry 5 --retry-delay 2 --retry-all-errors -fsS "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/" | jq -e 'type == "array"' >/dev/null
       - name: Install dependencies
         working-directory: api/neon-function
         run: npm install --no-audit --no-fund
