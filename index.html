@@ -35,27 +35,19 @@ td:before{font-size:16px}
 <div id="painelPromptGemini" class="hidden" style="border:1px solid #cfd9e6;border-radius:12px;padding:12px;margin-bottom:14px;background:#f8fbff">
 <p class="note">Copie o prompt abaixo para o Gemini. Processe até 10 imagens por rodada. Nas rodadas seguintes, cole a última versão completa do JSON no campo indicado dentro do prompt para acumular os resultados sem perder os lotes anteriores.</p>
 <label for="promptGemini">Prompt pronto para copiar</label>
-<textarea id="promptGemini" style="min-height:320px">Você é um extrator de ofertas de supermercados. Analise todas as imagens anexadas, extraia apenas dados legíveis e não invente preços, marcas, embalagens ou validade.
-
-Devolva somente um ARRAY JSON válido, sem Markdown e sem texto fora do array. Cada objeto deve seguir este formato:
-{
-  "supermercado": "nome da loja",
-  "descricao": "nome do produto",
-  "peso_quantidade": "peso ou quantidade, se informado",
-  "preco": 0.00,
-  "marca": "marca, se legível",
-  "validade": "validade no formato AAAA-MM-DD ou null",
-  "condicoes": "condições da oferta, se houver",
-  "fonte": "encarte ou URL da fonte, se disponível"
-}
-
-Regras:
-- O campo "preco" deve ser numérico, sem símbolo de moeda; use ponto decimal.
-- Não crie ofertas sem preço legível.
-- Preserve ofertas diferentes quando embalagem, preço ou condição forem diferentes.
-- Evite duplicatas exatas de supermercado + produto + embalagem + preço.
-- Se não conseguir identificar um campo opcional, use string vazia ou null.
-- O array resultante será colado na aplicação para gravar as ofertas na API Neon.</textarea>
+<textarea id="promptGemini" style="min-height:320px">Analise todas as imagens de encartes de supermercado anexadas e extraia cada oferta identificável.
+Retorne exclusivamente um JSON válido, sem comentários, sem texto antes ou depois e sem cercas de Markdown.
+Use este formato:
+[
+  {
+    "store": "Nome do Supermercado",
+    "product": "Nome do Produto",
+    "brand": "Marca ou Não informada",
+    "package": "Apresentação/Peso; use Não informada se ausente",
+    "price": 12.90,
+    "signature": "identificador_unico"
+  }
+]</textarea>
 <div class="actions"><button class="primary" type="button" onclick="copiarPromptGemini()">Copiar prompt</button><button class="secondary" type="button" onclick="alternarPromptGemini()">Fechar</button></div>
 <div id="statusPromptGemini" class="status" aria-live="polite"></div>
 </div>
