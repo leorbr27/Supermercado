@@ -35,3 +35,6 @@ jobs:
             git commit -m "Build bundled Neon function"
             git push origin main
           fi
+      - name: Smoke test active Neon API read endpoint
+        run: |
+          curl --max-time 20 --retry 2 --retry-delay 2 --retry-all-errors -fsS "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/" | jq -e 'type == "array"' >/dev/null
