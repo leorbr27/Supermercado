@@ -259,22 +259,30 @@ async function editarPrecoNeon(id){
  const valor=Number(informado.replace(",", "."));if(!Number.isFinite(valor)||valor<0){alert("Informe um preço válido.");return;}
  const token=prompt("Informe o token de edição configurado na função Neon (APP_WRITE_TOKEN). O token não será salvo no navegador:");if(!token)return;
  try{
-  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id,price:valor,confirmed:true})});
+  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,price:valor,confirmed:true})});
   const body=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
   await carregarPrecosRegistrados(true);alert("Preço atualizado e enviado ao histórico.");
  }catch(e){alert("Não foi possível atualizar o preço. "+(e.message||"Verifique o token e a conexão."));}
 }
 
+function converterPreco(valor){
+ if(typeof valor==="number")return valor;
+ let texto=String(valor??"").trim().replace(/\s/g,"").replace(/^R\$/i,"");
+ if(texto.includes(",")&&texto.includes(".")){
+  if(texto.lastIndexOf(",")>texto.lastIndexOf("."))texto=texto.replace(/\./g,"").replace(",",".");
+  else texto=texto.replace(/,/g,"");
+ }else if(texto.includes(","))texto=texto.replace(",",".");
+ return Number(texto);
+}
 async function importarOfertasNeon(){
  const campo=document.getElementById("jsonOfertasNeon"),status=document.getElementById("statusImportacaoNeon");
  let dados;try{dados=JSON.parse(campo.value);}catch(e){status.textContent="JSON inválido. Confira as aspas, vírgulas e colchetes.";return;}
  const lista=Array.isArray(dados)?dados:(Array.isArray(dados.offers)?dados.offers:null);
  if(!lista||!lista.length){status.textContent="Informe um array JSON com pelo menos uma oferta.";return;}
- const token=prompt("Informe o token administrativo APP_WRITE_TOKEN configurado na função Neon. Ele não será salvo no navegador:");if(!token)return;
  let ok=0,erros=0;
  for(let i=0;i<lista.length;i++){
-  const o=lista[i]||{},store=String(o.store??o.supermercado??"").trim(),product=String(o.product??o.descricao??o.produto??"").trim(),pack=String(o.package??o.peso_quantidade??o.embalagem??"").trim(),price=Number(o.price??o.preco);
+  const o=lista[i]||{},store=String(o.store??o.supermercado??"").trim(),product=String(o.product??o.descricao??o.produto??"").trim(),pack=String(o.package??o.peso_quantidade??o.embalagem??"").trim(),price=converterPreco(o.price??o.preco);
   if(!store||!product||!Number.isFinite(price)||price<0){erros++;continue;}
   const signature=String(o.signature??o.assinatura??[store,product,pack].map(v=>normalizarBusca(v)).join("|")).slice(0,200);
   status.textContent="Gravando oferta "+(i+1)+" de "+lista.length+" no Neon…";
@@ -284,7 +292,7 @@ async function importarOfertasNeon(){
    ok++;
   }catch(e){erros++;}
  }
- status.textContent="Importação concluída: "+ok+" oferta(s) gravada(s)/atualizada(s); "+erros+" com erro.";
+ status.textContent="Importação concluída: "+ok+" oferta(s) gravada(s)/atualizada(s); "+erros+" com erro."+(erros?" Confira os dados e tente novamente.":"");
  if(ok){precosRegistradosPromise=null;await carregarPrecosRegistrados(true);campo.value="";}
 }
 
