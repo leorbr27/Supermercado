@@ -26,7 +26,7 @@ jobs:
         working-directory: api/neon-function
         run: npm install --no-audit --no-fund
       - name: Bundle dependencies into a single file
-        run: npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=esm --target=node24 --outfile=api/neon-function/deploy/index.mjs
+        run: npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=esm --target=node24 --banner:js='import { createRequire } from "node:module"; const require = createRequire(import.meta.url);' --outfile=api/neon-function/deploy/index.mjs
       - name: Commit deployable bundle
         run: |
           git config user.name "github-actions[bot]"
