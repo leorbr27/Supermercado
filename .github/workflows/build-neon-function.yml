@@ -26,7 +26,7 @@ jobs:
       - name: Bundle dependencies into a single file
         run: |
           npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=cjs --target=node24 --outfile=api/neon-function/deploy/index.cjs
-          printf '%s\n' 'import bundle from "./index.cjs";' 'export default bundle.default;' > api/neon-function/deploy/index.mjs
+          { printf '%s\n' 'import { createRequire } from "node:module";' 'const require = createRequire(import.meta.url);' 'const module = { exports: {} };' 'const exports = module.exports;'; cat api/neon-function/deploy/index.cjs; printf '\nexport default module.exports.default;\n'; } > api/neon-function/deploy/index.mjs
       - name: Commit deployable bundle
         run: |
           git config user.name "github-actions[bot]"
