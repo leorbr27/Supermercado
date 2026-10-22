@@ -41,3 +41,9 @@ jobs:
       - name: Smoke test active Neon API read endpoint
         run: |
           curl --max-time 20 --retry 2 --retry-delay 2 --retry-all-errors -fsS "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/" | jq -e 'type == "array"' >/dev/null
+      - name: Smoke test public offer write and localized price parsing
+        run: |
+          url="https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/"
+          signature="__SMOKE_TEST_20261022T0902Z__"
+          curl --max-time 20 -fsS -X POST "$url" -H "Origin: https://leorbr27.github.io" -H "Content-Type: application/json" --data '{"store":"__SMOKE_TEST__","product":"__SMOKE_TEST__","package":"Não informada","price":"R$ 12,90","signature":"__SMOKE_TEST_20261022T0902Z__","dados_originais":{"marca":"Não informada"}}' | jq -e '.success == true and .saved == 1' >/dev/null
+          curl --max-time 20 -fsS "$url" | jq -e 'any(.[]; .assinatura == "__SMOKE_TEST_20261022T0902Z__" and (.preco|tonumber) == 12.9)' >/dev/null
