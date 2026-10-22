@@ -217,12 +217,48 @@ function preencherFiltroSupermercado(){
  if(lojas.includes(atual))select.value=atual;
 }
 function pontuarCorrespondencia(item, produto){
- const a=normalizarBusca(item),b=normalizarBusca(produto);if(!a||!b)return 0;if(a===b)return 1;
- if(b.includes(a)||a.includes(b))return Math.min(.96,.78+Math.min(a.length,b.length)/Math.max(a.length,b.length)*.18);
- const stop=new Set(["de","da","do","das","dos","com","sem","para","por","e","ou","em","na","no","pacote","produto","unidade"]);
- const ta=[...new Set(a.split(" ").filter(t=>t.length>1&&!stop.has(t)))],tb=[...new Set(b.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
- if(!ta.length||!tb.length)return 0;const comuns=ta.filter(t=>tb.some(u=>u===t||(t.length>=5&&u.length>=5&&(t.startsWith(u)||u.startsWith(t)))));
- const cobertura=comuns.length/ta.length,precisao=comuns.length/tb.length;return (2*cobertura*precisao/(cobertura+precisao||1))*.92;
+ const a=normalizarBusca(item),b=normalizarBusca(produto);
+ if(!a||!b)return 0;
+ if(a===b)return 1;
+ const stop=new Set(["de","da","do","das","dos","com","sem","para","por","e","ou","em","na","no","pacote","produto","unidade","tipo"]);
+ const tokensA=[...new Set(a.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
+ const tokensB=[...new Set(b.split(" ").filter(t=>t.length>1&&!stop.has(t)))];
+ if(!tokensA.length||!tokensB.length)return 0;
+ const gruposTipo=[
+  ["bovino","boi","boi","carne bovina","bovina"],
+  ["frango","frango","ave","aves","galinha","frango"],
+  ["suino","suino","porco","suina","suino"],
+  ["peixe","peixe","peixes","pescado","peixe"],
+  ["peru","peru","peru"],
+  ["cordeiro","cordeiro","ovelha","cordeiro"]
+ ];
+ const detectarTipo=tokens=>{
+  const texto=" "+tokens.join(" ")+" ";
+  for(const grupo of gruposTipo){
+   if(grupo.slice(0,-1).some(t=>texto.includes(" "+t+" ")))return grupo[grupo.length-1];
+  }
+  if(tokens.some(t=>["bovina","bovino","boi"].includes(t)))return "bovino";
+  if(tokens.some(t=>["suina","suino","porco"].includes(t)))return "suino";
+  if(tokens.some(t=>["frango","ave","aves","galinha"].includes(t)))return "frango";
+  if(tokens.some(t=>["peixe","peixes","pescado"].includes(t)))return "peixe";
+  return "";
+ };
+ const tipoA=detectarTipo(tokensA),tipoB=detectarTipo(tokensB);
+ if(tipoA&&tipoB&&tipoA!==tipoB)return 0;
+ const equivalentes=(x,y)=>x===y||(x.length>=5&&y.length>=5&&(x.startsWith(y)||y.startsWith(x)));
+ const comuns=tokensA.filter(t=>tokensB.some(u=>equivalentes(t,u)));
+ if(!comuns.length)return 0;
+ const cobertura=comuns.length/tokensA.length;
+ const tokensFortes=tokensA.filter(t=>!["branco","branca","integral","tipo","extra","fresco","fresca","congelado","congelada","tradicional","especial","premium"].includes(t));
+ const fortesComuns=tokensFortes.filter(t=>tokensB.some(u=>equivalentes(t,u)));
+ if(tokensFortes.length&&!fortesComuns.length)return 0;
+ const coberturaForte=tokensFortes.length?fortesComuns.length/tokensFortes.length:cobertura;
+ const exataTokens=tokensA.every(t=>tokensB.some(u=>equivalentes(t,u)));
+ let score=0.48*cobertura+0.42*coberturaForte+0.10*(comuns.length/tokensB.length);
+ if(exataTokens)score=Math.max(score,0.84);
+ if(tipoA&&tipoB&&tipoA===tipoB)score=Math.min(0.99,score+0.08);
+ if(a.startsWith(b)||b.startsWith(a))score=Math.max(score,0.88);
+ return Math.min(0.99,score);
 }
 function dataLocalISO(v){if(!v)return "";const d=new Date(v);if(Number.isNaN(d.getTime()))return "";return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function indicadorTendencia(o){
