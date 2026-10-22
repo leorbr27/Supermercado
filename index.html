@@ -37,7 +37,7 @@ td:before{font-size:16px}
 <div id="painelImportacao" class="hidden">
 <div class="import-step">
 <h2>Passo 1 — Copie o prompt do Gemini</h2>
-<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="secondary" type="button" onclick="copiarPromptGemini()" id="botaoPromptGemini">📋 Copiar Prompt do Gemini</button></div>
+<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="primary" type="button" onclick="copiarPromptGemini()" id="botaoPromptGemini">📋 Copiar Prompt do Gemini</button><button class="secondary" type="button" onclick="alternarPromptGemini()" id="botaoVisualizarPrompt">Ver prompt</button></div>
 <div id="painelPromptGemini" class="hidden" style="border:1px solid #cfd9e6;border-radius:12px;padding:12px;margin-bottom:14px;background:#f8fbff">
 <p class="note">Copie o prompt abaixo para o Gemini. Processe até 10 imagens por rodada. Nas rodadas seguintes, cole a última versão completa do JSON no campo indicado dentro do prompt para acumular os resultados sem perder os lotes anteriores.</p>
 <label for="promptGemini">Prompt pronto para copiar</label>
@@ -55,8 +55,8 @@ Use este formato:
   }
 ]</textarea>
 <div class="actions"><button class="secondary" type="button" onclick="alternarPromptGemini()">Fechar prévia</button></div>
-<div id="statusPromptGemini" class="status" aria-live="polite"></div>
 </div>
+<div id="statusPromptGemini" class="status" aria-live="polite"></div>
 </div>
 <div class="import-step">
 <h2>Passo 2 — Cole o JSON das ofertas</h2>
@@ -107,10 +107,10 @@ function alternarPainelImportacao(){
 }
 function alternarPromptGemini(){
  const painel=document.getElementById("painelPromptGemini");
- const botao=document.getElementById("botaoPromptGemini");
+ const botao=document.getElementById("botaoVisualizarPrompt");
  const abrir=painel.classList.contains("hidden");
  painel.classList.toggle("hidden",!abrir);
- botao.setAttribute("aria-expanded",String(abrir));
+ if(botao)botao.textContent=abrir?"Ocultar prompt":"Ver prompt";
  if(abrir)document.getElementById("promptGemini").focus();
 }
 async function copiarPromptGemini(){
