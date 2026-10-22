@@ -23,12 +23,13 @@ jobs:
         working-directory: api/neon-function
         run: npm install --no-audit --no-fund
       - name: Bundle dependencies into a single file
-        run: npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=esm --target=node24 --banner:js='import { createRequire } from "node:module"; const require = createRequire(import.meta.url);' --outfile=api/neon-function/deploy/index.mjs
+        run: npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=cjs --target=node24 --outfile=api/neon-function/deploy/index.cjs
+          printf '%s\n' 'import bundle from "./index.cjs";' 'export default bundle.default;' > api/neon-function/deploy/index.mjs
       - name: Commit deployable bundle
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add api/neon-function/deploy/index.mjs
+          git add api/neon-function/deploy/index.mjs api/neon-function/deploy/index.cjs
           if git diff --cached --quiet; then
             echo "Bundle is already up to date."
           else
