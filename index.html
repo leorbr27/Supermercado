@@ -257,7 +257,7 @@ async function editarPrecoNeon(id){
  const oferta=precosRegistrados.find(o=>Number(o.id)===id);if(!oferta)return;
  const informado=prompt("Informe o novo preço para "+oferta.product+" (R$):",String(oferta.price));if(informado===null)return;
  const valor=Number(informado.replace(",", "."));if(!Number.isFinite(valor)||valor<0){alert("Informe um preço válido.");return;}
- const token=prompt("Informe o token de edição configurado na função Neon (APP_WRITE_TOKEN). O token não será salvo no navegador:");if(!token)return;
+
  try{
   const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,price:valor,confirmed:true})});
   const body=await res.json().catch(()=>({}));
@@ -287,7 +287,7 @@ async function importarOfertasNeon(){
   const signature=String(o.signature??o.assinatura??[store,product,pack].map(v=>normalizarBusca(v)).join("|")).slice(0,200);
   status.textContent="Gravando oferta "+(i+1)+" de "+lista.length+" no Neon…";
   try{
-   const res=await fetch(NEON_API,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({store,product,package:pack,price,signature,dados_originais:o})});
+   const res=await fetch(NEON_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({store,product,package:pack,price,signature,dados_originais:o})});
    if(!res.ok)throw new Error("HTTP "+res.status);
    ok++;
   }catch(e){erros++;}
