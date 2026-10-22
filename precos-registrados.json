@@ -1,1346 +1,1218 @@
 [
-  {
-    "store": "RB Supermercados",
-    "product": "Peito de Frango Resfriado c/ Osso Granel",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 15.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-16",
-    "conditions": "Sexta da Carne, enquanto durarem os estoques. Unidades: Santa Martha/Vitória e Marcílio/Viana",
-    "source": ""
-  },
-  {
-    "store": "RB Supermercados",
-    "product": "Peito Bovino",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 39.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-16",
-    "conditions": "Sexta da Carne, enquanto durarem os estoques. Unidades: Santa Martha/Vitória e Marcílio/Viana",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Leite Longa Vida",
-    "brand": "Selita",
-    "variant": "",
-    "package": "1L",
-    "price": 4.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta De Sexta e Sábado, enquanto durarem os estoques, para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Chã de Fora Bovino",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 39.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta De Sexta e Sábado, enquanto durarem os estoques, para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Pera PT",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 9.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta De Sexta e Sábado, enquanto durarem os estoques, para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Amaciante Concentrado",
-    "brand": "Downy",
-    "variant": "",
-    "package": "1,35L / 1,5L",
-    "price": 25.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta De Sexta e Sábado, enquanto durarem os estoques, para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Manteiga de Primeira Qualidade com Sal",
-    "brand": "Damare",
-    "variant": "",
-    "package": "200g",
-    "price": 7.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta válida para Cariacica, Serra, Vila Velha, Guarapari ou enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Filé de Peito de Frango BD.",
-    "brand": "Oi Frango",
-    "variant": "",
-    "package": "1kg",
-    "price": 17.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta válida para Cariacica, Serra, Vila Velha, Guarapari ou enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Massa Sêmola Espaguete N.8",
-    "brand": "Yara",
-    "variant": "",
-    "package": "1kg",
-    "price": 4.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta válida para Cariacica, Serra, Vila Velha, Guarapari ou enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Rede Casagrande",
-    "product": "Leite Condensado Integral Gourmet",
-    "brand": "Italac",
-    "variant": "",
-    "package": "395g",
-    "price": 4.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Oferta válida para Cariacica, Serra, Vila Velha, Guarapari ou enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Amaciante Concentrado Suave Encanto",
-    "brand": "Suprema",
-    "variant": "Suave Encanto",
-    "package": "1,5L",
-    "price": 13.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Arroz Branco Tipo 1",
-    "brand": "Alegre",
-    "variant": "Tradicional",
-    "package": "5kg",
-    "price": 18.79,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Feijão Carioca",
-    "brand": "Berger",
-    "variant": "",
-    "package": "1kg",
-    "price": 5.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Peito de Frango Congelado Envelopado",
-    "brand": "Gujão",
-    "variant": "",
-    "package": "kg",
-    "price": 12.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Massa de Espaguete",
-    "brand": "Supradely",
-    "variant": "",
-    "package": "400g",
-    "price": 1.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Hambúrguer Bovino Congelado Novilha",
-    "brand": "Frisa",
-    "variant": "Búrguer Black",
-    "package": "140g",
-    "price": 5.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Lava Roupas em Pó Concentrado",
-    "brand": "Tixan Ypê",
-    "variant": "",
-    "package": "2,2kg",
-    "price": 19.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida para a loja da BA (Teixeira de Freitas), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Presunto Cozido Peça/Pedaço",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "kg",
-    "price": 22.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Margarina Com/Sem Sal",
-    "brand": "Doriana",
-    "variant": "Cremosa",
-    "package": "500g",
-    "price": 6.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Feijão Vermelho Tipo 1",
-    "brand": "Berger",
-    "variant": "",
-    "package": "1kg",
-    "price": 5.69,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Arroz Branco Tipo 1",
-    "brand": "Alegre",
-    "variant": "Tradicional",
-    "package": "5kg",
-    "price": 17.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Coxa e Sobrecoxa de Frango Congelado com Porção Dorsal",
-    "brand": "Kifrango",
-    "variant": "",
-    "package": "kg",
-    "price": 7.19,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Filé de Peito de Frango Congelado Bandeja",
-    "brand": "Uniaves",
-    "variant": "",
-    "package": "1kg",
-    "price": 17.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Hambúrguer Misto Congelado Bovino/Aves",
-    "brand": "Grã Filé",
-    "variant": "Bife!",
-    "package": "2,688kg",
-    "price": 39.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Refrigerante Tradicional / Zero",
-    "brand": "Coca-Cola",
-    "variant": "",
-    "package": "2,5L",
-    "price": 10.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-24",
-    "conditions": "Oferta válida para as lojas do ES, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Azeite Português Extra Virgem Classic",
-    "brand": "Oliveira da Serra",
-    "variant": "",
-    "package": "500ml",
-    "price": 24.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Leite Condensado Semidesnatado",
-    "brand": "Italac",
-    "variant": "",
-    "package": "395g",
-    "price": 4.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Bebida de Uva Adoçada",
-    "brand": "Abbraccio",
-    "variant": "",
-    "package": "1,5L",
-    "price": 11.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Arroz Branco Tipo 1",
-    "brand": "Calafate",
-    "variant": "",
-    "package": "5kg",
-    "price": 17.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Batata Congelada Ok Fries Tradicional",
-    "brand": "Easychef",
-    "variant": "Ok Fries",
-    "package": "1,5kg",
-    "price": 12.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Queijo Mussarela Peça/Pedaço",
-    "brand": "LatVida",
-    "variant": "",
-    "package": "kg",
-    "price": 35.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Filé de Peito de Frango Congelado Bandeja",
-    "brand": "Seara",
-    "variant": "",
-    "package": "1kg",
-    "price": 16.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Lava Roupas em Pó Concentrado",
-    "brand": "Tixan Ypê",
-    "variant": "",
-    "package": "2,2kg",
-    "price": 24.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Desinfetante",
-    "brand": "Suprema",
-    "variant": "Lavanda",
-    "package": "5L",
-    "price": 14.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Amaciante Concentrado",
-    "brand": "Baby Soft",
-    "variant": "",
-    "package": "500ml",
-    "price": 4.75,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Papel Higiênico Neutro Fit Folha Dupla 12x20m",
-    "brand": "Primavera",
-    "variant": "",
-    "package": "12 rolos",
-    "price": 7.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-25",
-    "conditions": "Oferta válida somente para a loja do RJ (São Pedro da Aldeia), enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Miolo de Alcatra Resfriado Peça a Vácuo",
-    "brand": "Friboi",
-    "variant": "",
-    "package": "kg",
-    "price": 47.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Oferta válida somente para a loja de São Pedro da Aldeia, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Contra Filé Resfriado Peça a Vácuo",
-    "brand": "Friboi",
-    "variant": "",
-    "package": "kg",
-    "price": 49.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Oferta válida somente para a loja de São Pedro da Aldeia, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Picanha Resfriada Peça a Vácuo",
-    "brand": "Friboi",
-    "variant": "",
-    "package": "kg",
-    "price": 69.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Oferta válida somente para a loja de São Pedro da Aldeia, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Superatacado SempreTem",
-    "product": "Ovos Brancos Crivo com 30 Unidades",
-    "brand": "",
-    "variant": "",
-    "package": "30 un",
-    "price": 14.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Oferta válida somente para a loja de São Pedro da Aldeia, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Extrabom Supermercados",
-    "product": "Coxinha da Asa (Drumette)",
-    "brand": "Sadia",
-    "variant": "",
-    "package": "1kg",
-    "price": 15.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Extrabom: R$ 15,98. Sem Clube Extrabom: R$ 16,99. Oferta de Aniversário, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Extrabom Supermercados",
-    "product": "Peito Bovino sem Osso Pedaço",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 39.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Extrabom: R$ 39,90. Sem Clube Extrabom: R$ 46,90. Oferta de Aniversário, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Extrabom Supermercados",
-    "product": "Coração de Frango Congelado Bandeja",
-    "brand": "Aurora",
-    "variant": "",
-    "package": "1kg",
-    "price": 35.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Extrabom: R$ 35,90. Sem Clube Extrabom: R$ 38,90. Oferta de Aniversário, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Extrabom Supermercados",
-    "product": "Meio da Asa de Frango Churrasco",
-    "brand": "Uniaves",
-    "variant": "",
-    "package": "700g",
-    "price": 19.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Extrabom: R$ 19,98. Sem Clube Extrabom: R$ 23,98. Oferta de Aniversário, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Extrabom Supermercados",
-    "product": "Contrafilé Bovino Grill",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 69.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Extrabom: R$ 69,90. Sem Clube Extrabom: R$ 79,90. Oferta de Aniversário, enquanto durarem os estoques",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Bombom Favoritos / Sonho de Valsa e Ouro Branco",
-    "brand": "Lacta",
-    "variant": "",
-    "package": "250g / 206g / 220g",
-    "price": 11.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 11,98. Preço Oferta Loja: R$ 15,99. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Linguiça Tipo Calabresa Fina / Grossa Defumada",
-    "brand": "Sadia",
-    "variant": "",
-    "package": "kg",
-    "price": 19.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 19,98. Preço Oferta Loja: R$ 21,98/kg. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Azeite de Oliva Português Dia a Dia",
-    "brand": "Gallo",
-    "variant": "Dia a Dia",
-    "package": "400ml",
-    "price": 24.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 24,99. Preço Oferta Loja: R$ 28,90. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Amaciante Concentrado",
-    "brand": "Comfort",
-    "variant": "",
-    "package": "1L",
-    "price": 17.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 17,99. Preço Oferta Loja: R$ 21,29. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Filezinho Sassami Congelado Bandeja",
-    "brand": "Sadia",
-    "variant": "",
-    "package": "1kg",
-    "price": 17.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 17,49. Preço Oferta Loja: R$ 19,98. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Papel Higiênico Folha Tripla Deluxe 12x20m",
-    "brand": "Cotton",
-    "variant": "",
-    "package": "12 rolos",
-    "price": 14.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 14,99. Preço Oferta Loja: R$ 15,99. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Arroz Tipo 1 Pacote 5kg",
-    "brand": "Bella Dica",
-    "variant": "",
-    "package": "5kg",
-    "price": 17.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 17,90. Preço Oferta Loja: R$ 19,49. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Detergente em Pó",
-    "brand": "Ace",
-    "variant": "",
-    "package": "2,2kg",
-    "price": 14.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço Clube Meu Carone: R$ 14,99. Preço Oferta Loja: R$ 16,99. Válida somente para clientes cadastrados no Clube Carone nas lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Feijão Preto Tipo 1",
-    "brand": "Combrasil",
-    "variant": "",
-    "package": "1kg",
-    "price": 6.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Preço Clube Meu Carone: R$ 6,99. Preço Oferta Loja: R$ 8,49. Válida somente para clientes cadastrados no Clube Carone na loja de Cabo Frio",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Azeite de Oliva Português Dia a Dia",
-    "brand": "Gallo",
-    "variant": "Dia a Dia",
-    "package": "400ml",
-    "price": 24.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Preço Clube Meu Carone: R$ 24,99. Preço Oferta Loja: R$ 27,99. Válida somente para clientes cadastrados no Clube Carone na loja de Cabo Frio",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Filé de Coxa e Sobrecoxa de Frango Congelado Bandeja",
-    "brand": "Seara",
-    "variant": "",
-    "package": "1kg",
-    "price": 15.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Preço Clube Meu Carone: R$ 15,98. Preço Oferta Loja: R$ 17,99. Válida somente para clientes cadastrados no Clube Carone na loja de Cabo Frio",
-    "source": ""
-  },
-  {
-    "store": "Carone",
-    "product": "Achocolatado em Pó Act-Go",
-    "brand": "Nescau",
-    "variant": "",
-    "package": "550g",
-    "price": 15.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-18",
-    "conditions": "Preço Clube Meu Carone: R$ 15,98. Preço Oferta Loja: R$ 21,98. Válida somente para clientes cadastrados no Clube Carone na loja de Cabo Frio",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Feijão Preto Tipo 1 Pacote",
-    "brand": "Norte",
-    "variant": "",
-    "package": "1kg",
-    "price": 3.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 3,99 (válido para até 120 un). Preço normal: R$ 4,19. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Feijão Carioca Tipo 1 Pacote",
-    "brand": "Nico",
-    "variant": "",
-    "package": "1kg",
-    "price": 6.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Farinha de Trigo Tipo 1 Pacote",
-    "brand": "Três Coroas",
-    "variant": "",
-    "package": "1kg",
-    "price": 2.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Café Tradicional ou Extraforte Grão da Roça Pacote",
-    "brand": "Grão da Roça",
-    "variant": "",
-    "package": "250g",
-    "price": 7.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Açúcar Cristal Pacote",
-    "brand": "Coagro",
-    "variant": "",
-    "package": "2kg",
-    "price": 4.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Macarrão com Ovos Cortes (Exceto Ninho) Pacote",
-    "brand": "Lança",
-    "variant": "",
-    "package": "500g",
-    "price": 3.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Hambúrguer Misto de Carne Bovina e de Frango Caixeta",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "672g",
-    "price": 14.39,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 14,39 (válido para até 12 un). Preço normal: R$ 15,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Batata Palito Congelada Pacote",
-    "brand": "Chic Bem Brasil",
-    "variant": "",
-    "package": "2kg",
-    "price": 17.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Tirinhas de Frango Empanado ou Mini Chicken Empanado Pacote",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "1kg",
-    "price": 15.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Linguiça Tipo Calabresa Defumada Pacote",
-    "brand": "Nobre",
-    "variant": "",
-    "package": "2,5kg",
-    "price": 39.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Salsicha para Hot-Dog Congelada Pacote",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "3kg",
-    "price": 44.5,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Bacon Peça",
-    "brand": "Rezende",
-    "variant": "",
-    "package": "kg",
-    "price": 24.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço por quilo na peça. Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Leite em Pó Integral ou Integral Instantâneo Sachê",
-    "brand": "Aurora",
-    "variant": "",
-    "package": "400g",
-    "price": 11.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Creme Culinário UHT TP",
-    "brand": "Damare",
-    "variant": "",
-    "package": "200g",
-    "price": 1.59,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Milho-Verde Sachê Peso Drenado 170g",
-    "brand": "Fugini",
-    "variant": "",
-    "package": "170g",
-    "price": 2.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Molho de Tomate Tradicional Pouch",
-    "brand": "Fugini",
-    "variant": "",
-    "package": "300g",
-    "price": 1.19,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Biscoito Recheado Sabores Pacote",
-    "brand": "Piraquê",
-    "variant": "",
-    "package": "160g",
-    "price": 2.65,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Achocolatado em Pó Original Pacote",
-    "brand": "Toddy",
-    "variant": "",
-    "package": "1,02kg",
-    "price": 19.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Sobrecoxas de Frango Congeladas Bandeja",
-    "brand": "Oi Frango",
-    "variant": "",
-    "package": "1kg",
-    "price": 12.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Filezinho Sassami de Frango Congelado Pacote",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "1kg",
-    "price": 14.59,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Filé de Peito de Frango Congelado IQF Pacote",
-    "brand": "Canção",
-    "variant": "",
-    "package": "1kg",
-    "price": 14.5,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Cupim Bovino Resfriado Peça",
-    "brand": "Friboi",
-    "variant": "",
-    "package": "kg",
-    "price": 42.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço por quilo na peça. Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Alcatra com Maminha Resfriada Fracionada Peça",
-    "brand": "Friboi",
-    "variant": "",
-    "package": "kg",
-    "price": 48.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço por quilo na peça. Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Costelinha Suína Resfriada",
-    "brand": "Friella",
-    "variant": "",
-    "package": "kg",
-    "price": 22.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço por quilo. Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Meu Menu Sabores Pacote",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "300g",
-    "price": 5.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 5,99 (válido para até 12 un). Preço normal: R$ 6,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Sanduíche Congelado Hot Pocket Sabores Pacote",
-    "brand": "Sadia",
-    "variant": "",
-    "package": "145g",
-    "price": 6.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 6,99 (válido para até 12 un). Preço normal: R$ 7,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Pizza Congelada Sabores Caixeta",
-    "brand": "Perdigão",
-    "variant": "",
-    "package": "460g",
-    "price": 12.5,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 12,50 (válido para até 12 un). Preço normal: R$ 13,50. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Margarina Cremosa com Sal Pote",
-    "brand": "Qualy",
-    "variant": "",
-    "package": "1kg",
-    "price": 16.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Requeijão Cremoso Tradicional ou Light Pote",
-    "brand": "Damare",
-    "variant": "",
-    "package": "180g",
-    "price": 5.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Maionese Pote",
-    "brand": "Arisco",
-    "variant": "",
-    "package": "500g",
-    "price": 5.69,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 5,69 (válido para até 12 un). Preço normal: R$ 6,59. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Batata Palha Tradicional ou Extrafina Pacote",
-    "brand": "Crac",
-    "variant": "",
-    "package": "400g",
-    "price": 15.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Bebida Láctea Sabor Chocolate TP",
-    "brand": "Toddynho",
-    "variant": "",
-    "package": "200ml",
-    "price": 2.19,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Farinha de Mandioca Branca Pacote",
-    "brand": "Pachá",
-    "variant": "",
-    "package": "1kg",
-    "price": 3.69,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 3,69 (válido para até 12 un). Preço normal: R$ 3,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Biscoito Pacote",
-    "brand": "Petyan",
-    "variant": "",
-    "package": "2kg",
-    "price": 15.59,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Coquetel Alcoólico Sabores Garrafa",
-    "brand": "Drinkball",
-    "variant": "",
-    "package": "300ml",
-    "price": 4.49,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Gin Tipos Garrafa",
-    "brand": "Dry Cat",
-    "variant": "",
-    "package": "750ml",
-    "price": 58.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Bebida Energética PET",
-    "brand": "Start",
-    "variant": "",
-    "package": "2L",
-    "price": 8.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Refrigerante Uai Sabores PET",
-    "brand": "Uai",
-    "variant": "",
-    "package": "250ml",
-    "price": 0.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Refrigerante Original PET",
-    "brand": "Coca-Cola",
-    "variant": "",
-    "package": "2,5L",
-    "price": 9.79,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Suco de Caju Tropical PET",
-    "brand": "Docampo",
-    "variant": "",
-    "package": "1L",
-    "price": 3.19,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Refresco de Guaraná Sabores Copo",
-    "brand": "Guaravitta",
-    "variant": "",
-    "package": "290ml",
-    "price": 0.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Lava-Roupas Líquido Tipos Galão",
-    "brand": "Omo",
-    "variant": "",
-    "package": "5L",
-    "price": 51.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 51,99 (válido para até 12 un). Preço normal: R$ 57,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Lava-Roupas em Pó Tipos Caixeta",
-    "brand": "Omo",
-    "variant": "",
-    "package": "1,6kg",
-    "price": 19.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Amaciante Concentrado Fragrâncias Pacote Refil",
-    "brand": "Comfort",
-    "variant": "",
-    "package": "900ml",
-    "price": 15.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 15,99 (válido para até 12 un). Preço normal: R$ 17,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Detergente Líquido Limpadua Fragrâncias Frasco",
-    "brand": "Ypê",
-    "variant": "",
-    "package": "500ml",
-    "price": 1.79,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço no App Meu Assaí: R$ 1,79 (válido para até 12 un). Preço normal: R$ 1,99. Válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Água Sanitária Galão",
-    "brand": "Qboa",
-    "variant": "",
-    "package": "2L",
-    "price": 6.59,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Válido para todas as lojas do Espírito Santo",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Alho a Granel",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 13.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-15",
-    "conditions": "Feira Assaí, válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Beterraba",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 4.89,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-15",
-    "conditions": "Feira Assaí, válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Cenoura",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 4.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-15",
-    "conditions": "Feira Assaí, válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Maçã Gala",
-    "brand": "",
-    "variant": "",
-    "package": "kg",
-    "price": 5.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-15",
-    "conditions": "Feira Assaí, válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Assaí Atacadista",
-    "product": "Feijão Preto Tipo 1 Pacote",
-    "brand": "Juju",
-    "variant": "",
-    "package": "1kg",
-    "price": 5.99,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-15",
-    "conditions": "Economizasso de Aniversário, válido para todas as lojas do ES",
-    "source": ""
-  },
-  {
-    "store": "Extraplus Supermercados",
-    "product": "Batata Congelada Edição PlayStation",
-    "brand": "McCain",
-    "variant": "PlayStation",
-    "package": "350g",
-    "price": 8.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço com Clube Plus: R$ 8,98. Preço sem clube: R$ 11,99. Oferta Fim de Semana do Churrasco",
-    "source": ""
-  },
-  {
-    "store": "Extraplus Supermercados",
-    "product": "Filé de Tilápia Fresca",
-    "brand": "Ala Pescados",
-    "variant": "",
-    "package": "400g",
-    "price": 27.9,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço com Clube Plus: R$ 27,90. Preço sem clube: R$ 29,90. Oferta Fim de Semana do Churrasco",
-    "source": ""
-  },
-  {
-    "store": "Extraplus Supermercados",
-    "product": "Coxinha da Asa (Drumette)",
-    "brand": "Sadia",
-    "variant": "",
-    "package": "1kg",
-    "price": 15.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço com Clube Plus: R$ 15,98. Preço sem clube: R$ 16,99. Oferta Fim de Semana do Churrasco",
-    "source": ""
-  },
-  {
-    "store": "Extraplus Supermercados",
-    "product": "Coração de Frango Churrasco",
-    "brand": "Uniaves",
-    "variant": "",
-    "package": "700g",
-    "price": 28.98,
-    "recordedAt": "2026-10-17",
-    "validUntil": "2026-10-17",
-    "conditions": "Preço com Clube Plus: R$ 28,98. Preço sem clube: R$ 35,98. Oferta Fim de Semana do Churrasco",
-    "source": ""
-  }
+{
+"store": "Supermercados Extraplus",
+"product": "Whisky Johnnie Walker Black Label 12 Anos",
+"brand": "Johnnie Walker",
+"package": "750ml",
+"price": 129.90,
+"signature": "extraplus_whisky_johnnie_walker_black_label_12_anos_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Aperol",
+"brand": "Aperol",
+"package": "750ml",
+"price": 44.90,
+"signature": "extraplus_aperol_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Vodka Smirnoff",
+"brand": "Smirnoff",
+"package": "998ml",
+"price": 37.90,
+"signature": "extraplus_vodka_smirnoff_998ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Cerveja Stella Artois Garrafa",
+"brand": "Stella Artois",
+"package": "600ml",
+"price": 8.49,
+"signature": "extraplus_cerveja_stella_artois_garrafa_600ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Cerveja Spaten Puro Malte Long Neck",
+"brand": "Spaten",
+"package": "330ml",
+"price": 4.99,
+"signature": "extraplus_cerveja_spaten_puro_malte_long_neck_330ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Cerveja Amstel Ultra sem Glúten Garrafa",
+"brand": "Amstel",
+"package": "275ml",
+"price": 4.49,
+"signature": "extraplus_cerveja_amstel_ultra_sem_gluten_garrafa_275ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Cerveja Michelob Ultra Light Lata",
+"brand": "Michelob",
+"package": "350ml",
+"price": 4.49,
+"signature": "extraplus_cerveja_michelob_ultra_light_lata_350ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Suco Uva Aurora Vidro",
+"brand": "Aurora",
+"package": "1.5L",
+"price": 19.90,
+"signature": "extraplus_suco_uva_aurora_vidro_1_5l"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Pack Água com Gás Pedra Azul Garrafa Pet Leve Mais Pague Menos",
+"brand": "Pedra Azul",
+"package": "510ml",
+"price": 11.89,
+"signature": "extraplus_pack_agua_com_gas_pedra_azul_510ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Bala Fini Sabores",
+"brand": "Fini",
+"package": "80g/90g",
+"price": 5.99,
+"signature": "extraplus_bala_fini_sabores_80g_90g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Biscoito Polvilho Bombiscolto Light Sabores",
+"brand": "Bombiscolto",
+"package": "50g",
+"price": 2.79,
+"signature": "extraplus_biscoito_polvilho_bombiscolto_light_50g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Chips Parmesão Faixa Azul Sabores",
+"brand": "Faixa Azul",
+"package": "35g",
+"price": 15.99,
+"signature": "extraplus_chips_parmesao_faixa_azul_35g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Chocolate Barra Espirito Cacau 70% 80%",
+"brand": "Espirito Cacau",
+"package": "80g",
+"price": 19.90,
+"signature": "extraplus_chocolate_barra_espirito_cacau_80g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Sequilhos Bombiscolto",
+"brand": "Bombiscolto",
+"package": "320g",
+"price": 7.99,
+"signature": "extrabom_sequilhos_bombiscolto_320g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Bombiscolto Diet Zero Açucar",
+"brand": "Bombiscolto",
+"package": "100g",
+"price": 5.99,
+"signature": "extrabom_biscoito_bombiscolto_diet_zero_acucar_100g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Papa Ovo Premium Bombiscolto",
+"brand": "Bombiscolto",
+"package": "100g",
+"price": 5.99,
+"signature": "extrabom_biscoito_papa_ovo_premium_bombiscolto_100g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Polvilho Bombiscolto Tradicional",
+"brand": "Bombiscolto",
+"package": "25g",
+"price": 1.58,
+"signature": "extrabom_biscoito_polvilho_bombiscolto_tradicional_25g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Polvilho Bombiscolto",
+"brand": "Bombiscolto",
+"package": "100g",
+"price": 3.99,
+"signature": "extrabom_biscoito_polvilho_bombiscolto_100g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Amanteigado Marilan",
+"brand": "Marilan",
+"package": "280g",
+"price": 6.49,
+"signature": "extrabom_biscoito_amanteigado_marilan_280g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Cream Cracker Marilan",
+"brand": "Marilan",
+"package": "300g",
+"price": 4.99,
+"signature": "extrabom_biscoito_cream_cracker_marilan_300g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Tortinha Marilan Sabores",
+"brand": "Marilan",
+"package": "140g",
+"price": 3.39,
+"signature": "extrabom_biscoito_tortinha_marilan_sabores_140g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Teens Marilan",
+"brand": "Marilan",
+"package": "80g",
+"price": 3.99,
+"signature": "extrabom_biscoito_teens_marilan_80g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Pit Stop Marilan Sabores",
+"brand": "Marilan",
+"package": "137g",
+"price": 3.99,
+"signature": "extrabom_biscoito_pit_stop_marilan_sabores_137g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Sartoni Cookies",
+"brand": "Sartoni",
+"package": "60g",
+"price": 1.99,
+"signature": "extrabom_biscoito_sartoni_cookies_60g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Sartoni",
+"brand": "Sartoni",
+"package": "330g",
+"price": 4.99,
+"signature": "extrabom_biscoito_sartoni_330g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Cream Cracker Sartoni",
+"brand": "Sartoni",
+"package": "300g",
+"price": 9.98,
+"signature": "extrabom_biscoito_cream_cracker_sartoni_300g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Rosquinha Alcobaça Coco",
+"brand": "Alcobaça",
+"package": "500g",
+"price": 4.99,
+"signature": "extrabom_rosquinha_alcobaca_coco_500g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Alcobaça",
+"brand": "Alcobaça",
+"package": "330g",
+"price": 4.49,
+"signature": "extrabom_biscoito_alcobaca_330g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Roladinho Goiabinha Piraquê",
+"brand": "Piraquê",
+"package": "75g",
+"price": 2.99,
+"signature": "extrabom_biscoito_roladinho_goiabinha_piraque_75g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Recheado Piraquê Sabores",
+"brand": "Piraquê",
+"package": "160g",
+"price": 3.29,
+"signature": "extrabom_biscoito_recheado_piraque_sabores_160g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Wafer Piraquê Sabores",
+"brand": "Piraquê",
+"package": "100g",
+"price": 2.29,
+"signature": "extrabom_biscoito_wafer_piraque_sabores_100g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Salgadinho Piraquê Sabores",
+"brand": "Piraquê",
+"package": "100g",
+"price": 2.99,
+"signature": "extrabom_salgadinho_piraque_sabores_100g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Piraquê",
+"brand": "Piraquê",
+"package": "138g",
+"price": 5.49,
+"signature": "extrabom_biscoito_piraque_138g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Wafer Bauducco Maxi",
+"brand": "Bauducco",
+"package": "92g ou 104g",
+"price": 2.59,
+"signature": "extrabom_biscoito_wafer_bauducco_maxi_92g_104g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Cookies Bauducco",
+"brand": "Bauducco",
+"package": "96g",
+"price": 3.99,
+"signature": "extrabom_biscoito_cookies_bauducco_96g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Choco Biscuit Bauducco",
+"brand": "Bauducco",
+"package": "80g",
+"price": 6.49,
+"signature": "extrabom_choco_biscuit_bauducco_80g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Barrinha Bauducco Goiabinha",
+"brand": "Bauducco",
+"package": "30g",
+"price": 0.99,
+"signature": "extrabom_biscoito_barrinha_bauducco_goiabinha_30g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Amanteigado Bauducco Sabores",
+"brand": "Bauducco",
+"package": "335g",
+"price": 8.99,
+"signature": "extrabom_biscoito_amanteigado_bauducco_sabores_335g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Choco Cookies Nestlé",
+"brand": "Nestlé",
+"package": "100g",
+"price": 5.99,
+"signature": "extrabom_biscoito_choco_cookies_nestle_100g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Recheado Bono ou Negresco Nestlé",
+"brand": "Nestlé",
+"package": "90g",
+"price": 1.98,
+"signature": "extrabom_biscoito_recheado_bono_ou_negresco_nestle_90g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Biscoito Recheado Passatempo Chocolate Grátis 10%",
+"brand": "Passatempo",
+"package": "130g",
+"price": 1.99,
+"signature": "extrabom_biscoito_recheado_passatempo_chocolate_130g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Choco Biscuit Nestlé Chocolate",
+"brand": "Nestlé",
+"package": "79g",
+"price": 5.99,
+"signature": "extrabom_choco_biscuit_nestle_chocolate_79g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Choco Biscuit Garoto",
+"brand": "Garoto",
+"package": "78g",
+"price": 4.99,
+"signature": "extrabom_choco_biscuit_garoto_78g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Arroz Branco Tipo 1 Catarinão",
+"brand": "Catarinão",
+"package": "Pacote 5kg",
+"price": 17.59,
+"signature": "assai_arroz_branco_tipo_1_catarinao_5kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Feijão Preto Tipo 1 Plus Ana",
+"brand": "Ana",
+"package": "Pacote 1kg",
+"price": 5.49,
+"signature": "assai_feijao_preto_tipo_1_plus_ana_1kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Farinha de Trigo Tipo 1 Três Corodas",
+"brand": "Três Corodas",
+"package": "Pacote 1kg",
+"price": 2.49,
+"signature": "assai_farinha_de_trigo_tipo_1_tres_corodas_1kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Café Extraforte Pele",
+"brand": "Pele",
+"package": "Pacote 250g",
+"price": 7.99,
+"signature": "assai_cafe_extraforte_pele_250g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Açúcar Cristal Coacro",
+"brand": "Coacro",
+"package": "Pacote 2kg",
+"price": 4.99,
+"signature": "assai_acucar_cristal_coacro_2kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Macarrão de Sêmola Petyan Cortes",
+"brand": "Petyan",
+"package": "Pacote 500g",
+"price": 2.69,
+"signature": "assai_macarrao_de_semola_petyan_cortes_500g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Moldado Misto com Carne Bovina e de Aves Frisa",
+"brand": "Frisa",
+"package": "Caixa 2kg",
+"price": 19.90,
+"signature": "assai_moldado_misto_com_carne_bovina_e_de_aves_frisa_2kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Batata Palito Congelada Quality Fries",
+"brand": "Quality Fries",
+"package": "Pacote 2kg",
+"price": 16.90,
+"signature": "assai_batata_palito_congelada_quality_fries_2kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Queijo Tipo Mucarela Bimbo",
+"brand": "Bimbo",
+"package": "Preço por quilo na peça",
+"price": 35.90,
+"signature": "assai_queijo_tipo_mucarela_bimbo_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Linguiça Tipo Calabresa Defumada Nobre",
+"brand": "Nobre",
+"package": "Pacote 2.5kg",
+"price": 47.50,
+"signature": "assai_linguica_tipo_calabresa_defumada_nobre_2_5kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Salsicha Para Hot-Dog Congelada Seara",
+"brand": "Seara",
+"package": "Pacote 3kg",
+"price": 39.95,
+"signature": "assai_salsicha_para_hot_dog_congelada_seara_3kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Bacon Alegra",
+"brand": "Alegra",
+"package": "Preço por quilo na peça",
+"price": 25.90,
+"signature": "assai_bacon_alegra_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Milho-Verde Predilecta",
+"brand": "Predilecta",
+"package": "Lata 170g Peso Drenado",
+"price": 2.49,
+"signature": "assai_milho_verde_predilecta_lata_170g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Creme de Leite Leve Piracanjuba",
+"brand": "Piracanjuba",
+"package": "Pote 200g",
+"price": 2.29,
+"signature": "assai_creme_de_leite_leve_piracanjuba_200g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Mistura Láctea Condensada Mococa",
+"brand": "Mococa",
+"package": "395g",
+"price": 3.49,
+"signature": "assai_mistura_lactea_condensada_mococa_395g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Molho de Tomate Refogado Pramesa",
+"brand": "Pramesa",
+"package": "Pouch 300g",
+"price": 0.89,
+"signature": "assai_molho_de_tomate_refogado_pramesa_300g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Biscoito Cristal Delicitá Vitarella",
+"brand": "Vitarella",
+"package": "Pacote 400g",
+"price": 5.69,
+"signature": "assai_biscoito_cristal_delicita_vitarella_400g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Achocolatado em Pó Original Toddy",
+"brand": "Toddy",
+"package": "Pote 400g",
+"price": 7.99,
+"signature": "assai_achocolatado_em_po_original_toddy_400g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Alcatra com Maminha Resfriado Fracionado Friboi",
+"brand": "Friboi",
+"package": "Preço por quilo na peça",
+"price": 48.90,
+"signature": "assai_alcatra_com_maminha_resfriado_fracionado_friboi_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Costelinha Suína Resfriada Friella",
+"brand": "Friella",
+"package": "kg",
+"price": 22.90,
+"signature": "assai_costelinha_suina_resfriada_friella_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Bisteca Suína Congelada a Vácuo Aurora",
+"brand": "Aurora",
+"package": "Preço por quilo na peça",
+"price": 12.90,
+"signature": "assai_bisteca_suina_congelada_a_vacuo_aurora_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Coxinha das Asas de Frango Temperadas Congeladas Unigaves",
+"brand": "Unigaves",
+"package": "Pacote 1kg",
+"price": 10.50,
+"signature": "assai_coxinha_das_asas_de_frango_temperadas_congeladas_unigaves_1kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Sobrecoxas de Frango Congeladas Sadia",
+"brand": "Sadia",
+"package": "Bandeja 1kg",
+"price": 10.90,
+"signature": "assai_sobrecoxas_de_frango_congeladas_sadia_1kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Filé de Peito de Frango Congelado de Frango",
+"brand": "Não informada",
+"package": "Preço por quilo na peça",
+"price": 15.49,
+"signature": "assai_file_de_peito_de_frango_congelado_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Apresuntado Cofril",
+"brand": "Cofril",
+"package": "Preço por quilo na peça",
+"price": 15.90,
+"signature": "assai_apresuntado_cofril_kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Empanado de Frango Nobrinhos Nobre",
+"brand": "Nobre",
+"package": "Pacote 1kg",
+"price": 12.50,
+"signature": "assai_empanado_de_frango_nobrinhos_nobre_1kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Lasanha Pif Paf Sabores",
+"brand": "Pif Paf",
+"package": "Embalagem 600g",
+"price": 8.50,
+"signature": "assai_lasanha_pif_paf_sabores_600g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Margarina Com ou Sem Sal Claybon",
+"brand": "Claybon",
+"package": "Pote 500g",
+"price": 5.99,
+"signature": "assai_margarina_com_ou_sem_sal_claybon_500g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Requeijão Cremoso Tradicional ou Light Porto Alegre",
+"brand": "Porto Alegre",
+"package": "Pote 200g",
+"price": 6.99,
+"signature": "assai_requeijao_cremoso_tradicional_ou_light_porto_alegre_200g"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Creme de Leite Leve Italac",
+"brand": "Italac",
+"package": "1.036kg",
+"price": 10.99,
+"signature": "assai_creme_de_leite_leve_italac_1_036kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Chocolate em Pó 50% Cacau Damare Food",
+"brand": "Damare Food",
+"package": "Pote 1.01kg",
+"price": 32.49,
+"signature": "assai_chocolate_em_po_50_cacau_damare_food_1_01kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Ketchup ou Mostarda Ekma Sabores",
+"brand": "Ekma",
+"package": "Frasco 1.05kg",
+"price": 7.79,
+"signature": "assai_ketchup_ou_mostarda_ekma_sabores_1_05kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Margarina Vegetal 75% de Lipídios Sofiteli Sadia",
+"brand": "Sadia",
+"package": "Balde 3kg",
+"price": 17.90,
+"signature": "assai_margarina_vegetal_75_lipinios_sofiteli_sadia_3kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Requeijão Cremoso Limilk",
+"brand": "Limilk",
+"package": "Bisnaga 1.5kg",
+"price": 25.90,
+"signature": "assai_requeijao_cremoso_limilk_1_5kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Refrigerante Guaraná Coroa",
+"brand": "Coroa",
+"package": "Pet 3.3L",
+"price": 2.69,
+"signature": "assai_refrigerante_guarana_coroa_pet_3_3l"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Suco de Uva Tinto Integral Campo Largo",
+"brand": "Campo Largo",
+"package": "Pet 1.5L",
+"price": 10.99,
+"signature": "assai_suco_de_uva_tinto_integral_campo_largo_1_5l"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Bebida Energética Bad Wolf Sabores",
+"brand": "Bad Wolf",
+"package": "Pet 2L",
+"price": 5.89,
+"signature": "assai_bebida_energetica_bad_wolf_sabores_2l"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Cerveja Spaten",
+"brand": "Spaten",
+"package": "Lata 473ml",
+"price": 4.79,
+"signature": "assai_cerveja_spaten_lata_473ml"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Vinho Frisante Del Grano Tipos",
+"brand": "Del Grano",
+"package": "Garrafa 750ml",
+"price": 17.99,
+"signature": "assai_vinho_frisante_del_grano_tipos_750ml"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Amaciante Concentrado Comfort Fragrâncias",
+"brand": "Comfort",
+"package": "Frasco 500ml",
+"price": 7.99,
+"signature": "assai_amaciante_concentrado_comfort_fragrancias_500ml"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Limpador Cremoso Multiuso Cif Tipos",
+"brand": "Cif",
+"package": "Frasco 450ml",
+"price": 9.90,
+"signature": "assai_limpador_cremoso_multiuso_cif_tipos_450ml"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Lava-Roupas Líquido Brilhante Fragrâncias",
+"brand": "Brilhante",
+"package": "Galão 3L",
+"price": 39.99,
+"signature": "assai_lava_roupas_liquido_brilhante_fragrancias_3l"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Lava-Roupas em Pó Surf Tipos",
+"brand": "Surf",
+"package": "Caixa 1.6kg",
+"price": 17.99,
+"signature": "assai_lava_roupas_em_po_surf_tipos_1_6kg"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Água Sanitária Cloral",
+"brand": "Cloral",
+"package": "Frasco 2L",
+"price": 1.99,
+"signature": "assai_agua_sanitaria_cloral_2l"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Papel Higiênico Folha Dupla Deluxe",
+"brand": "Deluxe",
+"package": "Pacote com 12 Rolos de 30m",
+"price": 8.99,
+"signature": "assai_papel_higienico_folha_dupla_deluxe_12_rolos"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Papel-Toalha Beli Chef",
+"brand": "Beli",
+"package": "Pacote 2 Rolos",
+"price": 2.99,
+"signature": "assai_papel_toalha_beli_chef_2_rolos"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Fralda Descartável Máxima Proteção Huggies",
+"brand": "Huggies",
+"package": "Pacote/Tamanhos",
+"price": 64.90,
+"signature": "assai_fralda_descartavel_maxima_protecao_huggies"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Kit de Tipos Shampoo + Condicionador",
+"brand": "Não informada",
+"package": "Shampoo 375ml + Condicionador 170ml",
+"price": 24.99,
+"signature": "assai_kit_de_tipos_shampoo_condicionador"
+},
+{
+"store": "Assaí Atacadista",
+"product": "Desodorante Aerossol Above Fragrâncias",
+"brand": "Above",
+"package": "Frasco 150ml",
+"price": 6.19,
+"signature": "assai_desodorante_aerossol_above_fragrancias_150ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Requeijão Cremoso Catupiry",
+"brand": "Catupiry",
+"package": "200g",
+"price": 7.99,
+"signature": "extraplus_requeijao_cremoso_catupiry_200g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Creme de Ricota Tirolez Light ou Tradicional Pote",
+"brand": "Tirolez",
+"package": "200g",
+"price": 7.49,
+"signature": "extraplus_creme_de_ricota_tirolez_light_ou_tradicional_200g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Pão de Queijo Waffle Assado Forno de Minas",
+"brand": "Forno de Minas",
+"package": "200g",
+"price": 17.98,
+"signature": "extraplus_pao_de_queijo_waffle_assado_forno_de_minas_200g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Presunto Cozido Sadia Fatiado",
+"brand": "Sadia",
+"package": "a cada 100g",
+"price": 2.39,
+"signature": "extraplus_presunto_cozido_sadia_fatiado_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Lasanha Sadia Sabores",
+"brand": "Sadia",
+"package": "600g",
+"price": 10.49,
+"signature": "extraplus_lasanha_sadia_sabores_600g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Filezinho Frango Empanado Seara",
+"brand": "Seara",
+"package": "400g",
+"price": 11.99,
+"signature": "extraplus_filezinho_frango_empanado_seara_400g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Frango a Passarinho Congelado Sadia",
+"brand": "Sadia",
+"package": "1kg",
+"price": 12.98,
+"signature": "extraplus_frango_a_passarinho_congelado_sadia_1kg"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Batata Congelada Bem Brasil Noisettes",
+"brand": "Bem Brasil",
+"package": "400g",
+"price": 6.98,
+"signature": "extraplus_batata_congelada_bem_brasil_noisettes_400g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Filé de Peito de Frango Sadia",
+"brand": "Sadia",
+"package": "Bandeja 1kg",
+"price": 18.90,
+"signature": "extraplus_file_de_peito_de_frango_sadia_1kg"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Sorvete Nestlé Especial Sabores",
+"brand": "Nestlé",
+"package": "1.5L",
+"price": 24.99,
+"signature": "extraplus_sorvete_nestle_1_5l_especial_sabores"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Ancho Bovino Maturatta Filé de Costela",
+"brand": "Maturatta",
+"package": "kg",
+"price": 59.90,
+"signature": "extraplus_ancho_bovino_maturatta_file_de_costela_kg"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Costela Suína Resfriada Temperada Corella",
+"brand": "Corella",
+"package": "kg",
+"price": 37.90,
+"signature": "extraplus_costela_suina_resfriada_temperada_corella_kg"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Coxinha da Asa de Frango Resfriada Temperada Corella",
+"brand": "Corella",
+"package": "kg",
+"price": 32.90,
+"signature": "extraplus_coxinha_da_asa_de_frango_resfriada_temperada_corella_kg"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Filé de Tilápia Fresca Ala Pescados",
+"brand": "Ala Pescados",
+"package": "400g",
+"price": 27.90,
+"signature": "extraplus_file_de_tilapia_fresca_ala_pescados_400g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Vinho Gran Obra Malbec",
+"brand": "Gran Obra",
+"package": "750ml",
+"price": 139.00,
+"signature": "extraplus_vinho_gran_obra_malbec_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Vinho Entre Nós IG Lisboa",
+"brand": "Entre Nós",
+"package": "750ml",
+"price": 139.00,
+"signature": "extraplus_vinho_entre_nos_ig_lisboa_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Vinho Chileno Antawara Gran Reserva",
+"brand": "Antawara",
+"package": "750ml",
+"price": 79.90,
+"signature": "extraplus_vinho_chileno_antawara_gran_reserva_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Vinho Chileno Casas Patronales Gran Reserva",
+"brand": "Casas Patronales",
+"package": "750ml",
+"price": 69.90,
+"signature": "extraplus_vinho_chileno_casas_patronales_gran_reserva_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Vinho Francês Rosé Piscine",
+"brand": "Rosé Piscine",
+"package": "750ml",
+"price": 59.90,
+"signature": "extraplus_vinho_frances_rose_piscine_750ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Queijo Provolone Regina",
+"brand": "Regina",
+"package": "100g",
+"price": 9.99,
+"signature": "extraplus_queijo_provolone_regina_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Queijo Coalho Palito Regina",
+"brand": "Regina",
+"package": "300g",
+"price": 18.99,
+"signature": "extraplus_queijo_coalho_palito_regina_300g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Queijo Brie Regina",
+"brand": "Regina",
+"package": "a cada 100g",
+"price": 11.99,
+"signature": "extraplus_queijo_brie_regina_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Queijo Azul Regina",
+"brand": "Regina",
+"package": "a cada 100g",
+"price": 10.99,
+"signature": "extraplus_queijo_azul_regina_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Queijo Prato Esférico Regina",
+"brand": "Regina",
+"package": "a cada 100g",
+"price": 8.49,
+"signature": "extraplus_queijo_prato_esferico_regina_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Sabonete em Barra Lux",
+"brand": "Lux",
+"package": "85g",
+"price": 2.49,
+"signature": "extraplus_sabonete_em_barra_lux_85g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Desodorante Aerossol Rexona Feminino / Masculino",
+"brand": "Rexona",
+"package": "90g",
+"price": 12.80,
+"signature": "extraplus_desodorante_aerossol_rexona_90g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Papel Higiênico Neve Supreme Neutro Folha Tripla Leve 12 Pague 11",
+"brand": "Neve",
+"package": "20M 12 Rolos",
+"price": 19.98,
+"signature": "extraplus_papel_higienico_neve_supreme_neutro_12_rolos"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Toalhas de Papel Scala Plus",
+"brand": "Scala",
+"package": "120 Folhas 2 Rolos",
+"price": 4.79,
+"signature": "extraplus_toalhas_de_papel_scala_plus_2_rolos"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Pilha Duracell AA ou AAA",
+"brand": "Duracell",
+"package": "4 unid",
+"price": 27.90,
+"signature": "extraplus_pilha_duracell_aa_ou_aaa_4_unid"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Arroz Arbório Scotti",
+"brand": "Scotti",
+"package": "500g",
+"price": 10.98,
+"signature": "extraplus_arroz_arborio_scotti_500g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Massa Italiana San Frediano",
+"brand": "San Frediano",
+"package": "500g",
+"price": 11.99,
+"signature": "extraplus_massa_italiana_san_frediano_500g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Nhoque Italiano de Batata San Frediano Tradicional",
+"brand": "San Frediano",
+"package": "500g",
+"price": 10.99,
+"signature": "extraplus_nhoque_italiano_de_batata_san_frediano_500g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Azeite de Oliva Puro Tipo Único Gallo Vidro",
+"brand": "Gallo",
+"package": "500ml",
+"price": 27.98,
+"signature": "extraplus_azeite_de_oliva_puro_tipo_unico_gallo_500ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Passata Polpa de Tomate San Frediano Vidro",
+"brand": "San Frediano",
+"package": "680g",
+"price": 17.99,
+"signature": "extraplus_passata_polpa_de_tomate_san_frediano_680g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Pomodori Pelati Orgânico La Pastina",
+"brand": "La Pastina",
+"package": "240g",
+"price": 17.99,
+"signature": "extraplus_pomodori_pelati_organico_la_pastina_240g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Biscoito de Arroz Integral Rampinelli",
+"brand": "Rampinelli",
+"package": "150g",
+"price": 5.99,
+"signature": "extraplus_biscoito_de_arroz_integral_rampinelli_150g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Café Especial Extraplus Moído ou Grão",
+"brand": "Extraplus",
+"package": "250g",
+"price": 24.98,
+"signature": "extraplus_cafe_especial_extraplus_moido_ou_grao_250g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Pimenta do Reino com Moedor Bombay",
+"brand": "Bombay",
+"package": "50g",
+"price": 33.90,
+"signature": "extraplus_pimenta_do_reino_com_moedor_bombay_50g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Maionese com Trufa Beaufor Vidro",
+"brand": "Beaufor",
+"package": "180g",
+"price": 37.90,
+"signature": "extraplus_maionese_com_trufa_beaufor_180g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Snack de Arroz Kalassi Rice Cracker",
+"brand": "Kalassi",
+"package": "100g",
+"price": 15.99,
+"signature": "extraplus_snack_de_arroz_kalassi_rice_cracker_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Tempero Fit Bombay Sabores",
+"brand": "Bombay",
+"package": "30g ou 40g",
+"price": 12.99,
+"signature": "extraplus_tempero_fit_bombay_sabores"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Mel Melbras Sabores",
+"brand": "Melbras",
+"package": "300g",
+"price": 19.90,
+"signature": "extraplus_mel_melbras_sabores_300g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Chá Leão Celado Abacaxi e Hortelã",
+"brand": "Chá Leão",
+"package": "25g",
+"price": 14.99,
+"signature": "extraplus_cha_leao_celado_abacaxi_e_hortela_25g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Pão Caseiro Modelado",
+"brand": "Não informada",
+"package": "100g",
+"price": 1.99,
+"signature": "extraplus_pao_caseiro_modelado_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Torta Salgada de Frango",
+"brand": "Não informada",
+"package": "100g",
+"price": 5.49,
+"signature": "extraplus_torta_salgada_de_frango_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Bolo Pamonha",
+"brand": "Não informada",
+"package": "100g",
+"price": 4.49,
+"signature": "extraplus_bolo_pamonha_100g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Paçoca Flormel Zero",
+"brand": "Flormel",
+"package": "20g",
+"price": 3.99,
+"signature": "extraplus_pacoca_flormel_zero_20g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Creme de Avelã Flormel Extra Zero Açúcar Sabores",
+"brand": "Flormel",
+"package": "150g",
+"price": 29.90,
+"signature": "extraplus_creme_de_avela_flormel_extra_zero_acucar_150g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Bebida à Base de Amêndoa Almond Breeze Proteína Sabores",
+"brand": "Almond Breeze",
+"package": "250ml",
+"price": 8.99,
+"signature": "extraplus_bebida_a_base_de_amendoa_almond_breeze_proteina_250ml"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Bebida à Base de Amêndoa e Chocolate Almond Breeze",
+"brand": "Almond Breeze",
+"package": "1L",
+"price": 18.90,
+"signature": "extraplus_bebida_a_base_de_amendoa_e_chocolate_almond_breeze_1l"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Bebida Láctea Cappuccino Power Whey 3 Corações",
+"brand": "3 Corações",
+"package": "250ml ou 260ml",
+"price": 5.98,
+"signature": "extraplus_bebida_lactea_cappuccino_power_whey_3_coracoes"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Biscoito Jasmine Sou Sweet Integral Sabores",
+"brand": "Jasmine",
+"package": "135g",
+"price": 5.99,
+"signature": "extraplus_biscoito_jasmine_sou_sweet_integral_135g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Barra Proteína Integralmédica Crisp Sabores",
+"brand": "Integralmédica",
+"package": "40g/45g",
+"price": 9.99,
+"signature": "extraplus_barra_proteina_integralmedica_crisp_sabores"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Granola Harts Natural Australian",
+"brand": "Harts Natural",
+"package": "300g",
+"price": 49.90,
+"signature": "extraplus_granola_harts_natural_australian_300g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Cafeína Dux",
+"brand": "Dux",
+"package": "30 cápsulas",
+"price": 29.90,
+"signature": "extraplus_cafeina_dux_30_capsulas"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Whey Protein Isolado Dux Sachê",
+"brand": "Dux",
+"package": "25g",
+"price": 18.90,
+"signature": "extraplus_whey_protein_isolado_dux_sache_25g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Creatine Darkness Pote",
+"brand": "Darkness",
+"package": "300g",
+"price": 69.90,
+"signature": "extraplus_creatine_darkness_pote_300g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Évora Darkness Frutas Vermelhas Pote",
+"brand": "Darkness",
+"package": "300g",
+"price": 99.90,
+"signature": "extraplus_evora_darkness_frutas_vermelhas_pote_300g"
+},
+{
+"store": "Supermercados Extraplus",
+"product": "Whey Protein Integralmédica Pote",
+"brand": "Integralmédica",
+"package": "900g",
+"price": 179.00,
+"signature": "extraplus_whey_protein_integralmedica_pote_900g"
+},
+{
+"store": "Extrabom Supermercados",
+"product": "Linguiça Calabresa Perdigão Fina ou Grossa",
+"brand": "Perdigão",
+"package": "kg",
+"price": 19.90,
+"signature": "extrabom_linguica_calabresa_perdigao_fina_ou_grossa_kg"
+}
 ]
