@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.historico_precos_gemini (
 );
 -- A assinatura deve ser fornecida pela API (supermercado + produto + apresentação),
 -- não derivada do JSON inteiro, para permitir atualizar o mesmo produto e registrar histórico.
-DO $
+DO $$
 BEGIN
  IF EXISTS (
    SELECT 1 FROM information_schema.columns
@@ -24,7 +24,7 @@ BEGIN
  ) THEN
    ALTER TABLE public.ofertas_gemini ALTER COLUMN assinatura DROP EXPRESSION;
  END IF;
-END $;
+END $$;
 CREATE UNIQUE INDEX IF NOT EXISTS ofertas_gemini_assinatura_unique ON public.ofertas_gemini(assinatura);
 CREATE INDEX IF NOT EXISTS historico_precos_gemini_oferta_data_idx ON public.historico_precos_gemini(oferta_id, registrado_em DESC);
 DO $$
