@@ -280,7 +280,7 @@ async function importarOfertasNeon(){
  let dados;try{dados=JSON.parse(campo.value);}catch(e){status.textContent="JSON inválido. Confira as aspas, vírgulas e colchetes.";return;}
  const lista=Array.isArray(dados)?dados:(Array.isArray(dados.offers)?dados.offers:null);
  if(!lista||!lista.length){status.textContent="Informe um array JSON com pelo menos uma oferta.";return;}
- let ok=0,erros=0;
+ let ok=0,erros=0,detalhesErros=[];
  for(let i=0;i<lista.length;i++){
   const o=lista[i]||{},store=String(o.store??o.supermercado??"").trim(),product=String(o.product??o.descricao??o.produto??"").trim(),pack=String(o.package??o.peso_quantidade??o.embalagem??"").trim(),price=converterPreco(o.price??o.preco);
   if(!store||!product||!Number.isFinite(price)||price<0){erros++;continue;}
@@ -288,11 +288,12 @@ async function importarOfertasNeon(){
   status.textContent="Gravando oferta "+(i+1)+" de "+lista.length+" no Neon…";
   try{
    const res=await fetch(NEON_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({store,product,package:pack,price,signature,dados_originais:o})});
-   if(!res.ok)throw new Error("HTTP "+res.status);
+   const resposta=await res.json().catch(()=>({}));
+   if(!res.ok)throw new Error(resposta.error||("HTTP "+res.status));
    ok++;
-  }catch(e){erros++;}
+  }catch(e){erros++;if(detalhesErros.length<5)detalhesErros.push("Oferta "+(i+1)+": "+(e.message||"falha de conexão"));}
  }
- status.textContent="Importação concluída: "+ok+" oferta(s) gravada(s)/atualizada(s); "+erros+" com erro."+(erros?" Confira os dados e tente novamente.":"");
+ status.textContent="Importação concluída: "+ok+" oferta(s) gravada(s)/atualizada(s); "+erros+" com erro."+(erros?" Detalhes: "+detalhesErros.join(" | "):"");
  if(ok){precosRegistradosPromise=null;await carregarPrecosRegistrados(true);campo.value="";}
 }
 
