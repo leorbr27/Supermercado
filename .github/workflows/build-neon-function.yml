@@ -1,4 +1,5 @@
 name: Build bundled Neon function
+# Deployment smoke check runs after the source bundle is committed.
 on:
   push:
     branches: [main]
