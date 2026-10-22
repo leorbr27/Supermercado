@@ -1,6 +1,5 @@
 name: Build bundled Neon function
-# Deployment smoke check runs after the source bundle is committed.
-# The one-off write smoke test validates upsert and localized currency parsing.
+# Build the function bundle and validate the live API read/write-validation paths.
 on:
   push:
     branches: [main]
@@ -42,3 +41,8 @@ jobs:
       - name: Smoke test active Neon API read endpoint
         run: |
           curl --max-time 20 --retry 2 --retry-delay 2 --retry-all-errors -fsS "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/" | jq -e 'type == "array"' >/dev/null
+      - name: Smoke test server-side write validation without inserting data
+        run: |
+          status=$(curl --max-time 20 -sS -o /tmp/neon-api-validation.json -w '%{http_code}' -X POST "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/" -H 'Origin: https://leorbr27.github.io' -H 'Content-Type: application/json' --data '{"store":"","product":"","price":"R$ 12,90"}')
+          test "$status" = "400"
+          jq -e '.error | type == "string" and length > 0' /tmp/neon-api-validation.json >/dev/null
