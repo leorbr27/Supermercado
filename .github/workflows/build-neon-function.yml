@@ -1,5 +1,6 @@
 name: Build bundled Neon function
 # Deployment smoke check runs after the source bundle is committed.
+# The one-off write smoke test validates upsert and localized currency parsing.
 on:
   push:
     branches: [main]
