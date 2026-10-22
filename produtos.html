@@ -71,9 +71,8 @@ async function editarPreco(id){
  const o=ofertas.find(x=>Number(x.id)===id);if(!o)return;
  const raw=prompt("Novo preço para "+o.product+" — "+o.store+" (R$):",String(o.price));if(raw===null)return;
  const price=Number(raw.replace(",", "."));if(!Number.isFinite(price)||price<0){alert("Informe um preço válido.");return;}
- const token=prompt("Informe o token administrativo APP_WRITE_TOKEN. Ele não será salvo no navegador:");if(!token)return;
  try{
-  const res=await fetch(API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id,price,confirmed:true})});
+  const res=await fetch(API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,price,confirmed:true})});
   const body=await res.json().catch(()=>({}));if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
   await carregar();alert("Preço atualizado. O histórico foi registrado pelo Neon.");
  }catch(e){alert("Não foi possível atualizar o preço: "+(e.message||"verifique o token e a conexão."));}
