@@ -23,7 +23,8 @@ jobs:
         working-directory: api/neon-function
         run: npm install --no-audit --no-fund
       - name: Bundle dependencies into a single file
-        run: npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=cjs --target=node24 --outfile=api/neon-function/deploy/index.cjs
+        run: |
+          npx --yes esbuild api/neon-function/index.mjs --bundle --platform=node --format=cjs --target=node24 --outfile=api/neon-function/deploy/index.cjs
           printf '%s\n' 'import bundle from "./index.cjs";' 'export default bundle.default;' > api/neon-function/deploy/index.mjs
       - name: Commit deployable bundle
         run: |
