@@ -7,6 +7,9 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f8fc;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.container{max-width:900px;margin:auto;padding:16px 14px 42px}header{display:flex;align-items:center;gap:10px;margin:4px 0 16px}.back{border:0;background:#e8f0fb;color:#2456a6;border-radius:11px;width:44px;height:44px;font-size:22px;cursor:pointer}h1{font-size:25px;line-height:1.2;color:#163b65;margin:0}h2{font-size:19px;color:#1d3557;margin:0 0 12px}.subtitle,.note{color:#68778d;font-size:16px;line-height:1.45}.card,.product{background:#fff;border:1px solid #e7edf5;border-radius:17px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(30,70,110,.06)}textarea,input{width:100%;border:1px solid #cfd9e6;border-radius:11px;padding:12px;font:inherit;font-size:16px;background:#fff;color:#172033}textarea{min-height:145px;resize:vertical;line-height:1.45}label{display:block;font-size:16px;font-weight:700;margin:0 0 6px}button,.link-button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;border:0;border-radius:10px;padding:10px 13px;font:inherit;font-size:16px;font-weight:700;text-decoration:none;cursor:pointer}.primary{background:#2563eb;color:white;width:100%}.secondary{background:#eef3f8;color:#29415f}.success{background:#16845a;color:#fff}.danger{background:#fee9e9;color:#b42318}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.actions>*{flex:1}.product-title{font-size:17px;font-weight:750;margin-bottom:9px;overflow-wrap:anywhere}.search-links{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 14px}.search-links a{font-size:16px}.fields{display:grid;grid-template-columns:1.1fr 1fr .8fr;gap:8px}.fields .wide{grid-column:1/-1}.fields input{height:43px;padding:9px 10px}.offer{border-top:1px solid #e7edf5;padding:11px 0;display:grid;grid-template-columns:1fr auto;gap:8px}.offer:first-child{margin-top:12px}.offer-main{min-width:0}.offer-name{font-weight:700;overflow-wrap:anywhere}.offer-meta{font-size:16px;color:#68778d;margin-top:3px;overflow-wrap:anywhere}.price{font-size:18px;font-weight:800;white-space:nowrap;color:#183b63}.lowest{color:#087443}.empty{padding:16px 4px;text-align:center;color:#68778d;font-size:16px}.status{font-size:16px;color:#68778d;margin-top:8px}.pill{display:inline-block;background:#e8f7ee;color:#087443;border-radius:20px;padding:3px 8px;font-size:16px;font-weight:750;margin-left:6px}.hidden{display:none!important}.table-controls{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin:12px 0}.table-wrap{overflow-x:auto;border:1px solid #e7edf5;border-radius:10px}table{width:100%;border-collapse:collapse;background:#fff;font-size:16px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid #e7edf5;vertical-align:top}th{background:#eef3f8;color:#29415f;font-size:16px;white-space:nowrap}td.price-cell{font-weight:800;white-space:nowrap;color:#183b63}tbody tr:last-child td{border-bottom:0}.lowest-match-row td{background:#e8f7ee}.lowest-match-row td.price-cell{color:#087443;font-weight:900}.lowest-match-row{outline:2px solid #b7e4c7;outline-offset:-2px}.table-status{font-size:16px;color:#68778d;margin:8px 0}@media(max-width:600px){.container{padding:12px 10px 30px}h1{font-size:22px}.card,.product{padding:13px}.fields{grid-template-columns:1fr 1fr}.fields .wide{grid-column:1/-1}.actions button,.actions a{flex-basis:100%}.offer{grid-template-columns:1fr auto}.table-controls{grid-template-columns:1fr}.table-wrap{overflow:visible}table,thead,tbody,tr,td{display:block}thead{display:none}tbody tr{padding:9px 10px;border-bottom:1px solid #e7edf5}tbody tr:last-child{border-bottom:0}td{border:0;padding:4px 0;white-space:normal!important}td:before{content:attr(data-label) ": ";font-size:16px;font-weight:700;color:#68778d}td.price-cell:before{color:#68778d}}
 
+/* Reorganização de interface: importação recolhida e consulta em destaque. */
+.site-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.header-copy{flex:1;min-width:160px}.database-status{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border-radius:999px;background:#eef3f8;color:#53647a;font-size:16px;white-space:nowrap}.status-dot{width:8px;height:8px;border-radius:50%;background:#e0a12b;display:inline-block;flex-shrink:0}.database-status.is-online{background:#e8f7ee;color:#087443}.database-status.is-online .status-dot{background:#16a34a}.database-status.is-error{background:#fff1f2;color:#b42318}.database-status.is-error .status-dot{background:#dc2626}.import-card{padding:12px}.accordion-toggle{display:flex;width:100%;justify-content:space-between;gap:12px;align-items:center;min-height:52px;padding:13px 15px;background:#eaf1fb;color:#1d4f91;text-align:left}.accordion-toggle span:last-child{font-size:22px;line-height:1}.import-step{padding:15px 0;border-top:1px solid #e4ebf4}.import-step h2{font-size:18px;margin-bottom:10px}.import-step:first-child{margin-top:8px}.shopping-list-step{margin-top:5px}.comparison-card>h2{font-size:22px}.comparison-card .table-controls{margin-top:14px}.comparison-card #filtroTabela{min-height:52px;font-size:18px;border-color:#9db9e6;box-shadow:0 0 0 3px rgba(37,99,235,.06)}.comparison-card .table-controls select,.comparison-card .table-controls input{min-height:46px}@media(max-width:600px){.site-header{align-items:flex-start}.database-status{margin-left:54px}.accordion-toggle{min-height:54px}.import-step{padding:13px 0}.comparison-card #filtroTabela{font-size:16px}.comparison-card .table-controls{gap:10px}.comparison-card .table-wrap{overflow:visible}}
+
 /* Ajuste exclusivo de legibilidade: ampliar textos pequenos e controles. */
 .subtitle,.note,.status,.table-status{font-size:16px}
 label{font-size:16px}
@@ -28,10 +31,13 @@ td:before{font-size:16px}
 </head>
 <body>
 <main class="container">
-<header><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div><h1>💰 Pesquisa de preços</h1><div class="subtitle">Grande Vitória · ES</div></div></header>
-<section class="card">
-<h2>1. Importar lista de compras</h2>
-<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="secondary" type="button" onclick="abrirGemini()" id="botaoPromptGemini">Prompt Gemini</button></div>
+<header class="site-header"><button class="back" onclick="location.href='index.html'" aria-label="Voltar">‹</button><div class="header-copy"><h1>💰 Pesquisa de preços</h1><div class="subtitle">Grande Vitória · ES</div></div><span id="statusBanco" class="database-status" role="status" aria-live="polite"><span class="status-dot"></span>Consultando Neon…</span></header>
+<section class="card import-card">
+<button class="accordion-toggle" type="button" id="botaoImportacao" aria-expanded="false" aria-controls="painelImportacao" onclick="alternarPainelImportacao()"><span>📥 Importar Novas Ofertas</span><span id="iconeImportacao" aria-hidden="true">＋</span></button>
+<div id="painelImportacao" class="hidden">
+<div class="import-step">
+<h2>Passo 1 — Copie o prompt do Gemini</h2>
+<div class="actions" style="margin-top:0;margin-bottom:12px"><button class="secondary" type="button" onclick="copiarPromptGemini()" id="botaoPromptGemini">📋 Copiar Prompt do Gemini</button></div>
 <div id="painelPromptGemini" class="hidden" style="border:1px solid #cfd9e6;border-radius:12px;padding:12px;margin-bottom:14px;background:#f8fbff">
 <p class="note">Copie o prompt abaixo para o Gemini. Processe até 10 imagens por rodada. Nas rodadas seguintes, cole a última versão completa do JSON no campo indicado dentro do prompt para acumular os resultados sem perder os lotes anteriores.</p>
 <label for="promptGemini">Prompt pronto para copiar</label>
@@ -48,28 +54,33 @@ Use este formato:
     "signature": "identificador_unico"
   }
 ]</textarea>
-<div class="actions"><button class="primary" type="button" onclick="copiarPromptGemini()">Copiar prompt</button><button class="secondary" type="button" onclick="alternarPromptGemini()">Fechar</button></div>
+<div class="actions"><button class="secondary" type="button" onclick="alternarPromptGemini()">Fechar prévia</button></div>
 <div id="statusPromptGemini" class="status" aria-live="polite"></div>
 </div>
-<p class="note">Cole os lembretes, um produto por linha. Você também pode colar o conteúdo do arquivo TXT gerado pelo Atalho do iPhone. Os dados ficam neste navegador e não são enviados para um banco de dados.</p>
+</div>
+<div class="import-step">
+<h2>Passo 2 — Cole o JSON das ofertas</h2>
+<label for="jsonOfertasNeon">Ofertas em JSON</label>
+<textarea id="jsonOfertasNeon" placeholder='[{"store":"Loja","product":"Produto","package":"500 g","price":4.99,"signature":"loja-produto-500g"}]' style="min-height:150px"></textarea>
+</div>
+<div class="import-step">
+<h2>Passo 3 — Grave as ofertas no Neon</h2>
+<div class="actions"><button class="primary" type="button" onclick="importarOfertasNeon()">Gravar no Neon</button></div>
+<div id="statusImportacaoNeon" class="status" role="status" aria-live="polite"></div>
+</div>
+<div class="import-step shopping-list-step">
+<h2>Lista de compras para comparação (opcional)</h2>
+<p class="note">Cole os produtos, um por linha, para comparar com as ofertas registradas. Você também pode colar o conteúdo TXT gerado pelo Atalho do iPhone.</p>
 <label for="listaProdutos">Produtos</label>
 <textarea id="listaProdutos" placeholder="Pasta de dente&#10;Leite integral&#10;Chocolate quente&#10;Refrigerante"></textarea>
-<div class="actions" style="flex-direction:column"><button class="secondary" onclick="colarDaAreaDeTransferencia()">Colar da área de transferência</button><button class="primary" onclick="carregarProdutos()">Preparar pesquisa</button><button class="success" type="button" onclick="enviarResultadoParaWhatsApp()">Enviar resultado para WhatsApp</button></div>
+<div class="actions"><button class="secondary" type="button" onclick="colarDaAreaDeTransferencia()">Colar lista</button><button class="primary" type="button" onclick="carregarProdutos()">Preparar comparação</button><button class="success" type="button" onclick="enviarResultadoParaWhatsApp()">Enviar resultado para WhatsApp</button></div>
 <div id="mensagemColagem" class="status" aria-live="polite"></div>
-<p class="note">O WhatsApp será aberto para você escolher o contato ou grupo. Os produtos serão organizados por supermercado.</p>
+</div>
 </section>
-<section class="card">
-<h2>Importar ofertas para o Neon</h2>
-<p class="note">Cole abaixo o array JSON gerado pelo Gemini. As ofertas serão gravadas no banco e poderão atualizar registros existentes quando a assinatura do produto for igual.</p>
-<label for="jsonOfertasNeon">Ofertas em JSON</label>
-<textarea id="jsonOfertasNeon" placeholder='[{"supermercado":"Loja","descricao":"Produto","peso_quantidade":"500 g","preco":4.99}]' style="min-height:150px"></textarea>
-<div class="actions"><button class="primary" type="button" onclick="importarOfertasNeon()">Gravar ofertas no Neon</button></div>
-<div id="statusImportacaoNeon" class="status" role="status" aria-live="polite"></div>
-</section>
-<section class="card">
-<h2>2. Resultado da comparação</h2>
-<p class="note">Resultado final: compara cada produto da sua lista com as ofertas salvas no banco Neon, exibindo produto, supermercado, embalagem, preço e grau de correspondência.</p>
-<div class="table-controls"><input id="filtroTabela" type="search" placeholder="Buscar item, produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select><input id="filtroData" type="date" aria-label="Filtrar pela data da última atualização" title="Data da última atualização"></div>
+<section class="card comparison-card">
+<h2>Pesquisar e comparar ofertas</h2>
+<p class="note">Busque produtos ou supermercados. Os resultados são atualizados em tempo real e incluem preço, data do registro e tendência histórica.</p>
+<div class="table-controls"><input id="filtroTabela" type="search" placeholder="🔎 Buscar produto ou supermercado" aria-label="Buscar produto ou supermercado"><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select><input id="filtroData" type="date" aria-label="Filtrar pela data da última atualização" title="Data da última atualização"></div>
 <div id="statusTabela" class="table-status" role="status" aria-live="polite">Conectando à API do Neon...</div><div id="erroNeon" class="card hidden" role="alert"><strong>Não foi possível carregar as ofertas.</strong><p class="note" id="erroNeonTexto">Verifique sua conexão e tente novamente.</p><button type="button" class="secondary" onclick="carregarPrecosRegistrados(true)">Tentar Novamente</button></div>
 <div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Carregando ofertas do Neon…</td></tr></tbody></table></div>
 
@@ -86,13 +97,13 @@ const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
 let produtos = [];
 let ofertas = [];
 const normalizar = s => String(s||"").trim().replace(/\s+/g," ");
-async function abrirGemini(){
- const novaAba=window.open("about:blank","_blank");
- const painel=document.getElementById("painelPromptGemini");
- painel.classList.remove("hidden");
- document.getElementById("botaoPromptGemini").setAttribute("aria-expanded","true");
- await copiarPromptGemini();
- if(novaAba)novaAba.location.href="https://gemini.google.com/app";
+function alternarPainelImportacao(){
+ const painel=document.getElementById("painelImportacao");
+ const botao=document.getElementById("botaoImportacao");
+ const abrir=painel.classList.contains("hidden");
+ painel.classList.toggle("hidden",!abrir);
+ botao.setAttribute("aria-expanded",String(abrir));
+ document.getElementById("iconeImportacao").textContent=abrir?"−":"＋";
 }
 function alternarPromptGemini(){
  const painel=document.getElementById("painelPromptGemini");
@@ -103,20 +114,15 @@ function alternarPromptGemini(){
  if(abrir)document.getElementById("promptGemini").focus();
 }
 async function copiarPromptGemini(){
- const campo=document.getElementById("promptGemini");
- try{
-  await navigator.clipboard.writeText(campo.value);
- }catch(e){
-  const temporario=document.createElement("textarea");
-  temporario.value=campo.value;
-  temporario.setAttribute("readonly","");
-  temporario.style.position="fixed";
-  temporario.style.opacity="0";
-  document.body.appendChild(temporario);
-  temporario.select();
-  try{document.execCommand("copy");}catch(erro){}
+ const campo=document.getElementById("promptGemini"),status=document.getElementById("statusPromptGemini");
+ let copiado=false;
+ try{await navigator.clipboard.writeText(campo.value);copiado=true;}
+ catch(e){
+  const temporario=document.createElement("textarea");temporario.value=campo.value;temporario.setAttribute("readonly","");temporario.style.position="fixed";temporario.style.opacity="0";document.body.appendChild(temporario);temporario.select();
+  try{copiado=document.execCommand("copy");}catch(erro){copiado=false;}
   temporario.remove();
  }
+ status.textContent=copiado?"Prompt copiado!":"Não foi possível copiar automaticamente. Selecione o texto do prompt e copie manualmente.";
 }
 function carregarProdutos(){
  const linhas=[...new Set(document.getElementById("listaProdutos").value.split(/\r?\n/).map(normalizar).filter(Boolean))];
@@ -424,6 +430,9 @@ document.getElementById("filtroTabela").addEventListener("input",renderizarTabel
 document.getElementById("filtroSupermercado").addEventListener("change",renderizarTabelaRegistrados);
 document.getElementById("filtroData").addEventListener("change",renderizarTabelaRegistrados);
 document.getElementById("ordenarTabela").addEventListener("change",renderizarTabelaRegistrados);
+const statusBanco=document.getElementById("statusBanco"),statusTabela=document.getElementById("statusTabela");
+function atualizarIndicadorBanco(){const texto=statusTabela?.textContent||"";statusBanco.classList.remove("is-online","is-error");if(/Falha|Não foi possível|erro/i.test(texto)){statusBanco.classList.add("is-error");statusBanco.innerHTML='<span class="status-dot"></span>Banco indisponível';}else if(/carregada|correspondência|concluída/i.test(texto)){statusBanco.classList.add("is-online");statusBanco.innerHTML='<span class="status-dot"></span>Neon conectado';}else{statusBanco.innerHTML='<span class="status-dot"></span>Consultando Neon…';}}
+if(statusTabela&&statusBanco){new MutationObserver(atualizarIndicadorBanco).observe(statusTabela,{childList:true,subtree:true,characterData:true});atualizarIndicadorBanco();}
 carregarPrecosRegistrados();
 </script>
 </body>
