@@ -15,7 +15,7 @@
 <div class="card">
 <h2>Filtros</h2>
 <div class="controls"><input id="busca" type="search" autocomplete="off" placeholder="🔎 Produto, supermercado ou código"><select id="mercado" aria-label="Filtrar supermercado"><option value="">Todos os supermercados</option></select><select id="ordenacao" aria-label="Ordenar resultados"><option value="nome">Ordenar: produto (A–Z)</option><option value="menor">Preço: menor → maior</option><option value="maior">Preço: maior → menor</option><option value="recente">Atualização mais recente</option></select><input id="dataFiltro" type="date" aria-label="Data da última atualização" title="Filtrar pela data da última atualização"><button class="clear" id="limpar">Limpar filtros</button></div>
-<div class="note" style="margin-top:10px">A tendência compara o preço atual com o registro anterior salvo no histórico. Use “Editar preço” para atualizar o banco; a gravação exige o token administrativo configurado na função Neon.</div>
+<div class="note" style="margin-top:10px">A tendência compara o preço atual com o registro anterior salvo no histórico. Use “Editar preço” para atualizar o banco; a API valida a requisição no servidor.</div>
 </div>
 <div class="card"><div class="toolbar"><strong id="contador" role="status" aria-live="polite">Carregando…</strong><button class="clear" id="atualizar" type="button">Atualizar dados</button></div><div id="erro" class="error hidden" role="alert"><strong>Não foi possível carregar os produtos.</strong><div id="erroTexto">Verifique a conexão com a API.</div><button type="button" id="tentarNovamente">Tentar Novamente</button></div><div id="lista"><div class="loading"><span class="spinner" aria-hidden="true"></span>Carregando produtos e preços do Neon…</div></div></div>
 <div class="footer-note">Fonte dos dados: API Neon PostgreSQL. Os preços e as atualizações são carregados do banco de dados.</div>
@@ -75,7 +75,7 @@ async function editarPreco(id){
   const res=await fetch(API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,price,confirmed:true})});
   const body=await res.json().catch(()=>({}));if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
   await carregar();alert("Preço atualizado. O histórico foi registrado pelo Neon.");
- }catch(e){alert("Não foi possível atualizar o preço: "+(e.message||"verifique o token e a conexão."));}
+ }catch(e){alert("Não foi possível atualizar o preço: "+(e.message||"verifique a conexão e tente novamente."));}
 }
 $("busca").addEventListener("input",renderizar);$("mercado").addEventListener("change",renderizar);$("ordenacao").addEventListener("change",renderizar);$("dataFiltro").addEventListener("change",renderizar);
 $("limpar").addEventListener("click",()=>{$("busca").value="";$("mercado").value="";$("ordenacao").value="nome";$("dataFiltro").value="";renderizar();});
