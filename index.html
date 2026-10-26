@@ -339,11 +339,11 @@ function enviarResultadoParaWhatsApp(tipo="todos"){
  const grupos=new Map();
  linhas.forEach(c=>{
   if(c.length<6||!c[2]||c[2]==="Supermercado"||c[2].includes("Nenhum produto encontrado")||c[2].includes("Não foi possível"))return;
-  const loja=c[2], produto=c[1], peso=c[3], preco=c[4], correspondencia=c[5];
-  const menorPreco=correspondencia.includes("MENOR PREÇO");
+  const loja=c[2], produto=c[1].replace(/\s*MENOR PREÇO\s*/g,"").trim(), peso=c[3], preco=c[4], correspondencia=c[5];
+  const menorPreco=c[1].includes("MENOR PREÇO");
   if(tipo==="menor"&&!menorPreco)return;
   if(!grupos.has(loja))grupos.set(loja,[]);
-  const detalhes=[produto,peso&&peso!=="—"?peso:"",preco,correspondencia&&correspondencia!=="Aguardando comparação"?correspondencia.replace(/\s*MENOR PREÇO\s*/g,"").trim():""].filter(Boolean);
+  const detalhes=[produto,peso&&peso!=="—"?peso:"",preco,correspondencia&&correspondencia!=="Aguardando comparação"?correspondencia:""].filter(Boolean);
   const item="- "+(c[0]&&c[0]!=="—"?c[0]+" → ":"")+detalhes.join(" | ");
   grupos.get(loja).push(tipo==="todos"&&menorPreco?"*"+item+"*":item);
  });
