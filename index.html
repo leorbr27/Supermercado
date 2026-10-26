@@ -452,3 +452,30 @@ window.addEventListener("DOMContentLoaded",()=>{
  colarAutomaticamenteAoAbrir();
 });
 async function colarAutomaticamenteAoAbrir(){
+ const campo=document.getElementById("listaProdutos");
+ const status=document.getElementById("mensagemColagem");
+ if(campo.value.trim())return;
+ try{
+  if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error("clipboard");
+  const texto=await navigator.clipboard.readText();
+  if(!texto.trim()){
+   status.textContent="A área de transferência está vazia.";
+   return;
+  }
+  campo.value=texto;
+  carregarProdutos();
+  status.textContent="Conteúdo da área de transferência carregado automaticamente.";
+ }catch(e){
+  status.textContent="O navegador bloqueou a leitura automática. Use “Colar da área de transferência” para autorizar a colagem.";
+ }
+}
+document.getElementById("filtroTabela").addEventListener("input",renderizarTabelaRegistrados);
+document.getElementById("filtroSupermercado").addEventListener("change",renderizarTabelaRegistrados);
+document.getElementById("ordenarTabela").addEventListener("change",renderizarTabelaRegistrados);
+const statusBanco=document.getElementById("statusBanco"),statusTabela=document.getElementById("statusTabela");
+function atualizarIndicadorBanco(){const texto=statusTabela?.textContent||"";statusBanco.classList.remove("is-online","is-error");if(/Falha|Não foi possível|erro/i.test(texto)){statusBanco.classList.add("is-error");statusBanco.innerHTML='<span class="status-dot"></span>Banco indisponível';}else if(/carregada|correspondência|concluída/i.test(texto)){statusBanco.classList.add("is-online");statusBanco.innerHTML='<span class="status-dot"></span>Neon conectado';}else{statusBanco.innerHTML='<span class="status-dot"></span>Consultando Neon…';}}
+if(statusTabela&&statusBanco){new MutationObserver(atualizarIndicadorBanco).observe(statusTabela,{childList:true,subtree:true,characterData:true});atualizarIndicadorBanco();}
+carregarPrecosRegistrados();
+</script>
+</body>
+</html>
