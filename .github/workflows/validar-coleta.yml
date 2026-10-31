@@ -1,5 +1,7 @@
 name: Validar automação de ofertas
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [feature/coleta-automatica-22-redes]
     paths:
