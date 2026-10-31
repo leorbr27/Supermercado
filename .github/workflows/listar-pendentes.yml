@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Consultar fila protegida
         env:
-          APP_WRITE_TOKEN: \${{ secrets.APP_WRITE_TOKEN }}
+          APP_WRITE_TOKEN: ${{ secrets.APP_WRITE_TOKEN }}
         run: |
           test -n "$APP_WRITE_TOKEN" || { echo "::error::Configure APP_WRITE_TOKEN."; exit 1; }
           curl --fail-with-body --silent --show-error \
