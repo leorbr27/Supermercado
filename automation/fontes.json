@@ -27,7 +27,7 @@
     },
     {
       "id": "extrabom",
-      "name": "Extrabom",
+      "name": "Extrabom Supermercados",
       "url": "https://www.extrabom.com.br/ofertas/",
       "secondary_urls": [
         "https://www.extrabom.com.br/clube-extrabom/"
@@ -67,7 +67,7 @@
     },
     {
       "id": "assai",
-      "name": "Assaí",
+      "name": "Assaí Atacadista",
       "url": "https://www.assai.com.br/ofertas",
       "secondary_urls": [
         "https://www.assai.com.br/nossos-canais"
@@ -99,7 +99,7 @@
     },
     {
       "id": "extraplus",
-      "name": "Extraplus",
+      "name": "Supermercados Extraplus",
       "url": "https://www.extraplus.com.br/ofertas/",
       "secondary_urls": [
         "https://www.extraplus.com.br/backend/lojas/"
