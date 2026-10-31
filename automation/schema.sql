@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS public.coletas_publicacoes (
   tipo_conteudo text,
   coletada_em timestamptz NOT NULL DEFAULT now(),
   texto_extraido text,
+  arquivo_original bytea,
   status text NOT NULL DEFAULT 'capturada',
   metadados jsonb NOT NULL DEFAULT '{}'::jsonb,
   UNIQUE (fonte_id, hash_conteudo)
