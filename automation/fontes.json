@@ -195,13 +195,13 @@
       "notes": "Localizar encartes e páginas de ofertas."
     },
     {
-      "id": "canguru",
-      "name": "Canguru Supermercados",
-      "url": null,
+      "id": "noroeste",
+      "name": "Supermercado Noroeste",
+      "url": "https://www.instagram.com/sup_noroeste/",
       "secondary_urls": [],
-      "mode": "needs_official_source",
-      "enabled": false,
-      "notes": "Marca legada: unidades da Serra foram incorporadas/reinauguradas sob bandeira Supermercados BH em maio de 2025; não coletar como rede ativa sem confirmar outras lojas."
+      "mode": "manual_review",
+      "enabled": true,
+      "notes": "Central de Compras lista Instagram sup_noroeste e WhatsApp de ofertas; manter revisão manual sem raspar Instagram."
     },
     {
       "id": "falqueto",
