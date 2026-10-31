@@ -61,8 +61,8 @@ def gemini_extract(store,url,mime,raw,text):
  if mime in ("application/pdf","image/jpeg","image/png","image/webp") and raw:
   parts.append({"inline_data":{"mime_type":mime,"data":base64.b64encode(raw).decode("ascii")}})
  body={"contents":[{"role":"user","parts":parts}],"generationConfig":{"response_mime_type":"application/json","response_schema":SCHEMA,"temperature":0}}
- endpoint=f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent?key={GEMINI_KEY}"
- r=session.post(endpoint,json=body,timeout=120); r.raise_for_status()
+ endpoint=f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
+ r=session.post(endpoint,json=body,headers={"x-goog-api-key":GEMINI_KEY},timeout=120); r.raise_for_status()
  output="".join(p.get("text","") for p in r.json()["candidates"][0]["content"]["parts"])
  parsed=json.loads(output); return parsed if isinstance(parsed,list) else []
 def iso_date(value):
