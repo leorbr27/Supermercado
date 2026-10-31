@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS public.ofertas_pendentes (
   status text NOT NULL CHECK (status IN ('pending','approved','rejected','archived')),
   evidencias text,
   url_fonte text NOT NULL,
+  chave_oferta text,
   assinatura text NOT NULL UNIQUE,
   motivo_decisao text,
   criado_em timestamptz NOT NULL DEFAULT now(),
