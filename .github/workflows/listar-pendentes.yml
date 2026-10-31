@@ -1,0 +1,26 @@
+name: Listar ofertas pendentes para revisão
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar fila protegida
+        env:
+          APP_WRITE_TOKEN: \${{ secrets.APP_WRITE_TOKEN }}
+        run: |
+          test -n "$APP_WRITE_TOKEN" || { echo "::error::Configure APP_WRITE_TOKEN."; exit 1; }
+          curl --fail-with-body --silent --show-error \
+            "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/automacao/pendentes" \
+            -H "Authorization: Bearer $APP_WRITE_TOKEN" \
+            -o /tmp/pending.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/pending.json"))
+          rows=d.get("pending",[])
+          print(f"Ofertas aguardando revisão: {len(rows)}")
+          for x in rows:
+              print(f"ID {x['id']} | {x['supermercado']} | {x['produto']} | {x['embalagem'] or '-'} | R$ {x['preco']} | confiança {x['confianca']}% | validade {x['validade_fim'] or 'não informada'}")
+          PY
