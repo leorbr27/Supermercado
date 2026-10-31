@@ -68,7 +68,7 @@ def gemini_extract(store,url,mime,raw,text):
 def iso_date(value):
  try:
   value=str(value or "").strip()
-  if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}",value): return None
+  if not re.fullmatch(r"\d{4}-\d{2}-\d{2}",value): return None
   datetime.strptime(value,"%Y-%m-%d")
   return value
  except Exception: return None
@@ -79,8 +79,8 @@ def confidence(o,text):
   if 0<float(o.get("price"))<=100000: score+=25
  except Exception: pass
  if str(o.get("package","")).strip(): score+=10
- valid=str(o.get("valid_until","")).strip()
- if valid and re.fullmatch(r"\d{4}-\d{2}-\d{2}",valid): score+=20
+ valid=iso_date(o.get("valid_until"))
+ if valid: score+=20
  quote=str(o.get("evidence_quote","")).strip()
  if quote and (quote.casefold() in text.casefold() if text else True): score+=10
  return min(100,score)
