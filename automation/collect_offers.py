@@ -110,7 +110,7 @@ def main():
      package_key=normalize_key(package_value)
      if "por quilo" in package_key or package_key=="kg": package_key="kg"
      else:
-      measure=re.search(r"(\\d+(?:[.,]\\d+)?)(?:\\s*)(kg|g|ml|l|un)",package_value,re.I)
+      measure=re.search(r"(\d+(?:[.,]\d+)?)(?:\s*)(kg|g|ml|l|un)",package_value,re.I)
       if measure:
        package_key=measure.group(1).replace(",","_").replace(".","_")+measure.group(2).lower()
        if "lata" in package_key.lower() or "lata" in normalize_key(package_value): package_key="lata_"+package_key
