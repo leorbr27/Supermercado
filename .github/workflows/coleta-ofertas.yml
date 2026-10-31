@@ -21,15 +21,15 @@ jobs:
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
       - name: Validate required secrets
         env:
-          GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
-          APP_WRITE_TOKEN: \${{ secrets.APP_WRITE_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          APP_WRITE_TOKEN: ${{ secrets.APP_WRITE_TOKEN }}
         run: |
           test -n "$GEMINI_API_KEY" || { echo "::error::Configure o secret GEMINI_API_KEY."; exit 1; }
           test -n "$APP_WRITE_TOKEN" || { echo "::error::Configure o secret APP_WRITE_TOKEN."; exit 1; }
       - name: Collect and classify offers
         env:
-          GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
-          APP_WRITE_TOKEN: \${{ secrets.APP_WRITE_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          APP_WRITE_TOKEN: ${{ secrets.APP_WRITE_TOKEN }}
           GEMINI_MODEL: gemini-3.8-flash
           NEON_OFFERS_API: https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech
         run: python automation/collect_offers.py
