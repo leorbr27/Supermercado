@@ -81,7 +81,7 @@ def main():
  with open(os.path.join(ROOT,"automation","fontes.json"),encoding="utf-8") as f: registry=json.load(f)
  sources=registry["sources"]; publications=[]; errors=0; queried=0
  for source in sources:
-  if not source.get("enabled") or source.get("mode") not in ("official_web","manual_review") or not source.get("url"):
+  if not source.get("enabled") or source.get("mode") != "official_web" or not source.get("url"):
    print(f"[SKIP] {source['name']}: canal oficial ainda não confirmado",flush=True); continue
   queried+=1
   for url,mime,raw,text in page_candidates(source):
