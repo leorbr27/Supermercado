@@ -105,7 +105,16 @@ def main():
      score=confidence(item,text); status="approved" if score>=95 else ("pending" if score>=60 else "archived")
      normalize_key=lambda value: re.sub(r"[^a-z0-9]+"," ",unicodedata.normalize("NFD",str(value or "")).encode("ascii","ignore").decode("ascii").lower()).strip()
      package_value=str(item.get("package") or "Não informada").strip()
-     signature="|".join(normalize_key(value) for value in [source["name"],item["product"],package_value])[:200]
+     product_value=str(item["product"]).strip(); brand_value=str(item.get("brand","")).strip()
+     product_for_key=product_value if not brand_value or normalize_key(brand_value) in normalize_key(product_value) else product_value+" "+brand_value
+     package_key=normalize_key(package_value)
+     if "por quilo" in package_key or package_key=="kg": package_key="kg"
+     else:
+      for prefix in ("pacote ","pote ","caixa ","frasco ","garrafa ","pouch "):
+       if package_key.startswith(prefix): package_key=package_key[len(prefix):]; break
+      package_key=package_key.replace(" peso drenado","").replace(" ","").replace(",", "_")
+      if package_key.startswith("lata") and not package_key.startswith("lata_"): package_key="lata_"+package_key[4:]
+     signature=(source["id"]+"_"+normalize_key(product_for_key).replace(" ","_")+"_"+package_key)[:200]
      fingerprint=hashlib.sha256("|".join([source["id"],signature,str(iso_date(item.get("valid_until")) or ""),str(round(price,2))]).encode()).hexdigest()
      normalized.append({"store":source["name"],"product":str(item["product"]).strip(),"brand":str(item.get("brand","")).strip(),
       "package":package_value,"price":round(price,2),"valid_from":iso_date(item.get("valid_from")),
