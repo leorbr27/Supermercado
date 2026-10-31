@@ -77,7 +77,8 @@ export default {
         for(const publication of publications){
           const sourceId=text(publication.source_id,100), pubUrl=text(publication.url,2000), hash=text(publication.hash,128);
           if(!sourceId||!pubUrl||!hash) continue;
-          const pub=await sql`INSERT INTO public.coletas_publicacoes(fonte_id,url,hash_conteudo,tipo_conteudo,texto_extraido,metadados) VALUES(${sourceId},${pubUrl},${hash},${text(publication.content_type,100)},${text(publication.text,50000)},${JSON.stringify({run_id:runId})}::jsonb) ON CONFLICT(fonte_id,hash_conteudo) DO NOTHING RETURNING id`;
+          const originalBase64=typeof publication.original_base64==="string"&&publication.original_base64.length<=5600000?publication.original_base64:null;
+          const pub=await sql`INSERT INTO public.coletas_publicacoes(fonte_id,url,hash_conteudo,tipo_conteudo,texto_extraido,arquivo_original,metadados) VALUES(${sourceId},${pubUrl},${hash},${text(publication.content_type,100)},${text(publication.text,50000)},CASE WHEN ${originalBase64}::text IS NULL THEN NULL ELSE decode(${originalBase64}::text,'base64') END,${JSON.stringify({run_id:runId})}::jsonb) ON CONFLICT(fonte_id,hash_conteudo) DO NOTHING RETURNING id`;
           if(!pub.length) continue;
           insertedPublications++; const pubId=pub[0].id, offers=Array.isArray(publication.offers)?publication.offers:[];
           for(const offer of offers){
