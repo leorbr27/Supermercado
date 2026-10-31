@@ -19,9 +19,9 @@ jobs:
     steps:
       - name: Validar e aplicar decisão no Neon
         env:
-          APP_WRITE_TOKEN: \${{ secrets.APP_WRITE_TOKEN }}
-          OFFER_ID: \${{ inputs.offer_id }}
-          DECISION: \${{ inputs.decision }}
+          APP_WRITE_TOKEN: ${{ secrets.APP_WRITE_TOKEN }}
+          OFFER_ID: ${{ inputs.offer_id }}
+          DECISION: ${{ inputs.decision }}
         run: |
           test -n "$APP_WRITE_TOKEN" || { echo "::error::Configure APP_WRITE_TOKEN."; exit 1; }
           [[ "$OFFER_ID" =~ ^[0-9]+$ ]] || { echo "::error::ID inválido."; exit 1; }
