@@ -57,7 +57,7 @@ export default {
 
       if (url.pathname === "/automacao/pendentes" && request.method === "GET") {
         if (!authorized(request)) return reply({ error: "Não autorizado." }, 401);
-        const rows=await sql\`SELECT id,supermercado,produto,marca,embalagem,preco,validade_inicio,validade_fim,condicoes,confianca,evidencias,url_fonte,criado_em FROM public.ofertas_pendentes WHERE status='pending' ORDER BY criado_em DESC LIMIT 100\`;
+        const rows=await sql`SELECT id,supermercado,produto,marca,embalagem,preco,validade_inicio,validade_fim,condicoes,confianca,evidencias,url_fonte,criado_em FROM public.ofertas_pendentes WHERE status='pending' ORDER BY criado_em DESC LIMIT 100`;
         return reply({ pending: rows });
       }
       if (url.pathname === "/automacao/seen" && request.method === "GET") {
