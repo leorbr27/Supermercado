@@ -15,4 +15,4 @@ A rotina está programada para 06:00 (America/Sao_Paulo), diariamente. A lista c
 A rotina chama a API pública `geminiofertas` com autenticação Bearer e não recebe nem grava credenciais no navegador. A chave `NEON_API_KEY` continua restrita ao workflow de implantação da função.
 
 ## Observação de operação
-As 22 redes entram no cadastro inicial. Oito fontes têm URL oficial/canal identificado e ficam habilitadas para teste automatizado inicial; as demais ficam no cadastro, mas aguardam confirmação do endereço oficial e do formato de publicação. Instagram não é raspado por HTML: só poderá ser integrado por API oficial/autorizada.
+As 22 redes entram no cadastro inicial. Doze fontes têm endereço de site oficial identificado e ficam habilitadas para teste automatizado inicial; dez ficam no cadastro, mas aguardam confirmação do endereço oficial e do formato de publicação. A fonte RB permanece em revisão manual e não é raspada. Instagram não é raspado por HTML: só poderá ser integrado por API oficial/autorizada.
