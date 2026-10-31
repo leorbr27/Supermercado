@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Daily offer collector. Credentials remain in the GitHub Actions runner."""
-import os,re,json,hashlib,base64,sys
+import os,re,json,hashlib,base64,sys,unicodedata
 from datetime import datetime,timezone
 from urllib.parse import urljoin,urlparse
 import requests
@@ -103,11 +103,13 @@ def main():
      except Exception: continue
      if not item.get("product") or not (0<price<=100000): continue
      score=confidence(item,text); status="approved" if score>=95 else ("pending" if score>=60 else "archived")
-     signature=hashlib.sha256("|".join([source["id"],str(item["product"]).casefold(),str(item.get("package","")).casefold(),str(item.get("valid_until","")),str(round(price,2))]).encode()).hexdigest()
+     normalize_key=lambda value: re.sub(r"[^a-z0-9]+"," ",unicodedata.normalize("NFD",str(value or "")).encode("ascii","ignore").decode("ascii").lower()).strip()
+     signature="|".join(normalize_key(value) for value in [source["name"],item["product"],item.get("package","")])[:200]
+     fingerprint=hashlib.sha256("|".join([source["id"],signature,str(iso_date(item.get("valid_until")) or ""),str(round(price,2))]).encode()).hexdigest()
      normalized.append({"store":source["name"],"product":str(item["product"]).strip(),"brand":str(item.get("brand","")).strip(),
       "package":str(item.get("package","")).strip(),"price":round(price,2),"valid_from":iso_date(item.get("valid_from")),
       "valid_until":iso_date(item.get("valid_until")),"conditions":item.get("conditions",""),"evidence_quote":item.get("evidence_quote",""),
-      "confidence":score,"status":status,"source_url":url,"signature":signature})
+      "confidence":score,"status":status,"source_url":url,"signature":signature,"fingerprint":fingerprint})
     publications.append({"source_id":source["id"],"url":url,"hash":content_hash,"content_type":mime,"text":text[:50000],"offers":normalized})
     print(f"[OK] {source['name']}: {len(normalized)} ofertas",flush=True)
    except Exception as e: errors+=1; print(f"[ERROR] {source['name']} {url}: {e}",flush=True)
