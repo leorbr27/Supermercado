@@ -110,11 +110,13 @@
     {
       "id": "rb",
       "name": "RB Supermercados",
-      "url": "https://linktr.ee/rbsupermercados",
-      "secondary_urls": [],
+      "url": "https://www.rbsupermercados.com.br/",
+      "secondary_urls": [
+        "https://linktr.ee/rbsupermercados"
+      ],
       "mode": "manual_review",
       "enabled": true,
-      "notes": "Linktree/canal de ofertas; validar acesso permitido e URL direta do encarte."
+      "notes": "Site oficial confirma canais sociais; monitoramento automatizado suspenso até confirmar feed de ofertas e permissões."
     },
     {
       "id": "atacado-vem",
@@ -130,11 +132,11 @@
     {
       "id": "rede-show",
       "name": "Rede Show",
-      "url": null,
+      "url": "https://redeshowsupermercados.com.br/ofertas-redeshow/",
       "secondary_urls": [],
-      "mode": "needs_official_source",
-      "enabled": false,
-      "notes": "Unidades identificadas; perfil oficial e encarte ainda precisam ser confirmados."
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Página oficial com encarte PDF e encarte Express; fonte regional Serra/Vitória/Vila Velha."
     },
     {
       "id": "nossa-rede",
@@ -152,7 +154,7 @@
       "secondary_urls": [],
       "mode": "needs_official_source",
       "enabled": false,
-      "notes": "Presença em Viana identificada; confirmar site/perfil oficial e encarte."
+      "notes": "A loja Rede Mais de Viana aparece em registros locais; site de mesmo nome encontrado pertence a lojas na Bahia, portanto não associar sem confirmação."
     },
     {
       "id": "oba",
@@ -199,16 +201,16 @@
       "secondary_urls": [],
       "mode": "needs_official_source",
       "enabled": false,
-      "notes": "Estabelecimentos identificados na Serra; confirmar canal oficial."
+      "notes": "Marca legada: unidades da Serra foram incorporadas/reinauguradas sob bandeira Supermercados BH em maio de 2025; não coletar como rede ativa sem confirmar outras lojas."
     },
     {
       "id": "falqueto",
       "name": "Supermercado Falqueto",
-      "url": null,
+      "url": "https://www.instagram.com/superfalquetoserrasede/",
       "secondary_urls": [],
-      "mode": "needs_official_source",
-      "enabled": false,
-      "notes": "Canal promocional citado em diretório; validar URL oficial e permissão de coleta."
+      "mode": "manual_review",
+      "enabled": true,
+      "notes": "Instagram informado no diretório oficial da Central de Compras e WhatsApp de ofertas; não raspar Instagram."
     },
     {
       "id": "ovelha",
