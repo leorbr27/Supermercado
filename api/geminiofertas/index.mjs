@@ -85,9 +85,9 @@ export default {
             if(!product||!store||/\b(cerveja|cervejas|beer)\b/i.test(product)) continue;
             const confidence=Math.max(0,Math.min(100,Number(offer.confidence)||0));
             const status=confidence>=95?"approved":confidence>=60?"pending":"archived";
-            const signature=text(offer.signature,200); if(!signature) continue;
-            const inserted=await sql`INSERT INTO public.ofertas_pendentes(publicacao_id,supermercado,produto,marca,embalagem,preco,validade_inicio,validade_fim,condicoes,confianca,status,evidencias,url_fonte,assinatura,motivo_decisao)
-              VALUES(${pubId},${store},${product},${text(offer.brand,200)},${text(offer.package,200)},${price},${offer.valid_from||null},${offer.valid_until||null},${text(offer.conditions,1000)},${confidence},${status},${text(offer.evidence_quote,2000)},${text(offer.source_url,2000)},${signature},${status==="approved"?"Aprovação automática: confiança >= 95%":status==="pending"?"Aguardando revisão humana":"Confiança inferior a 60%; arquivada"})
+            const signature=text(offer.signature,200), fingerprint=text(offer.fingerprint,200); if(!signature||!fingerprint) continue;
+            const inserted=await sql`INSERT INTO public.ofertas_pendentes(publicacao_id,supermercado,produto,marca,embalagem,preco,validade_inicio,validade_fim,condicoes,confianca,status,evidencias,url_fonte,chave_oferta,assinatura,motivo_decisao)
+              VALUES(${pubId},${store},${product},${text(offer.brand,200)},${text(offer.package,200)},${price},${offer.valid_from||null},${offer.valid_until||null},${text(offer.conditions,1000)},${confidence},${status},${text(offer.evidence_quote,2000)},${text(offer.source_url,2000)},${signature},${fingerprint},${status==="approved"?"Aprovação automática: confiança >= 95%":status==="pending"?"Aguardando revisão humana":"Confiança inferior a 60%; arquivada"})
               ON CONFLICT(assinatura) DO NOTHING RETURNING id`;
             if(!inserted.length) continue;
             extracted++;
@@ -105,7 +105,7 @@ export default {
         const rows=await sql`SELECT * FROM public.ofertas_pendentes WHERE id=${id} LIMIT 1`;
         if(!rows.length) return reply({error:"Oferta pendente não encontrada."},404);
         const offer=rows[0]; if(offer.status!=="pending") return reply({error:"A oferta não está aguardando revisão."},409);
-        if(decision==="approve") await persistApproved(sql,{supermercado:offer.supermercado,produto:offer.produto,embalagem:offer.embalagem,preco:offer.preco,assinatura:offer.assinatura,evidencias:offer.evidencias,url_fonte:offer.url_fonte,marca:offer.marca,validade_inicio:offer.validade_inicio,validade_fim:offer.validade_fim,condicoes:offer.condicoes,confianca:offer.confianca});
+        if(decision==="approve") await persistApproved(sql,{supermercado:offer.supermercado,produto:offer.produto,embalagem:offer.embalagem,preco:offer.preco,assinatura:offer.chave_oferta,evidencias:offer.evidencias,url_fonte:offer.url_fonte,marca:offer.marca,validade_inicio:offer.validade_inicio,validade_fim:offer.validade_fim,condicoes:offer.condicoes,confianca:offer.confianca});
         const newStatus=decision==="approve"?"approved":decision==="reject"?"rejected":"archived";
         await sql`UPDATE public.ofertas_pendentes SET status=${newStatus},motivo_decisao=${"Revisão humana: "+decision},revisado_em=now() WHERE id=${id}`;
         return reply({success:true,id,status:newStatus});
