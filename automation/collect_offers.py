@@ -110,7 +110,8 @@ def main():
       "package":str(item.get("package","")).strip(),"price":round(price,2),"valid_from":iso_date(item.get("valid_from")),
       "valid_until":iso_date(item.get("valid_until")),"conditions":item.get("conditions",""),"evidence_quote":item.get("evidence_quote",""),
       "confidence":score,"status":status,"source_url":url,"signature":signature,"fingerprint":fingerprint})
-    publications.append({"source_id":source["id"],"url":url,"hash":content_hash,"content_type":mime,"text":text[:50000],"offers":normalized})
+    original_base64=base64.b64encode(raw).decode("ascii") if mime in ("application/pdf","image/jpeg","image/png","image/webp") and raw and len(raw)<=4*1024*1024 else None
+    publications.append({"source_id":source["id"],"url":url,"hash":content_hash,"content_type":mime,"text":text[:50000],"original_base64":original_base64,"offers":normalized})
     print(f"[OK] {source['name']}: {len(normalized)} ofertas",flush=True)
    except Exception as e: errors+=1; print(f"[ERROR] {source['name']} {url}: {e}",flush=True)
  payload={"run":{"sources_total":len(sources),"sources_checked":queried,"publications_found":len(publications),"errors":errors},"publications":publications}
