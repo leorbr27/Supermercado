@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "scope": "Grande Vitória - ES",
+  "schedule": "06:00 America/Sao_Paulo",
+  "confidence_rules": {
+    "auto_approve_min": 95,
+    "manual_review_min": 60,
+    "reject_below": 60
+  },
+  "exclusions": [
+    "cerveja",
+    "cervejas",
+    "beer"
+  ],
+  "sources": [
+    {
+      "id": "carone",
+      "name": "Carone",
+      "url": "https://comunidade.carone.com.br/",
+      "secondary_urls": [
+        "https://www.carone.com.br/",
+        "https://linktr.ee/caroneonline"
+      ],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Comunidade oficial de ofertas; confirmar disponibilidade regional."
+    },
+    {
+      "id": "extrabom",
+      "name": "Extrabom",
+      "url": "https://www.extrabom.com.br/ofertas/",
+      "secondary_urls": [
+        "https://www.extrabom.com.br/clube-extrabom/"
+      ],
+      "mode": "official_web",
+      "enabled": true
+    },
+    {
+      "id": "bh",
+      "name": "Supermercados BH",
+      "url": "https://www.supermercadosbh.com.br/",
+      "secondary_urls": [
+        "https://linktr.ee/_supermercadosbh"
+      ],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Validar encarte específico do Espírito Santo."
+    },
+    {
+      "id": "sempretem",
+      "name": "SempreTem",
+      "url": "https://superatacadosempretem.com.br/",
+      "secondary_urls": [
+        "https://linktr.ee/sempretem.superatacado"
+      ],
+      "mode": "official_web",
+      "enabled": true
+    },
+    {
+      "id": "atacadao",
+      "name": "Atacadão",
+      "url": "https://www.atacadao.com.br/institucional/nossas-lojas?estado=ES",
+      "secondary_urls": [],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Filtrar unidades do Espírito Santo."
+    },
+    {
+      "id": "assai",
+      "name": "Assaí",
+      "url": "https://www.assai.com.br/ofertas",
+      "secondary_urls": [
+        "https://www.assai.com.br/nossos-canais"
+      ],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Validar ofertas regionais."
+    },
+    {
+      "id": "perim",
+      "name": "Perim",
+      "url": "https://www.superperim.com.br/",
+      "secondary_urls": [
+        "https://www.superperim.com.br/nossaslojas"
+      ],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Localizar folhetos/ofertas no site."
+    },
+    {
+      "id": "multishow",
+      "name": "Multishow",
+      "url": "https://multishowsupermercados.com.br/ofertas/",
+      "secondary_urls": [
+        "https://linktr.ee/multishowsupermercados"
+      ],
+      "mode": "official_web",
+      "enabled": true
+    },
+    {
+      "id": "extraplus",
+      "name": "Extraplus",
+      "url": "https://www.extraplus.com.br/ofertas/",
+      "secondary_urls": [
+        "https://www.extraplus.com.br/backend/lojas/"
+      ],
+      "mode": "official_web",
+      "enabled": true
+    },
+    {
+      "id": "rb",
+      "name": "RB Supermercados",
+      "url": "https://www.rbsupermercados.com.br/",
+      "secondary_urls": [
+        "https://linktr.ee/rbsupermercados"
+      ],
+      "mode": "manual_review",
+      "enabled": true,
+      "notes": "Site oficial confirma canais sociais; monitoramento automatizado suspenso até confirmar feed de ofertas e permissões."
+    },
+    {
+      "id": "atacado-vem",
+      "name": "Atacado Vem",
+      "url": "https://atacadovem.com.br/",
+      "secondary_urls": [
+        "https://linktr.ee/AtacadoVem"
+      ],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Separar ofertas de consumidor final e transformador."
+    },
+    {
+      "id": "rede-show",
+      "name": "Rede Show",
+      "url": "https://redeshowsupermercados.com.br/ofertas-redeshow/",
+      "secondary_urls": [],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Página oficial com encarte PDF e encarte Express; fonte regional Serra/Vitória/Vila Velha."
+    },
+    {
+      "id": "nossa-rede",
+      "name": "Nossa Rede Supermercados",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "Rede/associados identificados; mapear canal oficial de cada loja."
+    },
+    {
+      "id": "rede-mais",
+      "name": "Rede Mais",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "A loja Rede Mais de Viana aparece em registros locais; site de mesmo nome encontrado pertence a lojas na Bahia, portanto não associar sem confirmação."
+    },
+    {
+      "id": "oba",
+      "name": "Oba Superatacado",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "Unidade identificada; confirmar canal promocional oficial."
+    },
+    {
+      "id": "ok",
+      "name": "OK Superatacado",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "Unidades identificadas; confirmar canal promocional oficial."
+    },
+    {
+      "id": "carrefour",
+      "name": "Carrefour",
+      "url": "https://www.carrefour.com.br/",
+      "secondary_urls": [
+        "https://www.instagram.com/carrefourbrasil/"
+      ],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Validar unidade e disponibilidade das ofertas para Vila Velha."
+    },
+    {
+      "id": "superatacado-es",
+      "name": "Superatacado ES",
+      "url": "https://www.superatacado-es.com.br/nossas-lojas",
+      "secondary_urls": [],
+      "mode": "official_web",
+      "enabled": true,
+      "notes": "Localizar encartes e páginas de ofertas."
+    },
+    {
+      "id": "canguru",
+      "name": "Canguru Supermercados",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "Marca legada: unidades da Serra foram incorporadas/reinauguradas sob bandeira Supermercados BH em maio de 2025; não coletar como rede ativa sem confirmar outras lojas."
+    },
+    {
+      "id": "falqueto",
+      "name": "Supermercado Falqueto",
+      "url": "https://www.instagram.com/superfalquetoserrasede/",
+      "secondary_urls": [],
+      "mode": "manual_review",
+      "enabled": true,
+      "notes": "Instagram informado no diretório oficial da Central de Compras e WhatsApp de ofertas; não raspar Instagram."
+    },
+    {
+      "id": "ovelha",
+      "name": "Supermercado Ovelha",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "Estabelecimento identificado em Vitória; confirmar canal de ofertas."
+    },
+    {
+      "id": "extra-forte",
+      "name": "Rede Extra Forte",
+      "url": null,
+      "secondary_urls": [],
+      "mode": "needs_official_source",
+      "enabled": false,
+      "notes": "Estabelecimento identificado em Vitória; confirmar canal de ofertas."
+    }
+  ]
+}

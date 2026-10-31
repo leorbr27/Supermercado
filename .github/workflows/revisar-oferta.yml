@@ -1,0 +1,32 @@
+name: Revisar oferta coletada
+on:
+  workflow_dispatch:
+    inputs:
+      offer_id:
+        description: ID em public.ofertas_pendentes
+        required: true
+        type: string
+      decision:
+        description: Decisão administrativa
+        required: true
+        type: choice
+        options: [approve, reject, archive]
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar e aplicar decisão no Neon
+        env:
+          APP_WRITE_TOKEN: ${{ secrets.APP_WRITE_TOKEN }}
+          OFFER_ID: ${{ inputs.offer_id }}
+          DECISION: ${{ inputs.decision }}
+        run: |
+          test -n "$APP_WRITE_TOKEN" || { echo "::error::Configure APP_WRITE_TOKEN."; exit 1; }
+          [[ "$OFFER_ID" =~ ^[0-9]+$ ]] || { echo "::error::ID inválido."; exit 1; }
+          curl --fail-with-body --silent --show-error \
+            -X POST "https://br-wandering-resonance-b4w2m30c-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/automacao/revisar" \
+            -H "Authorization: Bearer $APP_WRITE_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data "{\"id\":$OFFER_ID,\"decision\":\"$DECISION\"}"
