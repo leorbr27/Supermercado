@@ -65,6 +65,13 @@ def gemini_extract(store,url,mime,raw,text):
  r=session.post(endpoint,json=body,timeout=120); r.raise_for_status()
  output="".join(p.get("text","") for p in r.json()["candidates"][0]["content"]["parts"])
  parsed=json.loads(output); return parsed if isinstance(parsed,list) else []
+def iso_date(value):
+ try:
+  value=str(value or "").strip()
+  if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}",value): return None
+  datetime.strptime(value,"%Y-%m-%d")
+  return value
+ except Exception: return None
 def confidence(o,text):
  score=10
  if str(o.get("product","")).strip(): score+=25
@@ -98,8 +105,8 @@ def main():
      score=confidence(item,text); status="approved" if score>=95 else ("pending" if score>=60 else "archived")
      signature=hashlib.sha256("|".join([source["id"],str(item["product"]).casefold(),str(item.get("package","")).casefold(),str(item.get("valid_until","")),str(round(price,2))]).encode()).hexdigest()
      normalized.append({"store":source["name"],"product":str(item["product"]).strip(),"brand":str(item.get("brand","")).strip(),
-      "package":str(item.get("package","")).strip(),"price":round(price,2),"valid_from":item.get("valid_from") or None,
-      "valid_until":item.get("valid_until") or None,"conditions":item.get("conditions",""),"evidence_quote":item.get("evidence_quote",""),
+      "package":str(item.get("package","")).strip(),"price":round(price,2),"valid_from":iso_date(item.get("valid_from")),
+      "valid_until":iso_date(item.get("valid_until")),"conditions":item.get("conditions",""),"evidence_quote":item.get("evidence_quote",""),
       "confidence":score,"status":status,"source_url":url,"signature":signature})
     publications.append({"source_id":source["id"],"url":url,"hash":content_hash,"content_type":mime,"text":text[:50000],"offers":normalized})
     print(f"[OK] {source['name']}: {len(normalized)} ofertas",flush=True)
