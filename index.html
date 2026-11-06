@@ -82,8 +82,9 @@ Use este formato:
 <p class="note">Busque produtos ou supermercados. Os resultados são atualizados em tempo real e incluem preço, data do registro e tendência histórica.</p>
 <div class="table-controls"><textarea id="filtroTabela" rows="3" placeholder="🔎 Digite ou cole produtos/supermercados, um por linha" aria-label="Buscar produtos ou supermercados, um por linha"></textarea><select id="filtroSupermercado" aria-label="Filtrar por supermercado"><option value="">Todos os supermercados</option></select><select id="ordenarTabela" aria-label="Ordenar correspondências"><option value="correspondencia">Melhor correspondência</option><option value="menor">Menor preço primeiro</option><option value="maior">Maior preço primeiro</option><option value="supermercado">Ordenar por supermercado</option></select></div>
 <div id="statusTabela" class="table-status" role="status" aria-live="polite">Conectando à API do Neon...</div><div id="erroNeon" class="card hidden" role="alert"><strong>Não foi possível carregar as ofertas.</strong><p class="note" id="erroNeonTexto">Verifique sua conexão e tente novamente.</p><button type="button" class="secondary" onclick="carregarPrecosRegistrados(true)">Tentar Novamente</button></div>
-<div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Carregando ofertas do Neon…</td></tr></tbody></table></div>
 <div class="actions" aria-label="Enviar resultados para o WhatsApp"><button class="success" type="button" onclick="enviarResultadoParaWhatsApp('todos')">Enviar todos os preços</button><button class="success" type="button" onclick="enviarResultadoParaWhatsApp('menor')">Enviar menor preço</button></div>
+<div class="table-wrap"><table><thead><tr><th>Na sua lista</th><th>Produto registrado</th><th>Supermercado</th><th>Peso / quantidade</th><th>Preço</th><th>Correspondência</th></tr></thead><tbody id="corpoTabela"><tr><td colspan="6">Carregando ofertas do Neon…</td></tr></tbody></table></div>
+
 
 </section>
 
