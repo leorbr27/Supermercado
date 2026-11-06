@@ -27,6 +27,7 @@ td:before{font-size:16px}
 /* Tamanho mínimo de texto para novas implementações: 16px. */
 .neon-spinner{display:inline-block;width:18px;height:18px;border:3px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:neon-spin .8s linear infinite;vertical-align:middle;margin-right:8px}@keyframes neon-spin{to{transform:rotate(360deg)}}.trend{display:inline-block;margin-top:5px;font-size:16px;font-weight:750}.trend.down{color:#087443}.trend.up{color:#b42318}.trend.neutral{color:#68778d}.edit-price{font-size:16px}
 .table-controls input,.table-controls select{font-size:16px}
+@media(max-width:600px){#painelInteligencia .fields{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -106,7 +107,7 @@ Use este formato:
  <h2 style="margin-top:18px">Custo da lista por supermercado</h2>
  <div class="table-wrap"><table><thead><tr><th>Supermercado</th><th>Total estimado</th><th>Itens encontrados</th></tr></thead><tbody id="intelLojas"><tr><td colspan="3">Aguardando lista de compras.</td></tr></tbody></table></div>
  <h2 style="margin-top:18px">Menor preço por item e preço por unidade</h2>
- <div class="table-wrap"><table><thead><tr><th>Produto da lista</th><th>Melhor oferta</th><th>Preço</th><th>Preço por unidade</th><th>Preço-alvo (R$)</th></tr></thead><tbody id="intelItens"><tr><td colspan="5">Aguardando lista de compras.</td></tr></tbody></table></div>
+ <div class="table-wrap"><table><thead><tr><th>Produto da lista</th><th>Melhor oferta</th><th>Preço</th><th>Menor preço por unidade</th><th>Preço-alvo (R$)</th></tr></thead><tbody id="intelItens"><tr><td colspan="5">Aguardando lista de compras.</td></tr></tbody></table></div>
  <h2 style="margin-top:18px">Oportunidades e histórico</h2>
  <div id="intelOportunidades" class="empty">As quedas de preço aparecerão aqui quando houver histórico anterior.</div>
  <div id="intelQualidade" class="note" style="margin-top:10px"></div>
@@ -287,7 +288,7 @@ function lerMetasPreco(){try{return JSON.parse(localStorage.getItem(CHAVES_PRECO
 function salvarMetaPreco(item,valor){const metas=lerMetasPreco();if(valor===""||valor===null)delete metas[item];else metas[item]=Number(valor);localStorage.setItem(CHAVES_PRECO_ALVO,JSON.stringify(metas));renderizarInteligenciaPrecos();}
 function analisarEmbalagem(valor){
  const texto=String(valor||"").toLowerCase().replace(/,/g,".");
- const m=texto.match(/(\\d+(?:\\.\\d+)?)\\s*(kg|quilo|quilos|g|gr|gramas?|l|litros?|ml|mililitros?|unidades?|unid|und|\\bun\\b)/i);
+ const m=texto.match(/(\d+(?:\.\d+)?)\s*(kg|quilo|quilos|g|gr|gramas?|l|litros?|ml|mililitros?|unidades?|unid|und|\bun\b)/i);
  if(!m)return null;
  let quantidade=Number(m[1]),un=m[2].toLowerCase(),base="",rotulo="";
  if(["kg","quilo","quilos"].includes(un)){base="kg";rotulo="kg";}
@@ -296,7 +297,7 @@ function analisarEmbalagem(valor){
  else if(un==="ml"||un==="mililitro"||un==="mililitros"){quantidade/=1000;base="L";rotulo="L";}
  else{base="un";rotulo="un.";}
  if(!Number.isFinite(quantidade)||quantidade<=0)return null;
- const multiplo=texto.match(/(\\d+)\\s*[x×]\\s*\\d+(?:\\.\\d+)?\\s*(?:kg|quilo|quilos|g|gr|gramas?|l|litros?|ml)/i);
+ const multiplo=texto.match(/(\d+)\s*[x×]\s*\d+(?:\.\d+)?\s*(?:kg|quilo|quilos|g|gr|gramas?|l|litros?|ml)/i);
  if(multiplo)quantidade*=Number(multiplo[1]);
  return {quantidade,base,rotulo};
 }
@@ -322,7 +323,7 @@ function renderizarInteligenciaPrecos(){
   el("intelEconomia").textContent=misto!==null&&melhorLoja?moeda(Math.max(0,melhorLoja.total-misto)):"—";
   el("intelResumo").textContent="Encontradas "+porItem.filter(p=>p.melhor).length+" de "+lista.length+" categorias da lista. A cesta mista pode exigir visitas a várias lojas; não inclui deslocamento, frete ou disponibilidade em estoque.";
   el("intelLojas").innerHTML=cestas.length?cestas.map(c=>'<tr><td>'+escaparHtmlTabela(c.store)+'</td><td class="price-cell">'+(c.faltam? "Parcial: "+moeda(c.total):moeda(c.total))+'</td><td>'+c.encontrados+"/"+lista.length+(c.faltam?" · faltam "+c.faltam:"")+'</td></tr>').join(""):'<tr><td colspan="3">Nenhuma correspondência confiável para a lista.</td></tr>';
-  el("intelItens").innerHTML=porItem.map(p=>{const o=p.melhor,u=o?precoUnitario(o):null,meta=metas[p.nome]??"";return '<tr><td>'+escaparHtmlTabela(p.nome)+'</td><td>'+(o?escaparHtmlTabela(o.product)+' · '+escaparHtmlTabela(o.store):"Sem correspondência confiável")+'</td><td class="price-cell">'+(o?moeda(Number(o.price)):"—")+'</td><td>'+(u?moeda(u.valor)+"/"+u.unidade:"Embalagem não identificada")+'</td><td><input aria-label="Preço-alvo para '+escaparHtmlTabela(p.nome)+'" class="intel-meta" data-item="'+escaparHtmlTabela(p.nome)+'" type="number" min="0" step="0.01" placeholder="Definir" value="'+(meta===""?"":Number(meta))+'" style="min-width:105px;padding:8px"></td></tr>';}).join("");
+  el("intelItens").innerHTML=porItem.map(p=>{const o=p.melhor,unidades=p.achados.map(x=>({oferta:x,unit:precoUnitario(x)})).filter(x=>x.unit).sort((a,b)=>a.unit.base.localeCompare(b.unit.base)||a.unit.valor-b.unit.valor),unidade=unidades.length?unidades[0]:null,meta=metas[p.nome]??"",alvoAtingido=o&&meta!==""&&Number(o.price)<=Number(meta);return '<tr><td>'+escaparHtmlTabela(p.nome)+(alvoAtingido?' <span class="pill">PREÇO-ALVO ATINGIDO</span>':"")+'</td><td>'+(o?escaparHtmlTabela(o.product)+' · '+escaparHtmlTabela(o.store):"Sem correspondência confiável")+'</td><td class="price-cell">'+(o?moeda(Number(o.price)):"—")+'</td><td>'+(unidade?moeda(unidade.unit.valor)+"/"+unidade.unit.rotulo+" · "+escaparHtmlTabela(unidade.oferta.store):"Embalagem não identificada")+'</td><td><input aria-label="Preço-alvo para '+escaparHtmlTabela(p.nome)+'" class="intel-meta" data-item="'+escaparHtmlTabela(p.nome)+'" type="number" min="0" step="0.01" placeholder="Definir" value="'+(meta===""?"":Number(meta))+'" style="min-width:105px;padding:8px"></td></tr>';}).join("");
   el("intelItens").querySelectorAll(".intel-meta").forEach(input=>input.addEventListener("change",()=>{const v=input.value.trim();if(v!==""&&(!Number.isFinite(Number(v))||Number(v)<0)){input.value="";return;}salvarMetaPreco(input.dataset.item,v);}));
   const quedas=ofertas.filter(o=>Number.isFinite(Number(o.previousPrice))&&Number(o.previousPrice)>Number(o.price)).map(o=>({...o,queda:(Number(o.previousPrice)-Number(o.price))/Number(o.previousPrice)})).sort((a,b)=>b.queda-a.queda).slice(0,8);
   el("intelOportunidades").innerHTML=quedas.length?quedas.map(o=>'<div class="offer"><div class="offer-main"><div class="offer-name">'+escaparHtmlTabela(o.product)+' · '+escaparHtmlTabela(o.store)+'</div><div class="offer-meta">Antes: '+moeda(Number(o.previousPrice))+' · Agora: '+moeda(Number(o.price))+'</div></div><div class="price lowest">↓ '+Math.round(o.queda*100)+'%</div></div>').join(""):'Ainda não há quedas confirmadas no histórico dos itens correspondentes.';
