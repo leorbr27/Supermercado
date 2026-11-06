@@ -353,9 +353,11 @@ function enviarResultadoParaWhatsApp(tipo="todos"){
   return (!termos.length||termos.some(termo=>texto.includes(termo)))
    &&(!lojaSelecionada||o.store===lojaSelecionada)&&ofertaVigente(o);
  });
- // Recalcula o menor preço dentro do conjunto atualmente filtrado. Sem lista de
- // compras, compara ofertas do mesmo produto registrado.
- const chaveItem=o=>normalizarBusca(temLista?o.item:o.product);
+ // Com uma lista de compras, compara o menor preço de cada item solicitado.
+ // Em uma busca livre por palavra-chave (sem lista), compara o conjunto inteiro
+ // de resultados: descrições diferentes não devem transformar cada oferta em
+ // "menor preço" automaticamente.
+ const chaveItem=o=>temLista?normalizarBusca(o.item):"__resultado_da_busca__";
  const menores=new Map();
  visiveis.forEach(o=>{
   const chave=chaveItem(o),preco=Number(o.price);
