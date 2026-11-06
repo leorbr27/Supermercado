@@ -64,12 +64,31 @@ async function save(client,o){
   if(old===null||old!==o.price)await client.query("INSERT INTO public.historico_precos_gemini(oferta_id,preco,origem,observacao) VALUES($1,$2,'api',$3)",[id,o.price,old===null?"Preço registrado/importado":"Preço alterado via API"]);
   return {id,store:o.store,product:o.product,package:o.pack,price:o.price};
 }
-async function edit(idValue,priceValue){
-  const id=Number(idValue),price=money(priceValue);if(!Number.isSafeInteger(id)||id<=0)throw Error("Identificador de oferta inválido.");if(!Number.isFinite(price)||price<0)throw Error("Preço inválido.");
-  const c=await pool.connect();try{await c.query("BEGIN");const q=await c.query("SELECT id,preco FROM public.ofertas_gemini WHERE id=$1 FOR UPDATE",[id]);if(!q.rowCount){await c.query("ROLLBACK");return null;}
-  const old=q.rows[0].preco==null?null:Number(q.rows[0].preco);await c.query("UPDATE public.ofertas_gemini SET preco=$2,registrado_em=NOW() WHERE id=$1",[id,price]);
-  if(old===null||old!==price)await c.query("INSERT INTO public.historico_precos_gemini(oferta_id,preco,origem,observacao) VALUES($1,$2,'api','Preço editado pela interface')",[id,price]);
-  await c.query("COMMIT");return {id,price,previousPrice:old};}catch(e){await c.query("ROLLBACK").catch(()=>{});throw e;}finally{c.release();}
+async function editProduct(idValue,data){
+  const id=Number(idValue);if(!Number.isSafeInteger(id)||id<=0)throw Error("Identificador de oferta inválido.");
+  if(!data||typeof data!=="object"||Array.isArray(data))throw Error("Dados do produto inválidos.");
+  const store=txt(data.store),product=txt(data.product),pack=txt(data.package,"Não informada"),price=money(data.price);
+  const brand=txt(data.brand),variant=txt(data.variant),conditions=txt(data.conditions),source=txt(data.source),validFrom=txt(data.validFrom),validUntil=txt(data.validUntil);
+  if(!store)throw Error("Supermercado ausente.");if(!product)throw Error("Nome do produto ausente.");if(!Number.isFinite(price)||price<0)throw Error("Preço inválido.");
+  const dateOk=v=>!v||(/^\d{4}-\d{2}-\d{2}$/.test(v)&&!Number.isNaN(Date.parse(v+"T00:00:00Z")));
+  if(!dateOk(validFrom)||!dateOk(validUntil))throw Error("Data de início ou validade inválida.");
+  if(validFrom&&validUntil&&validUntil<validFrom)throw Error("A validade não pode ser anterior ao início da oferta.");
+  if(source){let u;try{u=new URL(source);}catch(e){throw Error("Fonte/link inválido.");}if(!["http:","https:"].includes(u.protocol))throw Error("Fonte/link deve usar HTTP ou HTTPS.");}
+  const c=await pool.connect();
+  try{
+    await c.query("BEGIN");
+    const q=await c.query("SELECT id,preco,supermercado,descricao,peso_quantidade,dados_originais,assinatura FROM public.ofertas_gemini WHERE id=$1 FOR UPDATE",[id]);
+    if(!q.rowCount){await c.query("ROLLBACK");return null;}
+    const row=q.rows[0],old=row.preco==null?null:Number(row.preco),oldOriginal=row.dados_originais&&typeof row.dados_originais==="object"&&!Array.isArray(row.dados_originais)?row.dados_originais:{};
+    const identityChanged=String(row.supermercado||"")!==store||String(row.descricao||"")!==product||String(row.peso_quantidade||"")!==pack;
+    const newSignature=identityChanged?signature(store,product,pack):row.assinatura;
+    if(identityChanged){const collision=await c.query("SELECT id FROM public.ofertas_gemini WHERE assinatura=$1 AND id<>$2",[newSignature,id]);if(collision.rowCount)throw Error("Já existe outra oferta com esse supermercado, produto e embalagem. Ajuste os dados para evitar duplicidade.");}
+    const original={...oldOriginal,store,product,brand,package:pack,variant,price,validFrom:validFrom||null,validUntil:validUntil||null,conditions,source};
+    await c.query("UPDATE public.ofertas_gemini SET supermercado=$2,descricao=$3,peso_quantidade=$4,preco=$5,dados_originais=$6::jsonb,assinatura=$7,registrado_em=NOW() WHERE id=$1",[id,store,product,pack,price,JSON.stringify(original),newSignature]);
+    const priceChanged=old===null||old!==price;
+    if(priceChanged)await c.query("INSERT INTO public.historico_precos_gemini(oferta_id,preco,origem,observacao) VALUES($1,$2,'api',$3)",[id,price,old===null?"Preço registrado durante edição completa":"Preço alterado na edição do produto"]);
+    await c.query("COMMIT");return {id,store,product,package:pack,price,previousPrice:old,priceChanged};
+  }catch(e){await c.query("ROLLBACK").catch(()=>{});throw e;}finally{c.release();}
 }
 export default { async fetch(req){
   const origin=req.headers.get("origin")||"";
@@ -88,12 +107,12 @@ export default { async fetch(req){
     }
     if(req.method==="PUT"){
       if(!authorized(req,origin))return reply({error:"Atualização não autorizada."},401,origin);
-      const body=await req.json();if(body?.confirmed!==true)return reply({error:"Confirme a atualização do preço."},400,origin);
-      const result=await edit(body.id,body.price??body.preco);if(!result)return reply({error:"Oferta não encontrada."},404,origin);
+      const body=await req.json();if(body?.confirmed!==true)return reply({error:"Confirme a atualização do produto."},400,origin);
+      const result=await editProduct(body.id,body.product);if(!result)return reply({error:"Oferta não encontrada."},404,origin);
       return reply({success:true,...result},200,origin);
     }
     return reply({error:"Método não permitido."},405,origin);
-  }catch(e){const m=String(e?.message||"Erro interno.");const bad=/Supermercado ausente|Nome do produto ausente|Preço inválido|Oferta \d+:/i.test(m);console.error("[api]",m);return reply({error:bad?m:"Erro interno ao processar a operação."},bad?400:500,origin);}
+  }catch(e){const m=String(e?.message||"Erro interno.");const bad=/Supermercado ausente|Nome do produto ausente|Preço inválido|Data de início ou validade inválida|A validade não pode ser anterior|Fonte\/link inválido|Fonte\/link deve usar|Dados do produto inválidos|Já existe outra oferta|Oferta \d+:/i.test(m);console.error("[api]",m);return reply({error:bad?m:"Erro interno ao processar a operação."},bad?400:500,origin);}
 }};
 
 // Bundled deployment artifact is generated by .github/workflows/build-neon-function.yml.

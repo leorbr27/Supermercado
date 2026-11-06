@@ -25,7 +25,17 @@ td:before{font-size:16px}
 @media(max-width:600px){td:before{font-size:16px}}
 
 /* Tamanho mínimo de texto para novas implementações: 16px. */
-.neon-spinner{display:inline-block;width:18px;height:18px;border:3px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:neon-spin .8s linear infinite;vertical-align:middle;margin-right:8px}@keyframes neon-spin{to{transform:rotate(360deg)}}.trend{display:inline-block;margin-top:5px;font-size:16px;font-weight:750}.trend.down{color:#087443}.trend.up{color:#b42318}.trend.neutral{color:#68778d}.edit-price{font-size:16px}
+.neon-spinner{display:inline-block;width:18px;height:18px;border:3px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:neon-spin .8s linear infinite;vertical-align:middle;margin-right:8px}@keyframes neon-spin{to{transform:rotate(360deg)}}.trend{display:inline-block;margin-top:5px;font-size:16px;font-weight:750}.trend.down{color:#087443}.trend.up{color:#b42318}.trend.neutral{color:#68778d}.edit-product{font-size:16px}
+#editarProdutoDialog{width:min(680px,calc(100% - 24px));max-height:90vh;overflow:auto;border:0;border-radius:16px;padding:20px;box-shadow:0 18px 60px rgba(15,35,65,.28)}
+#editarProdutoDialog::backdrop{background:rgba(15,30,50,.55)}
+#editarProdutoDialog h2{margin:0 0 14px}
+#editarProdutoDialog .edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#editarProdutoDialog label{margin:0}
+#editarProdutoDialog input{margin-top:5px}
+#editarProdutoDialog .wide{grid-column:1/-1}
+#editarProdutoDialog .dialog-actions{display:flex;gap:8px;margin-top:16px}
+#editarProdutoDialog .dialog-actions button{flex:1}
+@media(max-width:520px){#editarProdutoDialog{padding:15px}#editarProdutoDialog .edit-grid{grid-template-columns:1fr}#editarProdutoDialog .wide{grid-column:auto}}
 .table-controls input,.table-controls select{font-size:16px}
 @media(max-width:600px){#painelInteligencia .fields{grid-template-columns:1fr!important}}
 </style>
@@ -113,6 +123,27 @@ Use este formato:
  <div id="intelQualidade" class="note" style="margin-top:10px"></div>
 </section>
 </main>
+<dialog id="editarProdutoDialog" aria-labelledby="tituloEditarProduto">
+ <form id="formEditarProduto">
+  <h2 id="tituloEditarProduto">Editar produto</h2>
+  <p class="note">Altere os dados da oferta. A mudança de preço será registrada no histórico.</p>
+  <input type="hidden" name="id">
+  <div class="edit-grid">
+   <label class="wide">Nome do produto<input name="product" required maxlength="240"></label>
+   <label>Supermercado<input name="store" required maxlength="160"></label>
+   <label>Marca<input name="brand" maxlength="160"></label>
+   <label>Peso / quantidade<input name="package" maxlength="120" placeholder="Ex.: 500 g, 1 kg, 12 un."></label>
+   <label>Variação<input name="variant" maxlength="160" placeholder="Ex.: tradicional, sem açúcar"></label>
+   <label>Preço (R$)<input name="price" type="number" min="0" step="0.01" required></label>
+   <label>Início da oferta<input name="validFrom" type="date"></label>
+   <label>Validade da oferta<input name="validUntil" type="date"></label>
+   <label class="wide">Condições da oferta<input name="conditions" maxlength="500" placeholder="Ex.: clube, limite por CPF, pagamento no Pix"></label>
+   <label class="wide">Fonte / link<input name="source" type="url" maxlength="1000" placeholder="https://..."></label>
+  </div>
+  <div id="statusEditarProduto" class="status" role="status" aria-live="polite"></div>
+  <div class="dialog-actions"><button type="button" class="secondary" id="cancelarEditarProduto">Cancelar</button><button type="submit" class="primary" id="salvarEditarProduto">Salvar produto</button></div>
+ </form>
+</dialog>
 <script>
 const CIDADES = "Vitória Vila Velha Serra Cariacica Espírito Santo";
 let produtos = [];
@@ -220,7 +251,7 @@ async function carregarPrecosRegistrados(force=false){
   if(status)status.textContent="Carregando ofertas do banco de dados…";
   if(erro)erro.classList.add("hidden");
   precosRegistradosPromise=fetch(NEON_API+"?"+new URLSearchParams({ordenar:"recentes"}),{cache:"no-store",signal:AbortSignal.timeout(15000)})
-   .then(async res=>{if(!res.ok)throw new Error("A API respondeu HTTP "+res.status+".");const data=await res.json();if(!Array.isArray(data))throw new Error("A API retornou um formato inesperado.");return data.map(o=>{const original=o.dados_originais&&typeof o.dados_originais==="object"?o.dados_originais:{};return {id:o.id,store:o.supermercado||"Supermercado não identificado",product:o.descricao||"",brand:"",variant:"",package:o.peso_quantidade||"",price:o.preco,recordedAt:o.registrado_em||null,previousPrice:o.preco_anterior,original,validFrom:o.valid_from||o.validFrom||o.data_inicio||o.inicio_vigencia||original.valid_from||original.validFrom||original.data_inicio||original.inicio_vigencia||original.validade_inicio||null,validUntil:o.valid_until||o.validUntil||o.data_fim||o.fim_vigencia||o.validade||original.valid_until||original.validUntil||original.data_fim||original.fim_vigencia||original.validade||original.validade_fim||null};});})
+   .then(async res=>{if(!res.ok)throw new Error("A API respondeu HTTP "+res.status+".");const data=await res.json();if(!Array.isArray(data))throw new Error("A API retornou um formato inesperado.");return data.map(o=>{const original=o.dados_originais&&typeof o.dados_originais==="object"?o.dados_originais:{};return {id:o.id,store:o.supermercado||"Supermercado não identificado",product:o.descricao||"",brand:original.brand||original.marca||"",variant:original.variant||original.variacao||original.variação||"",package:o.peso_quantidade||original.package||original.peso_quantidade||"",price:o.preco,recordedAt:o.registrado_em||null,previousPrice:o.preco_anterior,original,conditions:original.conditions||original.condicoes||original.condições||"",source:original.source||original.fonte||original.link||original.url||"",validFrom:o.valid_from||o.validFrom||o.data_inicio||o.inicio_vigencia||original.valid_from||original.validFrom||original.data_inicio||original.inicio_vigencia||original.validade_inicio||null,validUntil:o.valid_until||o.validUntil||o.data_fim||o.fim_vigencia||o.validade||original.valid_until||original.validUntil||original.data_fim||original.fim_vigencia||original.validade||original.validade_fim||null};});})
    .then(lista=>{precosRegistrados=lista;return lista;})
    .catch(err=>{console.error("[Supermercado] Falha ao carregar ofertas do Neon:",err);precosRegistradosPromise=null;precosRegistrados=[];const erro=document.getElementById("erroNeon");const msg=document.getElementById("erroNeonTexto");if(erro)erro.classList.remove("hidden");if(msg)msg.textContent=(err&&err.name==="TimeoutError"?"A API do Neon não respondeu em 15 segundos.":err&&err.name==="AbortError"?"A consulta à API do Neon foi cancelada por exceder o tempo limite.":err&&err.message?err.message:"Erro de conexão.")+" Verifique a conexão, o CORS e se a função Neon está disponível; depois tente novamente.";throw err;});
  }
@@ -378,25 +409,41 @@ function renderizarTabelaRegistrados(){
  if(!precosRegistrados.length){corpo.innerHTML='<tr><td colspan="6">Nenhuma oferta registrada no Neon.</td></tr>';}
  else if(!lista.length){corpo.innerHTML='<tr><td colspan="6">Nenhuma oferta encontrada com esses filtros.</td></tr>';}
  else{
-  corpo.innerHTML=lista.map(o=>{const trend=indicadorTendencia(o);const when=o.recordedAt?new Date(o.recordedAt).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"—";return '<tr'+(temLista&&o.menorPreco?' class="lowest-match-row"':'')+'><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+(temLista&&o.menorPreco?' <span class="pill">MENOR PREÇO</span>':'')+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'<div>'+trend+'</div></td><td data-label="Correspondência">'+(temLista?(o.score>=.8?"Alta":o.score>=.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)':"Oferta salva no Neon")+'<div class="offer-meta">Atualizado: '+escaparHtmlTabela(when)+'</div><button type="button" class="secondary edit-price" data-id="'+Number(o.id)+'" style="margin-top:6px">Editar preço</button></td></tr>';}).join("");
-  corpo.querySelectorAll(".edit-price").forEach(btn=>btn.addEventListener("click",()=>editarPrecoNeon(Number(btn.dataset.id))));
+  corpo.innerHTML=lista.map(o=>{const trend=indicadorTendencia(o);const when=o.recordedAt?new Date(o.recordedAt).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"—";return '<tr'+(temLista&&o.menorPreco?' class="lowest-match-row"':'')+'><td data-label="Na sua lista">'+escaparHtmlTabela(o.item)+'</td><td data-label="Produto registrado">'+escaparHtmlTabela(o.product)+(temLista&&o.menorPreco?' <span class="pill">MENOR PREÇO</span>':'')+'</td><td data-label="Supermercado">'+escaparHtmlTabela(o.store)+'</td><td data-label="Peso / quantidade">'+escaparHtmlTabela(o.package||"—")+'</td><td data-label="Preço" class="price-cell">'+moeda(Number(o.price))+'<div>'+trend+'</div></td><td data-label="Correspondência">'+(temLista?(o.score>=.8?"Alta":o.score>=.55?"Boa":"Possível")+' ('+Math.round(o.score*100)+'%)':"Oferta salva no Neon")+'<div class="offer-meta">Atualizado: '+escaparHtmlTabela(when)+'</div><button type="button" class="secondary edit-product" data-id="'+Number(o.id)+'" style="margin-top:6px">Editar produto</button></td></tr>';}).join("");
+  corpo.querySelectorAll(".edit-product").forEach(btn=>btn.addEventListener("click",()=>abrirEdicaoProduto(Number(btn.dataset.id))));
  }
  document.getElementById("statusTabela").textContent=temLista?lista.length+" correspondência(s) exibida(s) para "+produtos.length+" item(ns) da lista.":lista.length+" oferta(s) carregada(s) do Neon.";renderizarInteligenciaPrecos();
 }
 function obterTokenEscrita(){let token=sessionStorage.getItem("supermercado_admin_token");if(!token){token=prompt("Informe o token administrativo do Neon para autorizar gravações e edições:");if(!token)return null;token=token.trim();if(!token)return null;sessionStorage.setItem("supermercado_admin_token",token);}return token;}
-async function editarPrecoNeon(id){
+function dataCampo(valor){const texto=String(valor||"").trim();if(!texto)return "";if(/^\d{4}-\d{2}-\d{2}$/.test(texto))return texto;const br=texto.match(/^(\d{2})\/(\d{2})\/(\d{4})/);return br?br[3]+"-"+br[2]+"-"+br[1]:"";}
+function abrirEdicaoProduto(id){
  const oferta=precosRegistrados.find(o=>Number(o.id)===id);if(!oferta)return;
- const informado=prompt("Informe o novo preço para "+oferta.product+" (R$):",String(oferta.price));if(informado===null)return;
- const valor=Number(informado.replace(",", "."));if(!Number.isFinite(valor)||valor<0){alert("Informe um preço válido.");return;}
-
- const token=obterTokenEscrita();if(!token)return;
- try{
-  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id,price:valor,confirmed:true})});
-  const body=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
-  await carregarPrecosRegistrados(true);alert("Preço atualizado e enviado ao histórico.");
- }catch(e){alert("Não foi possível atualizar o preço. "+(e.message||"Verifique o token e a conexão."));}
+ const form=document.getElementById("formEditarProduto");
+ form.elements.id.value=String(id);form.elements.product.value=oferta.product||"";form.elements.store.value=oferta.store||"";
+ form.elements.brand.value=oferta.brand||"";form.elements.package.value=oferta.package||"";form.elements.variant.value=oferta.variant||"";
+ form.elements.price.value=String(oferta.price??"");form.elements.validFrom.value=dataCampo(oferta.validFrom);form.elements.validUntil.value=dataCampo(oferta.validUntil);
+ form.elements.conditions.value=oferta.conditions||"";form.elements.source.value=oferta.source||"";
+ document.getElementById("statusEditarProduto").textContent="";document.getElementById("editarProdutoDialog").showModal();
 }
+document.getElementById("cancelarEditarProduto").addEventListener("click",()=>document.getElementById("editarProdutoDialog").close());
+document.getElementById("formEditarProduto").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const form=event.currentTarget,status=document.getElementById("statusEditarProduto"),botao=document.getElementById("salvarEditarProduto");
+ const dados=Object.fromEntries(new FormData(form).entries()),preco=converterPreco(dados.price);
+ if(!dados.product.trim()||!dados.store.trim()||!Number.isFinite(preco)||preco<0){status.textContent="Informe nome, supermercado e um preço válido.";return;}
+ if(dados.validFrom&&dados.validUntil&&dados.validUntil<dados.validFrom){status.textContent="A validade não pode ser anterior ao início da oferta.";return;}
+ if(dados.source){try{const u=new URL(dados.source);if(!["http:","https:"].includes(u.protocol))throw new Error();}catch(e){status.textContent="Informe um link válido iniciado por https:// ou http://.";return;}}
+ const token=obterTokenEscrita();if(!token)return;
+ botao.disabled=true;botao.textContent="Salvando…";status.textContent="Atualizando oferta no Neon…";
+ try{
+  const produto={product:dados.product.trim(),store:dados.store.trim(),brand:dados.brand.trim(),package:dados.package.trim(),variant:dados.variant.trim(),price:preco,validFrom:dados.validFrom,validUntil:dados.validUntil,conditions:dados.conditions.trim(),source:dados.source.trim()};
+  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id:Number(dados.id),product:produto,confirmed:true})});
+  const body=await res.json().catch(()=>({}));if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
+  await carregarPrecosRegistrados(true);document.getElementById("editarProdutoDialog").close();
+  alert("Produto atualizado com sucesso."+(body.priceChanged?" O novo preço foi registrado no histórico.":""));
+ }catch(e){status.textContent="Não foi possível salvar: "+(e.message||"verifique o token e a conexão.");}
+ finally{botao.disabled=false;botao.textContent="Salvar produto";}
+});
 
 function converterPreco(valor){
  if(typeof valor==="number")return valor;
