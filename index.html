@@ -470,14 +470,19 @@ function renderizarPrecosRegistrados(){
    const nome=normalizarBusca(o.product||"");
    return nome && (nome===termo || nome.includes(termo) || termo.includes(nome));
   }).filter(ofertaVigente).filter(o=>o.price!==null && o.price!==undefined && o.price!=="" && Number.isFinite(Number(o.price)) && Number(o.price)>=0)
-    .sort((a,b)=>Number(a.price)-Number(b.price));
+    // Prioriza os registros mais recentes; ofertas sem data ficam no final.
+    .sort((a,b)=>{
+     const dataA=Date.parse(a.recordedAt||"")||0;
+     const dataB=Date.parse(b.recordedAt||"")||0;
+     return dataB-dataA;
+    });
   root.innerHTML="";
   if(!encontrados.length){
    root.textContent="Nenhuma oferta registrada para este produto.";
    return;
   }
   const hoje=new Date();hoje.setHours(0,0,0,0);
-  encontrados.forEach((o,index)=>{
+  const linhas=encontrados.map((o,index)=>{
    const vencida=!!o.validUntil && new Date(String(o.validUntil).slice(0,10)+"T00:00:00")<hoje;
    const row=document.createElement("div");row.className="offer";
    const main=document.createElement("div");main.className="offer-main";
@@ -494,16 +499,26 @@ function renderizarPrecosRegistrados(){
     try{const u=new URL(o.source);if(["http:","https:"].includes(u.protocol)){const a=document.createElement("a");a.href=u.href;a.target="_blank";a.rel="noopener noreferrer";a.className="note";a.textContent="Abrir fonte";meta.appendChild(document.createTextNode(" · "));meta.appendChild(a)}}catch(e){}
    }
    const preco=document.createElement("div");preco.className="price";preco.textContent=moeda(Number(o.price));
-   if(index===0&&!vencida)preco.classList.add("lowest");
-   if(vencida){nome.textContent+=" · OFERTA VENCIDA";preco.classList.remove("lowest");}
-   main.appendChild(nome);main.appendChild(meta);row.appendChild(main);row.appendChild(preco);root.appendChild(row);
+   main.appendChild(nome);main.appendChild(meta);row.appendChild(main);row.appendChild(preco);
+   return row;
   });
+  let expandida=false;
+  const exibirLinhas=()=>{
+   linhas.forEach((linha,index)=>{linha.classList.toggle("hidden",!expandida&&index>=2);});
+  };
+  linhas.forEach(linha=>root.appendChild(linha));
+  if(encontrados.length>2){
+   const botao=document.createElement("button");botao.type="button";botao.className="secondary";botao.style.width="100%";botao.style.marginTop="8px";
+   botao.setAttribute("aria-expanded","false");
+   const atualizarBotao=()=>{botao.textContent=expandida?"Recolher lista":"Ver todas as "+encontrados.length+" ofertas";botao.setAttribute("aria-expanded",String(expandida));};
+   botao.addEventListener("click",()=>{expandida=!expandida;exibirLinhas();atualizarBotao();});
+   root.appendChild(botao);atualizarBotao();exibirLinhas();
+  }
   const nota=document.createElement("div");nota.className="note";nota.style.marginTop="8px";
-  nota.textContent="Ordenado pelo menor preço registrado. Confira se embalagem e condições são equivalentes; preços de encartes não garantem disponibilidade atual.";
+  nota.textContent="Exibindo primeiro os registros mais recentes. Confira se embalagem e condições são equivalentes; preços de encartes não garantem disponibilidade atual.";
   root.appendChild(nota);
  });
 }
-
 async function pesquisarPrecosAutomaticamente(lista){
  const status=document.getElementById("mensagemColagem");
  try{
