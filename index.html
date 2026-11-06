@@ -291,13 +291,15 @@ function renderizarTabelaRegistrados(){
  }
  document.getElementById("statusTabela").textContent=temLista?lista.length+" correspondência(s) exibida(s) para "+produtos.length+" item(ns) da lista.":lista.length+" oferta(s) carregada(s) do Neon.";
 }
+function obterTokenEscrita(){let token=sessionStorage.getItem("supermercado_admin_token");if(!token){token=prompt("Informe o token administrativo do Neon para autorizar gravações e edições:");if(!token)return null;token=token.trim();if(!token)return null;sessionStorage.setItem("supermercado_admin_token",token);}return token;}
 async function editarPrecoNeon(id){
  const oferta=precosRegistrados.find(o=>Number(o.id)===id);if(!oferta)return;
  const informado=prompt("Informe o novo preço para "+oferta.product+" (R$):",String(oferta.price));if(informado===null)return;
  const valor=Number(informado.replace(",", "."));if(!Number.isFinite(valor)||valor<0){alert("Informe um preço válido.");return;}
 
+ const token=obterTokenEscrita();if(!token)return;
  try{
-  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,price:valor,confirmed:true})});
+  const res=await fetch(NEON_API,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({id,price:valor,confirmed:true})});
   const body=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error(body.error||("A API respondeu HTTP "+res.status+"."));
   await carregarPrecosRegistrados(true);alert("Preço atualizado e enviado ao histórico.");
@@ -318,6 +320,7 @@ async function importarOfertasNeon(){
  let dados;try{dados=JSON.parse(campo.value);}catch(e){status.textContent="JSON inválido. Confira as aspas, vírgulas e colchetes.";return;}
  const lista=Array.isArray(dados)?dados:(Array.isArray(dados.offers)?dados.offers:null);
  if(!lista||!lista.length){status.textContent="Informe um array JSON com pelo menos uma oferta.";return;}
+ const token=obterTokenEscrita();if(!token){status.textContent="Importação cancelada: token administrativo não informado.";return;}
  let ok=0,erros=0,detalhesErros=[];
  for(let i=0;i<lista.length;i++){
   const o=lista[i]||{},store=String(o.store??o.supermercado??"").trim(),product=String(o.product??o.descricao??o.produto??"").trim(),pack=String(o.package??o.peso_quantidade??o.embalagem??"").trim(),price=converterPreco(o.price??o.preco);
@@ -325,7 +328,7 @@ async function importarOfertasNeon(){
   const signature=String(o.signature??o.assinatura??[store,product,pack].map(v=>normalizarBusca(v)).join("|")).slice(0,200);
   status.textContent="Gravando oferta "+(i+1)+" de "+lista.length+" no Neon…";
   try{
-   const res=await fetch(NEON_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({store,product,package:pack,price,signature,dados_originais:o})});
+   const res=await fetch(NEON_API,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({store,product,package:pack,price,signature,dados_originais:o})});
    const resposta=await res.json().catch(()=>({}));
    if(!res.ok)throw new Error(resposta.error||("HTTP "+res.status));
    ok++;
