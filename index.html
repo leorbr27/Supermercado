@@ -353,7 +353,7 @@ function gerarCorrespondencias(){
   // Ofertas sem unidade interpretável só competem entre embalagens idênticas.
   const grupos=new Map();
   candidatos.forEach(o=>{
-   const chave=o.unit?"unidade:"+o.unit.unidade:"embalagem:"+o.packageKey;
+   const chave=o.unit?"unidade:"+o.unit.unidade:o.packageKey?"embalagem:"+o.packageKey:"sem-embalagem:"+o.id;
    if(!grupos.has(chave))grupos.set(chave,[]);
    grupos.get(chave).push(o);
   });
