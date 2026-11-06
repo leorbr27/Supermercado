@@ -1,0 +1,66 @@
+name: Temporary end-to-end test - edit complete product
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/test-editar-produto-temporario.yml
+jobs:
+  test-edit-product:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create an isolated offer and edit every field through the Neon API
+        env:
+          API_URL: https://br-cool-salad-b4x2110y-geminiofertas.compute.c-6.us-east-2.aws.neon.tech/
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 30 -X POST "$API_URL" \
+            -H 'Origin: https://leorbr27.github.io' \
+            -H 'Content-Type: application/json' \
+            --data-binary '{
+              "store":"TESTE E2E",
+              "product":"Produto teste edição completa",
+              "brand":"Marca original",
+              "package":"123 g",
+              "variant":"Tradicional",
+              "price":12.34,
+              "validFrom":"2026-11-01",
+              "validUntil":"2026-11-30",
+              "conditions":"Oferta temporária",
+              "source":"https://example.com/oferta-original",
+              "signature":"e2e-editar-produto-20261106"
+            }' > /tmp/create.json
+          id=$(jq -er '.offers[0].id' /tmp/create.json)
+          echo "TEST_OFFER_ID=$id"
+          curl -fsS --max-time 30 -X PUT "$API_URL" \
+            -H 'Origin: https://leorbr27.github.io' \
+            -H 'Content-Type: application/json' \
+            --data-binary "$(jq -cn --argjson id "$id" '{
+              id:$id,confirmed:true,product:{
+                product:"Produto teste editado",
+                store:"TESTE E2E EDITADO",
+                brand:"Marca atualizada",
+                package:"456 g",
+                variant:"Sem açúcar",
+                price:15.67,
+                validFrom:"2026-11-02",
+                validUntil:"2026-11-29",
+                conditions:"Somente no clube",
+                source:"https://example.com/oferta-atualizada"
+              }
+            }')" > /tmp/update.json
+          jq -e '.success == true and .priceChanged == true and .price == 15.67' /tmp/update.json >/dev/null
+          curl -fsS --max-time 30 "$API_URL" -H 'Origin: https://leorbr27.github.io' > /tmp/offers.json
+          jq -e --argjson id "$id" '
+            any(.[]; .id == $id
+              and .supermercado == "TESTE E2E EDITADO"
+              and .descricao == "Produto teste editado"
+              and .peso_quantidade == "456 g"
+              and .preco == 15.67
+              and .dados_originais.brand == "Marca atualizada"
+              and .dados_originais.variant == "Sem açúcar"
+              and .dados_originais.validFrom == "2026-11-02"
+              and .dados_originais.validUntil == "2026-11-29"
+              and .dados_originais.conditions == "Somente no clube"
+              and .dados_originais.source == "https://example.com/oferta-atualizada")
+          ' /tmp/offers.json >/dev/null
+          echo "E2E edit complete product: PASS (offer id $id)"
