@@ -76,7 +76,7 @@ export default { async fetch(req){
   if(req.method==="OPTIONS"){if(!ORIGINS.has(origin))return reply({error:"Origem não permitida."},403,origin);return new Response(null,{status:204,headers:{"Access-Control-Allow-Origin":origin,"Access-Control-Allow-Methods":"GET, POST, PUT, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Max-Age":"86400","Vary":"Origin"}});}
   try{
     if(req.method==="GET"){
-      const q=await pool.query("SELECT o.id,o.supermercado,o.descricao,o.peso_quantidade,o.preco,o.dados_originais,o.assinatura,o.registrado_em,(SELECT h.preco FROM public.historico_precos_gemini h WHERE h.oferta_id=o.id ORDER BY h.registrado_em DESC,h.id DESC OFFSET 1 LIMIT 1) AS preco_anterior FROM public.ofertas_gemini o ORDER BY o.registrado_em DESC,o.id DESC");
+      const q=await pool.query("SELECT o.id,o.supermercado,o.descricao,o.peso_quantidade,o.preco,o.dados_originais,o.assinatura,o.registrado_em,(SELECT h.preco FROM public.historico_precos_gemini h WHERE h.oferta_id=o.id ORDER BY h.registrado_em DESC,h.id DESC OFFSET 1 LIMIT 1) AS preco_anterior FROM public.ofertas_gemini o WHERE o.registrado_em >= NOW() - INTERVAL '7 days' ORDER BY o.registrado_em DESC,o.id DESC");
       return reply(q.rows,200,origin);
     }
     if(req.method==="POST"){
