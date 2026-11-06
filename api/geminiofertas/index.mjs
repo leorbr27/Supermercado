@@ -47,7 +47,8 @@ export default {
                      AND h.registrado_em < o.registrado_em
                    ORDER BY h.registrado_em DESC LIMIT 1) AS preco_anterior
             FROM public.ofertas_gemini o
-           WHERE (${store}::text IS NULL OR o.supermercado ILIKE '%' || ${store} || '%')
+           WHERE o.registrado_em >= NOW() - INTERVAL '7 days'
+             AND (${store}::text IS NULL OR o.supermercado ILIKE '%' || ${store} || '%')
              AND (${min}::numeric IS NULL OR o.preco >= ${min})
              AND (${max}::numeric IS NULL OR o.preco <= ${max})
              AND (${after}::timestamptz IS NULL OR o.registrado_em >= ${after})
