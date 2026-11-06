@@ -339,20 +339,43 @@ async function importarOfertasNeon(){
 }
 
 function enviarResultadoParaWhatsApp(tipo="todos"){
- const linhas=[...document.querySelectorAll("#corpoTabela tr")].map(tr=>[...tr.querySelectorAll("td")].map(td=>td.innerText.trim()));
- const grupos=new Map();
- linhas.forEach(c=>{
-  if(c.length<6||!c[2]||c[2]==="Supermercado"||c[2].includes("Nenhum produto encontrado")||c[2].includes("Não foi possível"))return;
-  const loja=c[2], produto=c[1].replace(/\s*MENOR PREÇO\s*/g,"").trim(), peso=c[3], preco=c[4], correspondencia=c[5];
-  const menorPreco=c[1].includes("MENOR PREÇO");
-  if(tipo==="menor"&&!menorPreco)return;
-  if(!grupos.has(loja))grupos.set(loja,[]);
-  const detalhes=[produto,peso&&peso!=="—"?peso:"",preco,correspondencia&&correspondencia!=="Aguardando comparação"?correspondencia:""].filter(Boolean);
-  const item="- "+(c[0]&&c[0]!=="—"?c[0]+" → ":"")+detalhes.join(" | ");
-  grupos.get(loja).push(tipo==="todos"&&menorPreco?"*"+item+"*":item);
+ // Usa os dados da comparação, não o texto renderizado na tabela (innerText),
+ // que pode não expor o selo "MENOR PREÇO" de forma consistente em alguns navegadores.
+ const termos=document.getElementById("filtroTabela").value.split(/\r?\n/).map(normalizarBusca).filter(Boolean);
+ const lojaSelecionada=document.getElementById("filtroSupermercado").value;
+ const temLista=produtos.length>0;
+ const linhas=temLista
+  ?gerarCorrespondencias()
+  :precosRegistrados.filter(o=>o.product&&o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0).map(o=>({...o,item:o.product,score:null}));
+ const visiveis=linhas.filter(o=>{
+  const texto=normalizarBusca([o.item,o.store,o.product,o.package].join(" "));
+  return (!termos.length||termos.some(termo=>texto.includes(termo)))
+   &&(!lojaSelecionada||o.store===lojaSelecionada)&&ofertaVigente(o);
  });
- if(!grupos.size){alert("Não há resultados para enviar. Prepare sua lista e confira as correspondências.");return;}
- const secoes=[...grupos.entries()].map(([loja,items])=>"*"+loja+"*\n"+items.join("\n"));
+ // Recalcula o menor preço dentro do conjunto atualmente filtrado. Sem lista de
+ // compras, compara ofertas do mesmo produto registrado.
+ const chaveItem=o=>normalizarBusca(temLista?o.item:o.product);
+ const menores=new Map();
+ visiveis.forEach(o=>{
+  const chave=chaveItem(o),preco=Number(o.price);
+  if(!menores.has(chave)||preco<menores.get(chave))menores.set(chave,preco);
+ });
+ const selecionadas=visiveis.filter(o=>Number(o.price)===menores.get(chaveItem(o)));
+ const dados=tipo==="menor"?selecionadas:visiveis;
+ const grupos=new Map();
+ dados.forEach(o=>{
+  const nomeLoja=o.store||"Supermercado não identificado";
+  if(!grupos.has(nomeLoja))grupos.set(nomeLoja,[]);
+  const menorPreco=Number(o.price)===menores.get(chaveItem(o));
+  const produto=String(o.product||"").trim();
+  const peso=String(o.package||"").trim();
+  const preco=moeda(Number(o.price));
+  const correspondencia=temLista?(o.score>=.8?"Alta":o.score>=.55?"Boa":"Possível")+" ("+Math.round(o.score*100)+"%)":"Oferta registrada";
+  const item="- "+(temLista&&o.item?o.item+" → ":"")+[produto,peso&&peso!=="—"?peso:"",preco,correspondencia].filter(Boolean).join(" | ");
+  grupos.get(nomeLoja).push(tipo==="todos"&&menorPreco?"*"+item+"*":item);
+ });
+ if(!grupos.size){alert("Não há resultados para enviar. Confira se as ofertas foram carregadas e, se desejar comparar sua lista, toque em “Preparar comparação”.");return;}
+ const secoes=[...grupos.entries()].map(([nomeLoja,items])=>"*"+nomeLoja+"*\n"+items.join("\n"));
  const titulo=tipo==="menor"?"*Pesquisa de preços — menor preço*":"*Pesquisa de preços — todos os preços*";
  const mensagem=titulo+"\n\n"+secoes.join("\n\n\n");
  const url="https://api.whatsapp.com/send?text="+encodeURIComponent(mensagem);
