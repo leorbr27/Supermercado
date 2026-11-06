@@ -5366,10 +5366,79 @@ var TypeOverrides = import_lib.default.TypeOverrides;
 var defaults = import_lib.default.defaults;
 var esm_default = import_lib.default;
 
+// api/neon-function/node_modules/@neon/functions/dist/lib/attach-database-pool.js
+var IDLE_DISCONNECT_CODES = /* @__PURE__ */ new Set([
+  "ECONNRESET",
+  "EPIPE",
+  "ETIMEDOUT",
+  "57P01"
+]);
+var attached = /* @__PURE__ */ new WeakSet();
+var UNEXPECTED_POOL_ERROR = "attachDatabasePool: unexpected database pool error";
+var REPORTER_THREW = "attachDatabasePool: onUnexpectedError threw";
+var ALREADY_ATTACHED = "attachDatabasePool() was already called for this pool; this onUnexpectedError is ignored. Pass it on the first call.";
+function isDatabasePool(value) {
+  return typeof value === "object" && value !== null && "on" in value && typeof value.on === "function";
+}
+function isIdleDisconnect(err) {
+  const code = "code" in err && typeof err.code === "string" ? err.code : void 0;
+  return code !== void 0 && IDLE_DISCONNECT_CODES.has(code) || err.message === "Connection terminated unexpectedly";
+}
+function describeValue(value) {
+  if (value === null) return "null";
+  return typeof value;
+}
+function isPromise(value) {
+  return typeof value === "object" && value !== null && "then" in value && typeof value.then === "function";
+}
+function requireDatabasePool(pool2) {
+  if (isDatabasePool(pool2)) return pool2;
+  if (typeof pool2 === "object" && pool2 !== null) throw new TypeError("attachDatabasePool() requires a node-postgres Pool with an on() method, got an object without one");
+  throw new TypeError(`attachDatabasePool() requires a node-postgres Pool, got ${describeValue(pool2)}`);
+}
+function resolveOnUnexpectedError(options) {
+  if (options === void 0) return;
+  if (typeof options !== "object" || options === null) throw new TypeError(`attachDatabasePool() options must be an object, got ${describeValue(options)}`);
+  if (!("onUnexpectedError" in options) || options.onUnexpectedError === void 0) return;
+  const handler = options.onUnexpectedError;
+  if (typeof handler !== "function") throw new TypeError(`attachDatabasePool() onUnexpectedError must be a function, got ${typeof handler}`);
+  return (err) => handler(err);
+}
+function reportUnexpectedError(err, onUnexpectedError) {
+  if (!onUnexpectedError) {
+    console.error(UNEXPECTED_POOL_ERROR, err);
+    return;
+  }
+  try {
+    const result = onUnexpectedError(err);
+    if (isPromise(result)) result.catch((reporterError) => {
+      console.error(UNEXPECTED_POOL_ERROR, err);
+      console.error(REPORTER_THREW, reporterError);
+    });
+  } catch (reporterError) {
+    console.error(UNEXPECTED_POOL_ERROR, err);
+    console.error(REPORTER_THREW, reporterError);
+  }
+}
+function attachDatabasePool(pool2, options) {
+  const databasePool = requireDatabasePool(pool2);
+  const onUnexpectedError = resolveOnUnexpectedError(options);
+  if (attached.has(databasePool)) {
+    if (onUnexpectedError) console.warn(ALREADY_ATTACHED);
+    return;
+  }
+  databasePool.on("error", (err) => {
+    if (isIdleDisconnect(err)) return;
+    reportUnexpectedError(err, onUnexpectedError);
+  });
+  attached.add(databasePool);
+}
+
 // api/neon-function/index.mjs
 var import_node_crypto = require("node:crypto");
 var { Pool: Pool2 } = esm_default;
 var pool = new Pool2({ connectionString: process.env.DATABASE_URL, max: 5 });
+attachDatabasePool(pool);
 pool.on("error", (e) => console.error("[db]", e?.message || "pool error"));
 var ORIGINS = /* @__PURE__ */ new Set(["https://leorbr27.github.io", "http://localhost:8000", "http://127.0.0.1:8000"]);
 function reply(body, status = 200, origin = "") {
