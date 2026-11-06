@@ -1,7 +1,9 @@
 import pg from "pg";
+import { attachDatabasePool } from "@neon/functions";
 import { timingSafeEqual } from "node:crypto";
 const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+attachDatabasePool(pool);
 pool.on("error", e => console.error("[db]", e?.message || "pool error"));
 const ORIGINS = new Set(["https://leorbr27.github.io", "http://localhost:8000", "http://127.0.0.1:8000"]);
 function reply(body, status=200, origin="") {

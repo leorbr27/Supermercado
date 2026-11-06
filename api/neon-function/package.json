@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "@neon/functions": "^0.11.0"
   },
   "devDependencies": {
     "esbuild": "^0.25.0"
