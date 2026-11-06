@@ -275,7 +275,7 @@ function gerarCorrespondencias(){
  const linhas=[];produtos.forEach(p=>{const candidatos=precosRegistrados.filter(o=>o.price!==null&&o.price!==undefined&&o.price!==""&&Number.isFinite(Number(o.price))&&Number(o.price)>=0).map(o=>({...o,score:pontuarCorrespondencia(p.nome,o.product)})).filter(o=>o.score>=.30);candidatos.sort((a,b)=>Number(a.price)-Number(b.price)||b.score-a.score);if(candidatos.length){const menorPreco=Number(candidatos[0].price);candidatos.forEach(o=>linhas.push({item:p.nome,...o,menorPreco:Number(o.price)===menorPreco}));}});return linhas;
 }
 function dataValidadeISO(valor){if(!valor)return "";const texto=String(valor).trim();const iso=texto.match(/^(\d{4})-(\d{2})-(\d{2})/);if(iso)return iso[1]+"-"+iso[2]+"-"+iso[3];const br=texto.match(/^(\d{2})\/(\d{2})\/(\d{4})/);if(br)return br[3]+"-"+br[2]+"-"+br[1];return "";}
-function ofertaVigente(o){const hoje=new Date();hoje.setHours(0,0,0,0);const hojeISO=hoje.getFullYear()+"-"+String(hoje.getMonth()+1).padStart(2,"0")+"-"+String(hoje.getDate()).padStart(2,"0");const inicio=dataValidadeISO(o.validFrom),fim=dataValidadeISO(o.validUntil);if(inicio&&inicio>hojeISO)return false;if(fim&&fim<hojeISO)return false;return true;}
+function ofertaVigente(o){const registrado=o.recordedAt?new Date(o.recordedAt).getTime():NaN;const agora=Date.now();const limite=7*24*60*60*1000;if(!Number.isFinite(registrado)||agora-registrado>limite)return false;const hoje=new Date();hoje.setHours(0,0,0,0);const hojeISO=hoje.getFullYear()+"-"+String(hoje.getMonth()+1).padStart(2,"0")+"-"+String(hoje.getDate()).padStart(2,"0");const inicio=dataValidadeISO(o.validFrom),fim=dataValidadeISO(o.validUntil);if(inicio&&inicio>hojeISO)return false;if(fim&&fim<hojeISO)return false;return true;}
 
 function renderizarTabelaRegistrados(){
  const corpo=document.getElementById("corpoTabela");if(!corpo)return;
@@ -399,7 +399,7 @@ function renderizarPrecosRegistrados(){
   const encontrados=precosRegistrados.filter(o=>{
    const nome=normalizarBusca(o.product||"");
    return nome && (nome===termo || nome.includes(termo) || termo.includes(nome));
-  }).filter(o=>o.price!==null && o.price!==undefined && o.price!=="" && Number.isFinite(Number(o.price)) && Number(o.price)>=0)
+  }).filter(ofertaVigente).filter(o=>o.price!==null && o.price!==undefined && o.price!=="" && Number.isFinite(Number(o.price)) && Number(o.price)>=0)
     .sort((a,b)=>Number(a.price)-Number(b.price));
   root.innerHTML="";
   if(!encontrados.length){
